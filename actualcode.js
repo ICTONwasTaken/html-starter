@@ -13,11 +13,7 @@ const db = getDatabase(app);
   let change = document.getElementById("change"); 
   let something = 0; 
   
-onValue(ref(db, "something"), (snapshot) => { 
-  something = snapshot.val() || 0; 
-}); 
-
-window.onload = () => {
+window.onload = async () => {
   something = herewego(something);
   console.log('All resources finished loading'); 
   }
@@ -38,13 +34,3 @@ window.backBtn = function backBtn() {
     console.log("This also worked! You destroyed:", old);
     something = 0;
 }
-
-/* Currently:
-Box that makes random number
-
-Needs: /
--make random number
--Send that number to database
--put number into something
--press button, check if number exists
-*/
