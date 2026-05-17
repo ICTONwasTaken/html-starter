@@ -16,21 +16,6 @@ const db = getDatabase(app);
   let something = 0;
 
 window.onload = () => {
-  let saved = localStorage.getItem("myNumber");
-
-  if (saved) {
-    something = Number(saved);
-    console.log("Reusing old number:", something);
-  } 
-  else {
-    something = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-
-    localStorage.setItem("myNumber", something);
-    set(ref(db, "numbers/" + something), true);
-    console.log("New number sent:", something);
-  }
-  change.innerText = something;
-
   window.mycheck = async function () {
     const numRef = ref(db, "numbers/" + something);
     const snap = await get(numRef);
