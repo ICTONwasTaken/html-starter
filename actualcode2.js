@@ -23,6 +23,7 @@ window.mycheck = async function () {
   if (!rum) {
     div1.innerText = "Please enter a room number!";
     div1.hidden = false;
+    playAnim();
     console.log("YOU DON'T GOT SHIZ", rum);
     return;
   }
