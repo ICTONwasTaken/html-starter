@@ -19,6 +19,13 @@ const db = getDatabase(app);
 
 window.mycheck = async function () {
     let rum = document.getElementById("dothething").value;
+
+    if (!rum) {
+    div1.innerText = "Please enter a room number!";
+    div1.hidden = false;
+    return;
+    }
+    
     const numRef = ref(db, "numbers/" + rum);
     const snap = await get(numRef);
     
