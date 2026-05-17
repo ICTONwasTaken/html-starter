@@ -25,6 +25,11 @@ window.onload = async () => {
 
   something = herewego(something);
   console.log('All resources finished loading');
+
+  onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
+        const players = snapshot.val() || {};
+        console.log("Players in room:", Object.keys(players).length);
+    });
   }
 
 function herewego(something) {
