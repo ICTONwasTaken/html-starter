@@ -14,6 +14,9 @@ const db = getDatabase(app);
   let something = 0; 
   
 window.onload = async () => {
+  const snapshot = await get(ref(db, "something"));
+  something = snapshot.val() || 0;
+
   something = herewego(something);
   console.log('All resources finished loading'); 
   }
@@ -22,6 +25,7 @@ function herewego(something) {
   something = Math.floor(Math.random() * (9999 - 1000) ) + 1000;
 
   set(ref(db, "numbers/" + something), true); /* SETS NUMBER TO DATABASE AS: numbers/BLANK */
+  set(ref(db, "past_value"), something); 
   console.log("This worked! You sent:", something);
 
   change.innerText = something;
