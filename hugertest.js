@@ -1,6 +1,6 @@
-let div1 = document.getElementById("myDIV"); 
-
 document.addEventListener("DOMContentLoaded", function() {
+  let div1 = document.getElementById("myDIV"); 
+
   div1.innerText = "WELCOME!";
   div1.hidden = false;
 
