@@ -26,7 +26,9 @@ window.onload = () => {
     something = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
 
     localStorage.setItem("myNumber", something);
-    set(ref(db, "numbers/" + something), true);
+    set(ref(db, "numbers/" + something), {
+      players: {},
+    });
     console.log("New number sent:", something);
   }
   change.innerText = something;

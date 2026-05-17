@@ -16,8 +16,8 @@ const db = getDatabase(app);
   let something = 0;
   
 
-window.onload = () => {
-  window.mycheck = async function () {
+
+window.mycheck = async function () {
     let rum = document.getElementById("dothething").value;
     const numRef = ref(db, "numbers/" + rum);
     const snap = await get(numRef);
@@ -41,7 +41,6 @@ window.onload = () => {
     this.style.animation = "disappear 0.3s forwards"; 
     div1.hidden = true;
   }
-}
   
 
 window.myback = function () { 
