@@ -50,7 +50,7 @@ window.onload = () => {
   window.mythingy = function () { 
     if (something == 0) { something = atleast(1111, 9999); } 
     else { something = 0; } 
-    change.innerText = ("Sent to database:", something); 
+    change.innerHTML("Sent to database:", something); 
   }
 }
 
