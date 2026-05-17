@@ -10,6 +10,7 @@ const firebaseConfig = {
   
 const db = getDatabase(app);
 
+  let div1 = document.getElementById("myDIV"); 
   let change = document.getElementById("change"); 
   let something = 0; 
   let old = 0; 
@@ -29,6 +30,7 @@ window.onload = async () => {
   onValue(ref(db, "numbers/" + something + "/players"), (snapshot) => {
         const players = snapshot.val() || {};
         console.log("Players in room:", Object.keys(players).length);
+        playerscome();
     });
   }
 
@@ -53,3 +55,13 @@ window.backBtn = function backBtn() {
     console.log("This also worked! You destroyed:", old);
     something = 0;
 }
+
+function playerscome() {
+  div1.innerText = "A new player arrives!";
+  div1.style.animation = "mymove 0.9s forwards";
+  div1.addEventListener("animationend", endAnim, { once: true });
+}
+function endAnim() { 
+    this.style.animation = "disappear 0.3s forwards"; 
+    div1.hidden = true;
+  }
