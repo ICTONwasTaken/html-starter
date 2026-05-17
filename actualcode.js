@@ -32,15 +32,13 @@ function herewego(something) {
   return something;
 }
 
-function backBtn() {
+window.backBtn = function backBtn() {
     let old = something;
-
-    remove(ref(db, "numbers/" + old)); /* removes anything as numbers/BLANK */
-    console.log("This also worked! You destroyed:", old); 
+    remove(ref(db, "numbers/" + old));
+    console.log("This also worked! You destroyed:", old);
     something = 0;
 }
 
-window.backBtn = backBtn;
 /* Currently:
 Box that makes random number
 
