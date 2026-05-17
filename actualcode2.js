@@ -14,13 +14,6 @@ const db = getDatabase(app);
   const div1 = document.getElementById("myDIV"); 
   let change = document.getElementById("change");
   let something = 0;
-  
-window.onload = async () => {
-onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
-    const players = snapshot.val() || {};
-    console.log("Players in room:", Object.keys(players).length);
-});
-}
 
 window.mycheck = async function () {
   let rum = document.getElementById("dothething").value.trim();
@@ -67,3 +60,8 @@ function endAnim() {
     this.style.animation = "disappear 0.3s forwards"; 
     div1.hidden = true;
   }
+
+onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
+    const players = snapshot.val() || {};
+    console.log("Players in room:", Object.keys(players).length);
+});
