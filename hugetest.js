@@ -42,7 +42,7 @@ window.onload = () => {
     
   function myEndFunction() { 
     this.style.animation = "disappear 0.3s forwards"; 
-  } 
+  }
 
   function atleast(min, max) {
   return Math.floor(Math.random() * (max - min) ) + min;
@@ -60,7 +60,6 @@ window.onload = () => {
       console.log("This also worked! You destroyed:", old); 
       something = 0; 
     }
-    nochange.innerText = "Sent to DB: ";
     change.innerText = something; 
   }
 }
@@ -76,6 +75,18 @@ window.mycheck = async function () {
       console.log("Number does NOT exist");
     }
   }
+
+window.opening_thingy = function () {
+  div1.hidden = false;
+    div1.innerText = "NEED NUMBER";
+    console.log("WOAH IT HAPPENIN");
+    
+    div1.style.animation = "mymove 0.9s forwards"; } 
+    div1.addEventListener("animationend", myEndFunction);
+
+document.addEventListener("DOMContentLoaded", function() {
+  opening_thingy()
+});
 
 /* Currently:
 Box that makes random number
