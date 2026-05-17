@@ -57,11 +57,22 @@ window.onload = () => {
     else { 
       let old = something
       remove(ref(db, "numbers/" + old));
+      console.log("This also worked! You destroyed:", old); 
       something = 0; 
-      console.log("This also worked! You destroyed:", something); 
-    } 
-    nochange.innerText = "Sent to DB: "; 
+    }
+    nochange.innerText = "Sent to DB: ";
     change.innerText = something; 
+  }
+
+  window.mycheck = function () {
+    const numRef = ref(db, "numbers/" + something);
+    const snap = await get(numRef);
+
+    if (snap.exists()) {
+      console.log("Number exists!");
+    } else {
+      console.log("Number does NOT exist");
+    }
   }
 }
 
