@@ -51,12 +51,12 @@ window.onload = () => {
   window.mythingy = function () { 
     if (something == 0) { 
       something = atleast(1111, 9999); 
-      set(ref(db, "numbers/" + something), true);
+      set(ref(db, "numbers/" + something), true); /* SETS NUMBER TO DATABASE AS: numbers/BLANK */
       console.log("This worked! You sent:", something); 
     } 
     else { 
       let old = something
-      remove(ref(db, "numbers/" + old));
+      remove(ref(db, "numbers/" + old)); /* removes anything as numbers/BLANK */
       console.log("This also worked! You destroyed:", old); 
       something = 0; 
     }
@@ -65,7 +65,7 @@ window.onload = () => {
   }
 }
 
-
+/* CHECKS IF DATABASE NUMBER EXISTS */
 window.mycheck = async function () {
     const numRef = ref(db, "numbers/" + something);
     const snap = await get(numRef);
@@ -80,7 +80,7 @@ window.mycheck = async function () {
 /* Currently:
 Box that makes random number
 
-Needs:
+Needs: /
 -make random number
 -Send that number to database
 -put number into something
