@@ -15,17 +15,25 @@ const db = getDatabase(app);
   let change = document.getElementById("change");
   let something = 0;
 
+  onValue(ref(db, "something"), (snapshot) => { 
+    something = snapshot.val() || 0; 
+  }); 
+  
+
 window.onload = () => {
   window.mycheck = async function () {
     const numRef = ref(db, "numbers/" + something);
     const snap = await get(numRef);
+    let id = document.getElementById("dothething");
     
     if (snap.exists()){
       div1.innerText = "Joined Room!";
-      console.log("Did it work?", numRef); 
+      console.log("Did it work?", numRef);
+      console.log("Well, did it?", id); 
     } else {
       div1.innerText = "Invalid Room Number!";
-      console.log("Did it work?", numRef); 
+      console.log("NOOOOOO", numRef); 
+      console.log("DANG UIT", id);
     }
 
     div1.hidden = false;
