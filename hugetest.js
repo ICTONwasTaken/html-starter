@@ -25,21 +25,23 @@ window.onload = () => {
   console.log("something =", something); 
 };
 
-function myFunction() { 
-  div1.hidden = false;
+window.onload = () => {
+  function myFunction() { 
+    div1.hidden = false;
 
-  if (something == 0) {div1.innerText = "NEED NUMBER";} 
-  else { div1.innerText = "Game Start!";}
-  
-  div1.style.animation = "mymove 0.9s forwards"; } 
-  div1.addEventListener("animationend", myEndFunction); 
-  
-function myEndFunction() { 
-  this.style.animation = "disappear 0.3s forwards"; 
-} 
+    if (something == 0) {div1.innerText = "NEED NUMBER";} 
+    else { div1.innerText = "Game Start!";}
+    
+    div1.style.animation = "mymove 0.9s forwards"; } 
+    div1.addEventListener("animationend", myEndFunction); 
+    
+  function myEndFunction() { 
+    this.style.animation = "disappear 0.3s forwards"; 
+  } 
 
-function mythingy() { 
-  if (something == 0) { something = atleast(1111, 9999); } 
-  else { something = 0; } 
-  change.innerText = something; 
+  function mythingy() { 
+    if (something == 0) { something = atleast(1111, 9999); } 
+    else { something = 0; } 
+    change.innerText = something; 
+  }
 }
