@@ -52,6 +52,7 @@ window.mycheck = async function () {
     console.log("Joined room:", rum, "as", newPlayerKey);
 
     localStorage.setItem("joinedRoom", rum); 
+    localStorage.setItem("myPlayerKey", newPlayerKey);
     window.location.href = "joinedroom.html"; //puts in the joinedroom file
 };
 

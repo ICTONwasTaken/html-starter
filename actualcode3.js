@@ -17,6 +17,7 @@ const db = getDatabase(app);
   let something = 0;
 
   const rum = localStorage.getItem("joinedRoom");
+  const myPlayerKey = localStorage.getItem("myPlayerKey");
 
 window.onload = async () => {
   playAnim();
@@ -45,8 +46,9 @@ function endAnim() {
     div1.hidden = true;
   }
 
-window.backBtn3 = function backBtn3() {
+window.backBtn3 = async function backBtn3() {
+  await remove(ref(db, "numbers/" + rum + "/players/" + myPlayerKey));
   localStorage.removeItem("joinedRoom");
+  localStorage.removeItem("myPlayerKey");
   window.location.href = "joinroom.html";
-  remove(ref(db, rum + "/players"));
 }
