@@ -12,6 +12,7 @@ const db = getDatabase(app);
 
   let change = document.getElementById("change"); 
   let something = 0; 
+  let old = 0; 
   
 window.onload = async () => {
   const snapshot = await get(ref(db, "past_value"));
