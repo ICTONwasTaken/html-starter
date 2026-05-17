@@ -20,7 +20,7 @@ onValue(ref(db, "something"), (snapshot) => {
 }); 
 
 window.onload = () => {
-  herewego();
+  something = herewego(something);
   }
 
 function herewego() {
@@ -30,10 +30,11 @@ function herewego() {
   console.log("This worked! You sent:", something);
 
   change.innerText = something;
+  return something;
 }
 
 function myback() {
-    let old = something
+    let old = something;
 
     remove(ref(db, "numbers/" + old)); /* removes anything as numbers/BLANK */
     console.log("This also worked! You destroyed:", old); 
