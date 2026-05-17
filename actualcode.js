@@ -30,7 +30,9 @@ window.onload = async () => {
   onValue(ref(db, "numbers/" + something + "/players"), (snapshot) => {
         const players = snapshot.val() || {};
         console.log("Players in room:", Object.keys(players).length);
-        if (players > 1) {
+        
+        const playerCount = Object.keys(players).length;
+        if (playerCount  > 1) {
           playerscome();
         }
     });
