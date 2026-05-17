@@ -33,7 +33,7 @@ function herewego(something) {
   return something;
 }
 
-function myback() {
+function backBtn() {
     let old = something;
 
     remove(ref(db, "numbers/" + old)); /* removes anything as numbers/BLANK */
