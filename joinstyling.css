@@ -37,6 +37,7 @@ input {
 }
 
 #box {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
