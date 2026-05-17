@@ -15,7 +15,12 @@ const db = getDatabase(app);
   let change = document.getElementById("change");
   let something = 0;
   
-
+window.onload = async () => {
+onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
+    const players = snapshot.val() || {};
+    console.log("Players in room:", Object.keys(players).length);
+});
+}
 
 window.mycheck = async function () {
   let rum = document.getElementById("dothething").value.trim();
@@ -28,20 +33,29 @@ window.mycheck = async function () {
     return;
   }
 
-  const playersRef = ref(db, "numbers/" + rum);
-  const snap = await get(playersRef);
+  const snap = get(ref(db, "numbers/" + rum));
 
-  if (snap.exists()) {
+  if (!snap.exists()) {
+        div1.innerText = "Invalid Room Number!";
+        playAnim()
+        console.log("Not found:", rum);
+        div1.hidden = true;
+        return;
+    }
+
+  const players = snap.val().players || {};
+  const playerCount = Object.keys(players).length;
+
+    if (playerCount >= 4) {
+        div1.innerText = "Room is full!";
+        return;
+    }
+
+    const newPlayerKey = "player" + (playerCount + 1);
+    await set(ref(db, "numbers/" + rum + "/players/" + newPlayerKey), "Player " + (playerCount + 1));
+
     div1.innerText = "Joined Room!";
-    div1.hidden = true;
-    playAnim()
-    console.log("Joined:", rum);
-  } else {
-    div1.innerText = "Invalid Room Number!";
-    div1.hidden = true;
-    playAnim()
-    console.log("Not found:", rum);
-  }
+    console.log("Joined room:", rum, "as", newPlayerKey);
 };
 
 
