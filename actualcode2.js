@@ -41,6 +41,7 @@ window.mycheck = async function () {
 
     if (playerCount >= 4) {
         div1.innerText = "Room is full!";
+        playAnim();
         return;
     }
 
