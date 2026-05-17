@@ -21,7 +21,6 @@ window.onload = async () => {
 
   if (!saved) {
     createNewRoom();
-    return;
   }
 
   something = Number(saved);
