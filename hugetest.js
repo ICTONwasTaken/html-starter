@@ -51,11 +51,14 @@ window.onload = () => {
   window.mythingy = function () { 
     if (something == 0) { 
       something = atleast(1111, 9999); 
-      set(ref(db, "numbers/" + number), true);
-      console.log("This worked!"); 
+      set(ref(db, "numbers/" + something), true);
+      console.log("This worked! You sent:", something); 
     } 
     else { 
+      let old = something
+      remove(ref(db, "numbers/" + old));
       something = 0; 
+      console.log("This also worked! You destroyed:", something); 
     } 
     nochange.innerText = "Sent to DB: "; 
     change.innerText = something; 
