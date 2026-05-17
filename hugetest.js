@@ -8,19 +8,25 @@ const firebaseConfig = {
   databaseURL: "https://realsomething-default-rtdb.asia-southeast1.firebasedatabase.app/", 
   projectId: "realsomething", }; const app = initializeApp(firebaseConfig); 
   
-const db = getDatabase(app); window.onload = () => { console.log('All resources finished loading'); };
+const db = getDatabase(app); window.onload = () => { 
+  console.log('All resources finished loading'); 
+};
   
-const div1 = document.getElementById("myDIV"); let change = document.getElementById("change"); 
+  const div1 = document.getElementById("myDIV"); 
+  let change = document.getElementById("change"); 
   let something = 0; 
-  onValue(ref(db, "something"), 
-  (snapshot) => { something = snapshot.val() || 0; 
-  console.log("something =", something); }); 
+  
+onValue(ref(db, "something"), (snapshot) => { 
+  something = snapshot.val() || 0; 
+  console.log("something =", something); 
+}); 
 
-function myFunction() { div1.hidden = false; 
-  if (something == 0) { 
-    div1.innerText = "NEED NUMBER"; return; 
-  } 
-  div1.innerText = "Game Start!"; 
+function myFunction() { 
+  div1.hidden = false;
+
+  if (something == 0) {div1.innerText = "NEED NUMBER";} 
+  else { div1.innerText = "Game Start!";}
+  
   div1.style.animation = "mymove 0.9s forwards"; } 
   div1.addEventListener("animationend", myEndFunction); 
   
