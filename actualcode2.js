@@ -27,23 +27,28 @@ window.mycheck = async function () {
     return;
   }
 
-  const playersRef = ref(db, "numbers/" + rum + "/players");
+  const playersRef = ref(db, "numbers/" + rum);
   const snap = await get(playersRef);
-  div1.hidden = false;
 
   if (snap.exists()) {
     div1.innerText = "Joined Room!";
+    div1.hidden = true;
+    playAnim()
     console.log("Joined:", rum);
   } else {
     div1.innerText = "Invalid Room Number!";
+    div1.hidden = true;
+    playAnim()
     console.log("Not found:", rum);
   }
-
-  div1.style.animation = "mymove 0.9s forwards";
-  div1.addEventListener("animationend", myEndFunction);
 };
 
-function myEndFunction() { 
+
+function playAnim () {
+  div1.style.animation = "mymove 0.9s forwards";
+  div1.addEventListener("animationend", endAnim, { once: true });
+}
+function endAnim() { 
     this.style.animation = "disappear 0.3s forwards"; 
     div1.hidden = true;
   }
