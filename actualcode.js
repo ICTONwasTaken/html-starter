@@ -8,57 +8,79 @@ const firebaseConfig = {
   databaseURL: "https://realsomething-default-rtdb.asia-southeast1.firebasedatabase.app/", 
   projectId: "realsomething", }; const app = initializeApp(firebaseConfig); 
   
-const db = getDatabase(app);
+const db = getDatabase(app); window.onload = () => { 
+  console.log('All resources finished loading'); 
+};
 
   
   const div1 = document.getElementById("myDIV"); 
-  let change = document.getElementById("change");
-  let something = 0;
-
-
-window.onload = async () => {
-  let saved = localStorage.getItem("myNumber");
-
-  if (!saved) {
-    createNewRoom();
-  }
-
-  something = Number(saved);
-
-  const snap = await get(ref(db, "numbers/" + something));
-
-  if (snap.exists()) {
-    console.log("Room still exists:", something);
-    change.innerText = something;
-  } else {
-    console.log("Room deleted, not recreating automatically");
-
-    localStorage.removeItem("myNumber");
-
-    div1.hidden = false;
-    div1.innerText = "Room expired. Create a new one.";
-  }
-};
+  let change = document.getElementById("change"); 
+  let nochange = document.getElementById("nochange");
+  let something = 0; 
   
-function createNewRoom() {
-  something = Math.floor(Math.random() * 9000) + 1000;
+onValue(ref(db, "something"), (snapshot) => { 
+  something = snapshot.val() || 0; 
+}); 
 
-  set(ref(db, "numbers/" + something), {
-    players: {}
-  });
+window.onload = () => {
+  window.myFunction = function () { 
+    div1.hidden = false;
 
-  localStorage.setItem("myNumber", something);
-  change.innerText = something;
+    if (something == 0) {
+      div1.innerText = "NEED NUMBER";
+      console.log("something =", something);
+      console.log("div1 =", div1); 
+      console.log("change =", change); 
+    } 
+    else { 
+      div1.innerText = "Game Start!";
+      console.log("something =", something); 
+    }
+    
+    div1.style.animation = "mymove 0.9s forwards"; } 
+    div1.addEventListener("animationend", myEndFunction); 
+    
+  function myEndFunction() { 
+    this.style.animation = "disappear 0.3s forwards"; 
+  }
+
+  function atleast(min, max) {
+  return Math.floor(Math.random() * (max - min) ) + min;
+  }
+
+  window.mythingy = function () { 
+    something = atleast(9999, 1111); 
+    set(ref(db, "numbers/" + something), true); /* SETS NUMBER TO DATABASE AS: numbers/BLANK */
+    console.log("This worked! You sent:", something); 
+
+    change.innerText = something; 
+  }
 }
 
-window.myback = function () { 
-      let old = localStorage.getItem("myNumber");
+/* CHECKS IF DATABASE NUMBER EXISTS */
+window.mycheck = async function () {
+    const numRef = ref(db, "numbers/" + something);
+    const snap = await get(numRef);
 
-      if (!old) return;
-
-      remove(ref(db, "numbers/" + old)); /* removes anything as numbers/BLANK */
-
-      localStorage.removeItem("myNumber");
-      something = 0; 
-      console.log("This also worked! You destroyed:", old); 
+    if (snap.exists()) {
+      console.log("Number exists!");
+    } else {
+      console.log("Number does NOT exist");
     }
+  }
+
+function back() {
+    let old = something
+    remove(ref(db, "numbers/" + old)); /* removes anything as numbers/BLANK */
+    console.log("This also worked! You destroyed:", old); 
+    something = 0; 
+}
+/* Currently:
+Box that makes random number
+
+Needs: /
+-make random number
+-Send that number to database
+-put number into something
+-press button, check if number exists
+*/
