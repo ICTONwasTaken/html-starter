@@ -26,7 +26,7 @@ window.mycheck = async function () {
     return;
   }
 
-  const snap = get(ref(db, "numbers/" + rum));
+  const snap = await get(ref(db, "numbers/" + rum));
 
   if (!snap.exists()) {
         div1.innerText = "Invalid Room Number!";
@@ -49,6 +49,11 @@ window.mycheck = async function () {
 
     div1.innerText = "Joined Room!";
     console.log("Joined room:", rum, "as", newPlayerKey);
+
+    onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
+      const players = snapshot.val() || {};
+      console.log("Players in room:", Object.keys(players).length);
+    });
 };
 
 
@@ -60,8 +65,3 @@ function endAnim() {
     this.style.animation = "disappear 0.3s forwards"; 
     div1.hidden = true;
   }
-
-onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
-    const players = snapshot.val() || {};
-    console.log("Players in room:", Object.keys(players).length);
-});
