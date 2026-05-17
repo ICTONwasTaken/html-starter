@@ -32,8 +32,9 @@ function herewego() {
   change.innerText = something;
 }
 
-function back() {
+function myback() {
     let old = something
+
     remove(ref(db, "numbers/" + old)); /* removes anything as numbers/BLANK */
     console.log("This also worked! You destroyed:", old); 
     something = 0;
