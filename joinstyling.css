@@ -9,7 +9,9 @@ body {
   min-height: 80vh;        /* full screen height */
   flex-direction: column;   /* stack h1 + box */
 }
-
+input {
+  padding: 10px;
+}
 .button {
   text-decoration: none;
   font-weight: bold;
@@ -65,12 +67,12 @@ body {
     align-items: center;
 
         position: fixed;
-        top: 20%;
+        top: 26%;
         left: 0;
         width: 100vw;
         z-index: 999999;
   height: 100px;
-  background: rgba(61, 68, 75, 0.397);
+  background: rgba(31, 34, 37, 0.397);
   backdrop-filter: blur(3px);
   color: rgb(255, 255, 255);
   font-size: 30px;

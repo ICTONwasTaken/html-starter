@@ -30,6 +30,30 @@ window.onload = () => {
     console.log("New number sent:", something);
   }
   change.innerText = something;
+
+  window.mycheck = async function () {
+    const numRef = ref(db, "numbers/" + something);
+    const snap = await get(numRef);
+    
+    if (snap.exists()){
+      div1.innerText = "Joined Room!";
+      console.log("Did it work?", numRef); 
+    } else {
+      div1.innerText = "Invalid Room Number!";
+      console.log("Did it work?", numRef); 
+    }
+
+    div1.hidden = false;
+    div1.style.animation = "mymove 0.9s forwards";
+    div1.addEventListener("animationend", myEndFunction); 
+
+    console.log(snap.exists() ? "Number exists!" : "Number does NOT exist");
+  }
+
+  function myEndFunction() { 
+    this.style.animation = "disappear 0.3s forwards"; 
+    div1.hidden = true;
+  }
 }
   
 
@@ -37,10 +61,13 @@ window.myback = function () {
       let old = localStorage.getItem("myNumber");
 
       if (!old) return;
-
+      
       remove(ref(db, "numbers/" + old)); /* removes anything as numbers/BLANK */
 
       localStorage.removeItem("myNumber");
       something = 0; 
       console.log("This also worked! You destroyed:", old); 
     }
+
+/* CHECKS IF DATABASE NUMBER EXISTS */
+/* CHECKS IF DATABASE NUMBER EXISTS */
