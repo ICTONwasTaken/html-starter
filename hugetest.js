@@ -26,7 +26,7 @@ window.onload = () => {
 };
 
 window.onload = () => {
-  function myFunction() { 
+  window.myFunction = function () { 
     div1.hidden = false;
 
     if (something == 0) {div1.innerText = "NEED NUMBER";} 
@@ -39,7 +39,11 @@ window.onload = () => {
     this.style.animation = "disappear 0.3s forwards"; 
   } 
 
-  function mythingy() { 
+  function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min) ) + min;
+  }
+
+  window.mythingy = function () { 
     if (something == 0) { something = atleast(1111, 9999); } 
     else { something = 0; } 
     change.innerText = something; 
