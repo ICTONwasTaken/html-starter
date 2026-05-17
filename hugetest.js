@@ -50,6 +50,16 @@ window.onload = () => {
   window.mythingy = function () { 
     if (something == 0) { something = atleast(1111, 9999); } 
     else { something = 0; } 
-    change.innerText = something; 
+    change.innerText = ("Sent to database:" = something); 
   }
 }
+
+/* Currently:
+Box that makes random number
+
+Needs:
+-make random number
+-Send that number to database
+-put number into something
+-press button, check if number exists
+*/
