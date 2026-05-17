@@ -68,9 +68,9 @@ window.onload = () => {
 
 window.mycheck = function () {
     const numRef = ref(db, "numbers/" + something);
-    const snap = await get(numRef);
+    const tap = await get(numRef);
 
-    if (snap.exists()) {
+    if (tap.exists()) {
       console.log("Number exists!");
     } else {
       console.log("Number does NOT exist");
