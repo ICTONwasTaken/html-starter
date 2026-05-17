@@ -27,9 +27,8 @@ window.mycheck = async function () {
     return;
   }
 
-  const numRef = ref(db, "numbers/" + rum);
-  const snap = await get(numRef);
-
+  const playersRef = ref(db, "numbers/" + rum + "/players");
+  const snap = await get(playersRef);
   div1.hidden = false;
 
   if (snap.exists()) {
@@ -44,23 +43,7 @@ window.mycheck = async function () {
   div1.addEventListener("animationend", myEndFunction);
 };
 
-  function myEndFunction() { 
+function myEndFunction() { 
     this.style.animation = "disappear 0.3s forwards"; 
     div1.hidden = true;
   }
-  
-
-window.myback = function () { 
-      let old = localStorage.getItem("myNumber");
-
-      if (!old) return;
-      
-      remove(ref(db, "numbers/" + old)); /* removes anything as numbers/BLANK */
-
-      localStorage.removeItem("myNumber");
-      something = 0; 
-      console.log("This also worked! You destroyed:", old); 
-    }
-
-/* CHECKS IF DATABASE NUMBER EXISTS */
-/* CHECKS IF DATABASE NUMBER EXISTS */

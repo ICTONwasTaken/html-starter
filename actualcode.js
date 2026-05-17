@@ -15,24 +15,38 @@ const db = getDatabase(app);
   let change = document.getElementById("change");
   let something = 0;
 
-window.onload = () => {
+  
+window.onload = async () => {
   let saved = localStorage.getItem("myNumber");
 
   if (saved) {
     something = Number(saved);
-    console.log("Reusing old number:", something);
-  } 
-  else {
-    something = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+
+    const snap = await get(ref(db, "numbers/" + something));
+
+    if (!snap.exists()) {
+      console.log("Room deleted, creating new one");
+
+      something = Math.floor(Math.random() * 9000) + 1000;
+
+      await set(ref(db, "numbers/" + something), {
+        players: {}
+      });
+
+      localStorage.setItem("myNumber", something);
+    }
+  } else {
+    something = Math.floor(Math.random() * 9000) + 1000;
+
+    await set(ref(db, "numbers/" + something), {
+      players: {}
+    });
 
     localStorage.setItem("myNumber", something);
-    set(ref(db, "numbers/" + something), {
-      players: {},
-    });
-    console.log("New number sent:", something);
   }
+
   change.innerText = something;
-}
+};
   
 
 window.myback = function () { 
