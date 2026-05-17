@@ -48,5 +48,5 @@ function endAnim() {
 window.backBtn3 = function backBtn3() {
   localStorage.removeItem("joinedRoom");
   window.location.href = "joinroom.html";
-  remove(ref(db, "numbers/" + rum + "/players"));
+  remove(ref(db, rum + "/players"));
 }
