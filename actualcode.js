@@ -1,0 +1,54 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"; 
+import { getDatabase, ref, set, get, update, onValue, remove } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"; 
+
+const firebaseConfig = { 
+  apiKey: "AIzaSyDkWvzrLrzPWShK1a6RhmrRJ6ChxAl2sHI", 
+  authDomain: "realsomething.firebaseapp.com", 
+  databaseURL: "https://realsomething-default-rtdb.asia-southeast1.firebasedatabase.app/", 
+  projectId: "realsomething", }; const app = initializeApp(firebaseConfig); 
+  
+const db = getDatabase(app);
+
+  
+  const div1 = document.getElementById("myDIV"); 
+  let change = document.getElementById("change");
+  let something = 0;
+
+window.onload = () => {
+  let saved = localStorage.getItem("myNumber");
+
+  if (saved) {
+    something = Number(saved);
+    console.log("Reusing old number:", something);
+  } 
+  else {
+    something = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+
+    localStorage.setItem("myNumber", something);
+    set(ref(db, "numbers/" + something), true);
+    console.log("New number sent:", something);
+  }
+  change.innerText = something;
+}
+  
+
+window.myback = function () { 
+      let old = localStorage.getItem("myNumber");
+
+      if (!old) return;
+      
+      remove(ref(db, "numbers/" + old)); /* removes anything as numbers/BLANK */
+
+      localStorage.removeItem("myNumber");
+      something = 0; 
+      console.log("This also worked! You destroyed:", old); 
+    }
+
+/* CHECKS IF DATABASE NUMBER EXISTS */
+window.mycheck = async function () {
+    const numRef = ref(db, "numbers/" + something);
+    const snap = await get(numRef);
+
+    console.log(snap.exists() ? "Number exists!" : "Number does NOT exist");
+  }
