@@ -29,8 +29,14 @@ window.onload = () => {
   window.myFunction = function () { 
     div1.hidden = false;
 
-    if (something == 0) {div1.innerText = "NEED NUMBER";} 
-    else { div1.innerText = "Game Start!";}
+    if (something == 0) {
+      div1.innerText = "NEED NUMBER";
+      console.log("something =", something); 
+    } 
+    else { 
+      div1.innerText = "Game Start!";
+      console.log("something =", something); 
+    }
     
     div1.style.animation = "mymove 0.9s forwards"; } 
     div1.addEventListener("animationend", myEndFunction); 
