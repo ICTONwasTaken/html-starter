@@ -46,8 +46,6 @@ window.onload = () => {
     div1.hidden = false;
     div1.style.animation = "mymove 0.9s forwards";
     div1.addEventListener("animationend", myEndFunction); 
-
-    console.log(snap.exists() ? "Number exists!" : "Number does NOT exist");
   }
 
   function myEndFunction() { 
