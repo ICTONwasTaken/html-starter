@@ -49,8 +49,14 @@ window.onload = () => {
   }
 
   window.mythingy = function () { 
-    if (something == 0) { something = atleast(1111, 9999); } 
-    else { something = 0; } 
+    if (something == 0) { 
+      something = atleast(1111, 9999); 
+      set(ref(db, "numbers/" + number), true);
+      console.log("This worked!"); 
+    } 
+    else { 
+      something = 0; 
+    } 
     nochange.innerText = "Sent to DB: "; 
     change.innerText = something; 
   }
