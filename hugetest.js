@@ -11,6 +11,7 @@ const firebaseConfig = {
 const db = getDatabase(app); window.onload = () => { 
   console.log('All resources finished loading'); 
 };
+
   
   const div1 = document.getElementById("myDIV"); 
   let change = document.getElementById("change"); 
