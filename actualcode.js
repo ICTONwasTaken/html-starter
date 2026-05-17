@@ -12,6 +12,7 @@ const db = getDatabase(app);
 
   let div1 = document.getElementById("myDIV"); 
   let change = document.getElementById("change"); 
+  let num = document.getElementById("num"); 
   let something = 0; 
   let old = 0; 
   
@@ -34,6 +35,7 @@ window.onload = async () => {
         const playerCount = Object.keys(players).length;
         if (playerCount  > 1) {
           playerscome();
+          num.innerText = playerCount;
         }
     });
   }
