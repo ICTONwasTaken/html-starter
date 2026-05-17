@@ -24,7 +24,7 @@ window.onload = () => {
   window.mycheck = async function () {
     const numRef = ref(db, "numbers/" + something);
     const snap = await get(numRef);
-    let id = document.getElementById("dothething");
+    let rum = document.getElementById("dothething");
     
     if (snap.exists()){
       div1.innerText = "Joined Room!";
@@ -33,7 +33,7 @@ window.onload = () => {
     } else {
       div1.innerText = "Invalid Room Number!";
       console.log("NOOOOOO", numRef); 
-      console.log("DANG UIT", id);
+      console.log("DANG UIT", rum);
     }
 
     div1.hidden = false;
