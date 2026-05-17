@@ -14,14 +14,16 @@ const db = getDatabase(app);
   let something = 0; 
   
 window.onload = async () => {
-  const snapshot = await get(ref(db, "something"));
-  something = snapshot.val() || 0;
+  const snapshot = await get(ref(db, "past_value"));
+  old = snapshot.val() || 0;
 
-  if (something != 0) {
-    change.innerText = something;
-  } else {
+  if (old != 0) {
+      await remove(ref(db, "numbers/" + old));
+      console.log("Cleaned up old number:", old);
+    }
+
   something = herewego(something);
-  console.log('All resources finished loading');}
+  console.log('All resources finished loading');
   }
 
 function herewego(something) {
