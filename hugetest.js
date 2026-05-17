@@ -45,7 +45,7 @@ window.onload = () => {
     this.style.animation = "disappear 0.3s forwards"; 
   } 
 
-  function getRndInteger(min, max) {
+  function atleast(min, max) {
   return Math.floor(Math.random() * (max - min) ) + min;
   }
 
