@@ -15,39 +15,42 @@ const db = getDatabase(app);
   let change = document.getElementById("change");
   let something = 0;
 
-  
+
 window.onload = async () => {
   let saved = localStorage.getItem("myNumber");
 
-  if (saved) {
-    something = Number(saved);
-
-    const snap = await get(ref(db, "numbers/" + something));
-
-    if (!snap.exists()) {
-      console.log("Room deleted, creating new one");
-
-      something = Math.floor(Math.random() * 9000) + 1000;
-
-      await set(ref(db, "numbers/" + something), {
-        players: {}
-      });
-
-      localStorage.setItem("myNumber", something);
-    }
-  } else {
-    something = Math.floor(Math.random() * 9000) + 1000;
-
-    await set(ref(db, "numbers/" + something), {
-      players: {}
-    });
-
-    localStorage.setItem("myNumber", something);
+  if (!saved) {
+    createNewRoom();
+    return;
   }
 
-  change.innerText = something;
+  something = Number(saved);
+
+  const snap = await get(ref(db, "numbers/" + something));
+
+  if (snap.exists()) {
+    console.log("Room still exists:", something);
+    change.innerText = something;
+  } else {
+    console.log("Room deleted, not recreating automatically");
+
+    localStorage.removeItem("myNumber");
+
+    div1.hidden = false;
+    div1.innerText = "Room expired. Create a new one.";
+  }
 };
   
+function createNewRoom() {
+  something = Math.floor(Math.random() * 9000) + 1000;
+
+  set(ref(db, "numbers/" + something), {
+    players: {}
+  });
+
+  localStorage.setItem("myNumber", something);
+  change.innerText = something;
+}
 
 window.myback = function () { 
       let old = localStorage.getItem("myNumber");
