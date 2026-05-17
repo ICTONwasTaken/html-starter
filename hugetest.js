@@ -76,18 +76,6 @@ window.mycheck = async function () {
     }
   }
 
-window.opening_thingy = function () {
-  div1.hidden = false;
-    div1.innerText = "NEED NUMBER";
-    console.log("WOAH IT HAPPENIN");
-    
-    div1.style.animation = "mymove 0.9s forwards"; } 
-    div1.addEventListener("animationend", myEndFunction);
-
-document.addEventListener("DOMContentLoaded", function() {
-  opening_thingy()
-});
-
 /* Currently:
 Box that makes random number
 
