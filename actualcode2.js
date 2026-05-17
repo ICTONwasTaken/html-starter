@@ -14,21 +14,18 @@ const db = getDatabase(app);
   const div1 = document.getElementById("myDIV"); 
   let change = document.getElementById("change");
   let something = 0;
-
-  onValue(ref(db, "something"), (snapshot) => { 
-    something = snapshot.val() || 0; 
-  }); 
   
 
-window.mycheck = async function () {
-    const numRef = ref(db, "numbers/" + something);
+window.onload = () => {
+  window.mycheck = async function () {
+    let rum = document.getElementById("dothething").value;
+    const numRef = ref(db, "numbers/" + rum);
     const snap = await get(numRef);
-    let rum = document.getElementById("dothething");
     
     if (snap.exists()){
       div1.innerText = "Joined Room!";
       console.log("Did it work?", numRef);
-      console.log("Well, did it?", id); 
+      console.log("Well, did it?", rum); 
     } else {
       div1.innerText = "Invalid Room Number!";
       console.log("NOOOOOO", numRef); 
@@ -44,7 +41,7 @@ window.mycheck = async function () {
     this.style.animation = "disappear 0.3s forwards"; 
     div1.hidden = true;
   }
-
+}
   
 
 window.myback = function () { 
