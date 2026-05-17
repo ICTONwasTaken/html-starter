@@ -51,10 +51,8 @@ window.mycheck = async function () {
     div1.innerText = "Joined Room!";
     console.log("Joined room:", rum, "as", newPlayerKey);
 
-    onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
-      const players = snapshot.val() || {};
-      console.log("Players in room:", Object.keys(players).length);
-    });
+    localStorage.setItem("joinedRoom", rum); 
+    window.location.href = "joinedroom.html"; //puts in the joinedroom file
 };
 
 
@@ -66,3 +64,8 @@ function endAnim() {
     this.style.animation = "disappear 0.3s forwards"; 
     div1.hidden = true;
   }
+
+window.backBtn2 = function backBtn2() {
+  localStorage.removeItem("joinedRoom");
+  window.location.href = "joinroom.html";
+}

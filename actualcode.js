@@ -66,6 +66,7 @@ function playerscome() {
   div1.innerText = "A new player arrives!";
   div1.style.animation = "mymove 0.9s forwards";
   div1.addEventListener("animationend", endAnim, { once: true });
+  div1.hidden = true;
 }
 function endAnim() { 
     this.style.animation = "disappear 0.3s forwards"; 
