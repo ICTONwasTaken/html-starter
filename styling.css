@@ -27,7 +27,7 @@ button:hover {
   cursor: pointer;
 }
 
-#change {
+#change, #nochange {
   color: rgb(255, 255, 255);
   font-size: 20px;
   font-weight: bolder;

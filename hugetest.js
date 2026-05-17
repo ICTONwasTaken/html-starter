@@ -15,6 +15,7 @@ const db = getDatabase(app); window.onload = () => {
   
   const div1 = document.getElementById("myDIV"); 
   let change = document.getElementById("change"); 
+  let nochange = document.getElementById("nochange");
   let something = 0; 
   
 onValue(ref(db, "something"), (snapshot) => { 
@@ -50,7 +51,8 @@ window.onload = () => {
   window.mythingy = function () { 
     if (something == 0) { something = atleast(1111, 9999); } 
     else { something = 0; } 
-    change.innerText("Sent to database:", something); 
+    nochange.innerText = "Sent to DB: "; 
+    change.innerText = something; 
   }
 }
 
