@@ -8,9 +8,7 @@ const firebaseConfig = {
   databaseURL: "https://realsomething-default-rtdb.asia-southeast1.firebasedatabase.app/", 
   projectId: "realsomething", }; const app = initializeApp(firebaseConfig); 
   
-const db = getDatabase(app); window.onload = () => { 
-  console.log('All resources finished loading'); 
-};
+const db = getDatabase(app);
 
   let change = document.getElementById("change"); 
   let something = 0; 
@@ -21,6 +19,7 @@ onValue(ref(db, "something"), (snapshot) => {
 
 window.onload = () => {
   something = herewego(something);
+  console.log('All resources finished loading'); 
   }
 
 function herewego(something) {
@@ -40,6 +39,8 @@ function backBtn() {
     console.log("This also worked! You destroyed:", old); 
     something = 0;
 }
+
+window.backBtn = backBtn;
 /* Currently:
 Box that makes random number
 
