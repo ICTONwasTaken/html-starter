@@ -21,17 +21,15 @@ onValue(ref(db, "something"), (snapshot) => {
   something = snapshot.val() || 0; 
 }); 
 
-window.onload = () => { 
-  console.log("something =", something); 
-};
-
 window.onload = () => {
   window.myFunction = function () { 
     div1.hidden = false;
 
     if (something == 0) {
       div1.innerText = "NEED NUMBER";
-      console.log("something =", something); 
+      console.log("something =", something);
+      console.log("div1 =", div1); 
+      console.log("change =", change); 
     } 
     else { 
       div1.innerText = "Game Start!";
