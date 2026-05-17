@@ -23,7 +23,7 @@ window.onload = () => {
   something = herewego(something);
   }
 
-function herewego() {
+function herewego(something) {
   something = Math.floor(Math.random() * (9999 - 1000) ) + 1000;
 
   set(ref(db, "numbers/" + something), true); /* SETS NUMBER TO DATABASE AS: numbers/BLANK */
