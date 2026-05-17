@@ -23,7 +23,7 @@ window.mycheck = async function () {
     if (!rum) {
     div1.innerText = "Please enter a room number!";
     div1.hidden = false;
-    return;
+    console.log("YOU DON'T GOT SHIT", rum);
     }
     
     const numRef = ref(db, "numbers/" + rum);
