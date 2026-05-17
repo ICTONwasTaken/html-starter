@@ -17,8 +17,11 @@ window.onload = async () => {
   const snapshot = await get(ref(db, "something"));
   something = snapshot.val() || 0;
 
+  if (something != 0) {
+    change.innerText = something;
+  } else {
   something = herewego(something);
-  console.log('All resources finished loading'); 
+  console.log('All resources finished loading');}
   }
 
 function herewego(something) {
