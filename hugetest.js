@@ -19,8 +19,11 @@ const db = getDatabase(app); window.onload = () => {
   
 onValue(ref(db, "something"), (snapshot) => { 
   something = snapshot.val() || 0; 
-  console.log("something =", something); 
 }); 
+
+window.onload = () => { 
+  console.log("something =", something); 
+};
 
 function myFunction() { 
   div1.hidden = false;
