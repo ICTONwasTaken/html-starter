@@ -18,31 +18,31 @@ const db = getDatabase(app);
 
 
 window.mycheck = async function () {
-    let rum = document.getElementById("dothething").value;
+  let rum = document.getElementById("dothething").value.trim();
 
-    if (!rum) {
+  if (!rum) {
     div1.innerText = "Please enter a room number!";
     div1.hidden = false;
-    console.log("YOU DON'T GOT SHIT", rum);
-    }
-    
-    const numRef = ref(db, "numbers/" + rum);
-    const snap = await get(numRef);
-    
-    if (snap.exists()){
-      div1.innerText = "Joined Room!";
-      console.log("Did it work?", numRef);
-      console.log("Well, did it?", rum); 
-    } else {
-      div1.innerText = "Invalid Room Number!";
-      console.log("NOOOOOO", numRef); 
-      console.log("DANG UIT", rum);
-    }
-
-    div1.hidden = false;
-    div1.style.animation = "mymove 0.9s forwards";
-    div1.addEventListener("animationend", myEndFunction); 
+    console.log("YOU DON'T GOT SHIZ", rum);
+    return;
   }
+
+  const numRef = ref(db, "numbers/" + rum);
+  const snap = await get(numRef);
+
+  div1.hidden = false;
+
+  if (snap.exists()) {
+    div1.innerText = "Joined Room!";
+    console.log("Joined:", rum);
+  } else {
+    div1.innerText = "Invalid Room Number!";
+    console.log("Not found:", rum);
+  }
+
+  div1.style.animation = "mymove 0.9s forwards";
+  div1.addEventListener("animationend", myEndFunction);
+};
 
   function myEndFunction() { 
     this.style.animation = "disappear 0.3s forwards"; 
