@@ -63,8 +63,10 @@ window.onload = () => {
     nochange.innerText = "Sent to DB: ";
     change.innerText = something; 
   }
+}
 
-  window.mycheck = function () {
+
+window.mycheck = function () {
     const numRef = ref(db, "numbers/" + something);
     const snap = await get(numRef);
 
@@ -74,7 +76,6 @@ window.onload = () => {
       console.log("Number does NOT exist");
     }
   }
-}
 
 /* Currently:
 Box that makes random number
