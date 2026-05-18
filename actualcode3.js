@@ -26,12 +26,13 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
         const players = snapshot.val() || {};
-        const playerList = Object.values(players); // get all player entries
+        const playerKeys = Object.keys(players);
         const playerCount = playerList.length;
         
-        num.innerText = playerCount;
+        num.innerText = playerKeys.length;
+        counting = playerKeys.join("\n");
 
-        counting = playerList.map(p => p.name).join(", ");
+      document.getElementById("player-list").innerText = counting;
     });
   }
 
