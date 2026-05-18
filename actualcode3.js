@@ -15,6 +15,7 @@ const db = getDatabase(app);
   let change = document.getElementById("change");
   let num = document.getElementById("num");
   let something = 0;
+  let counting = "";
 
   const rum = localStorage.getItem("joinedRoom");
   const myPlayerKey = localStorage.getItem("myPlayerKey");
@@ -25,10 +26,12 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
         const players = snapshot.val() || {};
-        console.log("Players in room:", Object.keys(players).length);
+        const playerList = Object.values(players); // get all player entries
+        const playerCount = playerList.length;
         
-        const playerCount = Object.keys(players).length;
         num.innerText = playerCount;
+
+        counting = playerList.map(p => p.name).join(", ");
     });
   }
 
