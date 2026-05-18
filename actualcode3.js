@@ -29,14 +29,8 @@ window.onload = async () => {
     const players = snapshot.val() || {};
     const stuff = Object.values(players);
 
-    num.innerText = stuff.length;
     counting = stuff.join("\n");
-
     playerlist.innerText = counting;
-
-    playerlist.style.animation = "none";
-    playerlist.offsetHeight;
-    playerlist.style.animation = "player-come 0.3s forwards";
   });
   }
 
