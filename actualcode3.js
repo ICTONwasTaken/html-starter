@@ -13,7 +13,7 @@ const db = getDatabase(app);
 
   const div1 = document.getElementById("myDIV"); 
   let change = document.getElementById("change");
-  let num = document.getElementById("num");
+  let num = document.getElementById("player-count");
   let something = 0;
   let counting = "";
   let playerlist = document.getElementById("player-list")
