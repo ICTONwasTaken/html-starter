@@ -26,10 +26,10 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
     const players = snapshot.val() || {};
-    const entries = Object.entries(players); // gives [["player1", "Player 1"], ["player2", "Player 2"], ...]
+    const stuff = Object.values(players);
 
-    num.innerText = entries.length;
-    counting = entries.map(([key, name]) => `${key}: ${name}`).join("\n");
+    num.innerText = stuff.length;
+    counting = stuff.join("\n");
 
     document.getElementById("player-list").innerText = counting;
 });
