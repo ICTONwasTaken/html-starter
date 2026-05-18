@@ -55,9 +55,12 @@ function endAnim() {
 
 window.backBtn3 = async function backBtn3() {
   await remove(ref(db, "numbers/" + rum + "/players/" + myPlayerKey));
-  console.log("rum:", rum);
-  console.log("myPlayerKey:", myPlayerKey);
   localStorage.removeItem("joinedRoom");
   localStorage.removeItem("myPlayerKey");
   window.location.href = "joinroom.html";
+
+  const rum = localStorage.getItem("joinedRoom");
+  const myPlayerKey = localStorage.getItem("myPlayerKey");
+  console.log("rum:", rum);
+  console.log("myPlayerKey:", myPlayerKey);
 }
