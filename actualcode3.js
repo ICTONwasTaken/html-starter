@@ -25,14 +25,14 @@ window.onload = async () => {
   start();
 
   onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
-        const players = snapshot.val() || {};
-        const playerKeys = Object.keys(players);
-        
-        num.innerText = playerKeys.length;
-        counting = playerKeys.join("\n");
+    const players = snapshot.val() || {};
+    const entries = Object.entries(players); // gives [["player1", "Player 1"], ["player2", "Player 2"], ...]
 
-        document.getElementById("player-list").innerText = counting;
-    });
+    num.innerText = entries.length;
+    counting = entries.map(([key, name]) => `${key}: ${name}`).join("\n");
+
+    document.getElementById("player-list").innerText = counting;
+});
   }
 
 
