@@ -1,14 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"; 
-import { getDatabase, ref, set, get, update, onValue, remove } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"; 
-
-const firebaseConfig = { 
-  apiKey: "AIzaSyDkWvzrLrzPWShK1a6RhmrRJ6ChxAl2sHI", 
-  authDomain: "realsomething.firebaseapp.com", 
-  databaseURL: "https://realsomething-default-rtdb.asia-southeast1.firebasedatabase.app/", 
-  projectId: "realsomething", }; const app = initializeApp(firebaseConfig); 
-  
-const db = getDatabase(app);
+import { db } from './firebase.js'
 
   
   const div1 = document.getElementById("myDIV"); 
@@ -26,38 +16,33 @@ window.mycheck = async function () {
     return;
   }
 
-  const snap = await get(ref(db, "numbers/" + rum));
+  const playersRef = ref(db, "numbers/" + rum + "/players");
 
-  if (!snap.exists()) {
-        div1.innerText = "Invalid Room Number!";
-        playAnim()
-        console.log("Not found:", rum);
-        div1.hidden = true;
-        return;
-    }
+  const result = await runTransaction(playersRef, (players) => {
+    if (!players) return; // room doesn't exist, abort
+    const count = Object.keys(players).length;
+    if (count >= 4) return; // full, abort
 
-  const players = snap.val().players || {};
-  const playerCount = Object.keys(players).length;
+    const newKey = "player" + (count + 1);
+    players[newKey] = "Player " + (count + 1);
+    return players; // commit
+  });
 
-    if (playerCount >= 4) {
-        div1.innerText = "Room is full!";
-        playAnim();
-        return;
-    }
+  if (!result.committed) {
+    div1.innerText = result.snapshot.exists() ? "Room is full!" : "Invalid Room Number!";
+    playAnim();
+    return;
+  }
 
-    const newPlayerKey = "player" + (playerCount + 1);
-    await set(ref(db, "numbers/" + rum + "/players/" + newPlayerKey), "Player " + (playerCount + 1));
-
-    div1.innerText = "Joined Room!";
-    console.log("Joined room:", rum, "as", newPlayerKey);
-
-    localStorage.setItem("joinedRoom", rum); 
-    localStorage.setItem("myPlayerKey", newPlayerKey);
-    window.location.href = "joinedroom.html"; //puts in the joinedroom file
+  const newPlayerKey = "player" + Object.keys(result.snapshot.val()).length;
+  localStorage.setItem("joinedRoom", rum);
+  localStorage.setItem("myPlayerKey", newPlayerKey);
+  window.location.href = "joinedroom.html";
 };
 
 
 function playAnim () {
+  div1.hidden = false;
   div1.style.animation = "mymove 0.9s forwards";
   div1.addEventListener("animationend", endAnim, { once: true });
 }

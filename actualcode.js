@@ -1,20 +1,5 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"; 
-import { getDatabase, ref, set, get, update, onValue, remove } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"; 
+import { db } from './firebase.js'
 
-const firebaseConfig = { 
-  apiKey: "AIzaSyDkWvzrLrzPWShK1a6RhmrRJ6ChxAl2sHI", 
-  authDomain: "realsomething.firebaseapp.com", 
-  databaseURL: "https://realsomething-default-rtdb.asia-southeast1.firebasedatabase.app/", 
-  projectId: "realsomething", }; const app = initializeApp(firebaseConfig); 
-  
-const db = getDatabase(app);
-
-  let div1 = document.getElementById("myDIV"); 
-  let change = document.getElementById("change"); 
-  let num = document.getElementById("num"); 
-  let something = 0; 
-  let old = 0; 
   
 window.onload = async () => {
   const snapshot = await get(ref(db, "past_value"));
@@ -25,7 +10,7 @@ window.onload = async () => {
       console.log("Cleaned up old number:", old);
     }
 
-  something = herewego(something);
+  something = await herewego(something);
   console.log('All resources finished loading');
 
   onValue(ref(db, "numbers/" + something + "/players"), (snapshot) => {
@@ -40,7 +25,7 @@ window.onload = async () => {
     });
   }
 
-function herewego(something) {
+async function herewego(something) {
   something = Math.floor(Math.random() * (9999 - 1000) ) + 1000;
 
   set(ref(db, "numbers/" + something), {
@@ -56,17 +41,16 @@ function herewego(something) {
 }
 
 window.backBtn = function backBtn() {
-    let old = something;
-    remove(ref(db, "numbers/" + old));
+    remove(ref(db, "numbers/" + something));
     console.log("This also worked! You destroyed:", old);
     something = 0;
 }
 
 function playerscome() {
+  div1.hidden = false
   div1.innerText = "A new player arrives!";
   div1.style.animation = "mymove 0.9s forwards";
   div1.addEventListener("animationend", endAnim, { once: true });
-  div1.hidden = true;
 }
 function endAnim() { 
     this.style.animation = "disappear 0.3s forwards"; 
