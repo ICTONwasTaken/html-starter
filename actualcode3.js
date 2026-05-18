@@ -16,6 +16,7 @@ const db = getDatabase(app);
   let num = document.getElementById("num");
   let something = 0;
   let counting = "";
+  let playerlist = document.getElementById("player-list")
 
   const rum = localStorage.getItem("joinedRoom");
   const myPlayerKey = localStorage.getItem("myPlayerKey");
@@ -31,10 +32,13 @@ window.onload = async () => {
     num.innerText = stuff.length;
     counting = stuff.join("\n");
 
-    document.getElementById("player-list").innerText = counting;
-});
-  }
+    playerlist.innerText = counting;
 
+    playerlist.style.animation = "none";
+    playerlist.offsetHeight;
+    playerlist.style.animation = "player-come 0.3s forwards";
+  });
+  }
 
 function start() {
   document.getElementById("room-boi").innerText = rum;
