@@ -88,6 +88,7 @@ input {
   font-size: 15px;
   background-color: rgb(15, 6, 20);
   padding-bottom: 5px;
+  transform-origin: top;
 }
 
 @keyframes player-come {
