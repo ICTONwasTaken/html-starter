@@ -6,7 +6,7 @@ import { db, ref, onValue, remove, get, set} from './firebase.js';
   let something = 0;
   let counting = "";
   let old = 0;
-  let playerlist = document.getElementById("player-list")
+  let playerlist = document.getElementById("host-list")
 
 window.onload = async () => {
   const snapshot = await get(ref(db, "past_value"));
