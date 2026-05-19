@@ -157,22 +157,23 @@ window.mythingy = async function mythingy() {
     duration: 30
   });
 
-  const snap = await get(ref(db, "numbers/" + something + "/players"));
-  const players = snap.val() || {};
-  const keys = Object.keys(players); // ["player1", "player2", ...]
+  // Only assign roles if they haven't been set yet
+  const existingRoles = await get(ref(db, "numbers/" + something + "/roles"));
+  if (!existingRoles.exists()) {
+    const snap = await get(ref(db, "numbers/" + something + "/players"));
+    const players = snap.val() || {};
+    const keys = Object.keys(players);
 
-  // Define roles — adjust this to match your player count
-  const roles = ["a Monk", "a Monk", "a Assassin", "a Spy"];
+    const roles = ["a Monk", "a Monk", "a Assassin", "a Spy"];
+    const shuffled = roles.sort(() => Math.random() - 0.5);
 
-  // Shuffle roles randomly
-  const shuffled = roles.sort(() => Math.random() - 0.5);
-
-  // Assign one role per player
-  for (let i = 0; i < keys.length; i++) {
-    await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), shuffled[i]);
+    for (let i = 0; i < keys.length; i++) {
+      await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), shuffled[i]);
+    }
   }
 }
 
 window.stopTimer = function stopTimer() {
   set(ref(db, "numbers/" + something + "/timer"), { running: false });
+  remove(ref(db, "numbers/" + something + "/roles"));
 }
