@@ -64,7 +64,7 @@ function game_time() {
   timerDisplay.style.display = "none";
   removing.style.display = "block";
   playercount.style.display = "block";
-  role.style.display = "block";
+  role.style.display = "none";
 }
 
 function game_end() {
@@ -76,7 +76,7 @@ function game_end() {
   timerDisplay.style.display = "block";
   removing.style.display = "none";
   playercount.style.display = "none";
-  role.style.display = "none";
+  role.style.display = "block";
 }
 
 function start() {
