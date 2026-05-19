@@ -105,6 +105,7 @@ function game_end() {
   beginBtn.style.display = "none"
   playercount.style.display = "none"
   role.style.display = "block"
+  document.getElementById("timer-btn").style.display = "none";
 }
 
 function playerscome() {
