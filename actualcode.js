@@ -19,7 +19,7 @@ window.onload = async () => {
   something = await herewego(something);
   console.log('All resources finished loading');
 
-  onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
+  onValue(ref(db, "numbers/" + something + "/players"), (snapshot) => {
       const players = snapshot.val() || {};
       const stuff = Object.values(players);
   
