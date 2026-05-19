@@ -37,7 +37,7 @@ window.onload = async () => {
     document.getElementById("role-display").textContent = "You are... " + role;
 
   if (role == "an Assassin") {
-    const snap = await get(ref(db, "numbers/" + something + "/players"));
+    const snap = get(ref(db, "numbers/" + something + "/players"));
     const players = snap.val() || {};
     const keys = Object.keys(players);
 
