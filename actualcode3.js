@@ -23,9 +23,12 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + rum + "/roles/" + myPlayerKey), async (snapshot) => {
   roledisplay.style.animation = "none";
+
   const role = snapshot.val();
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
+    document.getElementById("role-display").style.display = "block";
+    roledisplay.style.animation = "shake 1s linear";
 
   if (role == "an Assassin") {
       const playerSnap = await get(ref(db, "numbers/" + rum + "/players"));
@@ -38,8 +41,6 @@ window.onload = async () => {
   
     };
     }
-  document.getElementById("role-display").style.display = "block";
-  roledisplay.style.animation = "shake 1s linear";
   });
 
   onValue(ref(db, "numbers/" + rum + "/timer"), (snapshot) => {
