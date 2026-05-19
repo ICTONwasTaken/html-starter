@@ -74,7 +74,7 @@ function game_end() {
   const role = document.getElementById("role-display"); 
 
   timerDisplay.style.display = "block";
-  removing.style.display = "none"
+  removing.style.display = "none";
   playercount.style.display = "none";
   role.style.display = "none";
 }

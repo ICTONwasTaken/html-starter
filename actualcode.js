@@ -76,10 +76,8 @@ async function herewego(something) {
   something = Math.floor(Math.random() * (9999 - 1000) ) + 1000;
 
   set(ref(db, "numbers/" + something), {
-    players: {
-        player1: "Host" // host is just the first player
-    },
-    timer: { running: false }
+    players: {player1: "Host"},
+    timer: {running: false}
   });
   set(ref(db, "past_value"), something); 
   console.log("This worked! You sent:", something);
