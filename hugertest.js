@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
   let div1 = document.getElementById("myDIV"); 
+  const box = document.getElementById("box");
 
   div1.hidden = false;
 
@@ -9,5 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function myEndFunction() { 
     this.style.animation = "disappear 0.3s forwards"; 
     div1.hidden = true;
+
+  /* box.style.animation = "shake 1s linear"; */
 }
 })
