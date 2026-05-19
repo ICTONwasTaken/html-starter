@@ -34,10 +34,17 @@ input {
   cursor: pointer;
 }
 
-#change, #nochange, #role-display {
+#change, #nochange{
   color:rgb(224, 173, 96);
   font-size: 20px;
   font-weight: bolder;
+}
+
+#role-display {
+  color:rgb(224, 173, 96);
+  font-size: 20px;
+  font-weight: bolder;
+  grid-column: 1 / span 2;
 }
 
 #box {
