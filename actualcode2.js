@@ -41,11 +41,12 @@ const snap = await get(ref(db, "numbers/" + rum + "/players"));
     await set(ref(db, "numbers/" + rum + "/players/" + newPlayerKey), playerName);
 
     div1.innerText = "Joined Room!";
+    playAnim();
     console.log("Joined room:", rum, "as", newPlayerKey);
 
     localStorage.setItem("joinedRoom", rum); 
     localStorage.setItem("myPlayerKey", newPlayerKey);
-    window.location.href = "joinedroom.html"; //puts in the joinedroom file
+    window.location.href = "joinedroom.html";
 };
 
 
