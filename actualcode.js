@@ -175,5 +175,4 @@ window.mythingy = async function mythingy() {
 
 window.stopTimer = function stopTimer() {
   set(ref(db, "numbers/" + something + "/timer"), { running: false });
-  remove(ref(db, "numbers/" + something + "/roles"));
 }
