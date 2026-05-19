@@ -33,13 +33,13 @@ window.onload = async () => {
       playerlist.innerText = counting;
     });
 
-  onValue(ref(db, "numbers/" + something + "/roles/player1"), (snapshot) => {
+  onValue(ref(db, "numbers/" + something + "/roles/player1"), async (snapshot) => {
   const role = snapshot.val();
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
 
   if (role == "an Assassin") {
-    const playerSnap = get(ref(db, "numbers/" + something + "/players"));
+    const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
     const players = playerSnap.val() || {};
     const keys = Object.keys(players);
 
@@ -94,6 +94,7 @@ function endAnim() {
 let tickInterval = null; // track the interval so we can clear it
 
 window.mythingy = async function mythingy() {
+  roledisplay.style.animation = "none";
   const snap = await get(ref(db, "numbers/" + something + "/players"));
   const players = snap.val() || {};
   const keys = Object.keys(players);
