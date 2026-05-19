@@ -42,18 +42,11 @@ window.onload = async () => {
     tickInterval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - data.startedAt) / 1000);
       const remaining = data.duration - elapsed;
-      
-      if (remaining == 20) {
-      timerDisplay.style.color = rgb(206, 80, 42);
-      }
-
-      if (remaining == 10) {
-        timerDisplay.style.color = rgb(255, 17, 0);
-      }
-
+    
       if (remaining <= 0) {
         timerend()
         timerDisplay.textContent = "Timer Ended!";
+        timerDisplay.style.color = rgb(224, 33, 33);
         clearInterval(tickInterval);
         return;
       }
