@@ -44,12 +44,12 @@ window.onload = async () => {
   // Timer stopped or reset
   if (!data || !data.running) {
     clearInterval(tickInterval);
-    game_end()
+    game_time()
     return;
   }
 
   // Timer running
-  game_time()
+  game_end()
   clearInterval(tickInterval); // clear any previous interval
 
   tickInterval = setInterval(() => {
