@@ -37,7 +37,6 @@ window.onload = async () => {
   const role = snapshot.val();
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
-    roledisplay.style.animation = "shake 1s linear";
 
   if (role == "an Assassin") {
     const playerSnap = get(ref(db, "numbers/" + something + "/players"));
@@ -109,6 +108,7 @@ window.mythingy = async function mythingy() {
 
   document.getElementById("role-display").style.display = "block";
   document.getElementById("stop-btn").style.display = "block";
+  roledisplay.style.animation = "shake 1s linear";
   }
 
 window.mytimer = function mytimer() {
