@@ -9,6 +9,7 @@ const myPlayerKey = localStorage.getItem("myPlayerKey");
 let tickInterval = null;
 
 let roledisplay = document.getElementById("role-display");
+let wasRunning = false;
 
 window.onload = async () => {
   playAnim();
@@ -51,7 +52,6 @@ window.onload = async () => {
     if (!data || !data.running) {
       clearInterval(tickInterval);
       wasRunning = false;
-      timerplay();
       return;
     }
 
