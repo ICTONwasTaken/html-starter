@@ -24,25 +24,25 @@
         <div class="title">
           <div id="nochange">Room ID:</div>
           <div id="change">Generating...</div>
-          <div id="role-display">You are...</div>
+          <div id="role-display" style="display:none;">You are...</div>
         </div>
         
         <br>
         <div id="host-box">
-                <div id="player-count" hidden>Current Players
-                  <div id="host-list" hidden>...</div>
+                <div id="player-count">Current Players
+                  <div id="host-list">...</div>
                 </div>
 
-                <div id="timer-display" style=" font-size: 2rem; font-weight: bold;">30</div>
+                <div id="timer-display" style="display:none; font-size: 2rem; font-weight: bold;">30</div>
         </div>
         <br> <br>
 
 
         <div class="grid">
           <a href="join or create.html" onclick="backBtn()" class="button">BACK</a> 
-          <a onclick="mythingy()" hidden class="button" id="begin-btn">BEGIN GAME</a>
+          <a onclick="mythingy()" class="button" id="begin-btn">BEGIN GAME</a>
 
-          <a id="stop-btn" onclick="stopTimer()" class="button">STOP</a>
+          <a id="stop-btn" style="display:none;" onclick="stopTimer()" class="button">STOP</a>
         </div>
       </div>
 

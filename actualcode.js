@@ -98,7 +98,8 @@ function game_time() {
   const playercount = document.getElementById("player-count");
   const stopBtn = document.getElementById("stop-btn");
   const beginBtn = document.getElementById("begin-btn");
-  const nochange = document.getElementById("nochange");  
+  const nochange = document.getElementById("nochange");
+  const role = document.getElementById("role-display");  
 
   change.style.display = "none"
   nochange.style.display = "none"
@@ -106,6 +107,7 @@ function game_time() {
   stopBtn.style.display = "none";
   playercount.style.display = "block";
   beginBtn.style.display = "block";
+  role.style.display = "block";
 }
 
 function game_end() {
@@ -113,7 +115,8 @@ function game_end() {
   const playercount = document.getElementById("player-count");
   const stopBtn = document.getElementById("stop-btn");
   const beginBtn = document.getElementById("begin-btn");
-  const nochange = document.getElementById("nochange");  
+  const nochange = document.getElementById("nochange");
+  const role = document.getElementById("role-display"); 
 
   change.style.display = "none"
   nochange.style.display = "none"
@@ -121,6 +124,7 @@ function game_end() {
   stopBtn.style.display = "inline-block";
   playercount.style.display = "none";
   beginBtn.style.display = "none";
+  role.style.display = "none";
 }
 
 function playerscome() {

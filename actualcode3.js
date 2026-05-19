@@ -4,9 +4,9 @@ const div1 = document.getElementById("myDIV");
 let counting = "";
 let playerlist = document.getElementById("player-list");
 
-const rum = localStorage.getItem("joinedRoom");        // moved to top
+const rum = localStorage.getItem("joinedRoom");
 const myPlayerKey = localStorage.getItem("myPlayerKey");
-let tickInterval = null;                                // declared here
+let tickInterval = null;
 
 window.onload = async () => {
   playAnim();
@@ -59,20 +59,24 @@ function game_time() {
   const timerDisplay = document.getElementById("timer-display");
   const playercount = document.getElementById("player-count");
   const removing = document.getElementById("removing");
+  const role = document.getElementById("role-display"); 
 
   timerDisplay.style.display = "none";
   removing.style.display = "true"
   playercount.style.display = "true";
+  role.style.display = "block";
 }
 
 function game_end() {
   const timerDisplay = document.getElementById("timer-display");
   const playercount = document.getElementById("player-count");
   const removing = document.getElementById("removing");
+  const role = document.getElementById("role-display"); 
 
   timerDisplay.style.display = "block";
   removing.style.display = "none"
   playercount.style.display = "none";
+  role.style.display = "none";
 }
 
 function start() {
