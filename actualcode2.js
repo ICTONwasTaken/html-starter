@@ -38,6 +38,7 @@ const snap = await get(ref(db, "numbers/" + rum + "/players"));
     }
 
     const newPlayerKey = "player" + (playerCount + 1);
+    const playerName = document.getElementById("getname").value.trim() || "Player " + (playerCount + 1);
     await set(ref(db, "numbers/" + rum + "/players/" + newPlayerKey), name);
 
     div1.innerText = "Joined Room!";
