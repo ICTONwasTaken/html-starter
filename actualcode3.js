@@ -23,6 +23,7 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + rum + "/roles/" + myPlayerKey), async (snapshot) => {
   roledisplay.style.animation = "none";
+  roledisplay.offsetHeight;
 
   const role = snapshot.val();
   if (role) {
@@ -49,12 +50,19 @@ window.onload = async () => {
 
     if (!data || !data.running) {
       clearInterval(tickInterval);
+      wasRunning = false;
       timerplay();
       return;
     }
 
+    if (!wasRunning) {
+      timerplay();
+      wasRunning = true;
+    }
+
     clearInterval(tickInterval);
-    console.log("the timer reset!")
+    console.log("the timer starts")
+    document.getElementById("timer-display").style.display = "block";
 
     tickInterval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - data.startedAt) / 1000);
@@ -62,10 +70,9 @@ window.onload = async () => {
     
       if (remaining <= 0) {
         timerend()
-        timerDisplay.textContent = "Timer Ended!";
         console.log("the timer ends!")
-        clearInterval(tickInterval);
         document.getElementById("timer-display").style.display = "none";
+        clearInterval(tickInterval);
         return;
       }
       timerDisplay.textContent = remaining;
