@@ -95,6 +95,13 @@ window.backBtn = function backBtn() {
 }
 
 function game_time() {
+  const timerDisplay = document.getElementById("timer-display");
+  const playercount = document.getElementById("player-count");
+  const stopBtn = document.getElementById("stop-btn");
+  const beginBtn = document.getElementById("begin-btn");
+  const nochange = document.getElementById("nochange");
+  const role = document.getElementById("role-display");  
+
   // No game running — show lobby
   change.style.display = "block"       // show room ID
   nochange.style.display = "block"     // show "Room ID:" label
@@ -106,6 +113,13 @@ function game_time() {
 }
 
 function game_end() {
+  const timerDisplay = document.getElementById("timer-display");
+  const playercount = document.getElementById("player-count");
+  const stopBtn = document.getElementById("stop-btn");
+  const beginBtn = document.getElementById("begin-btn");
+  const nochange = document.getElementById("nochange");
+  const role = document.getElementById("role-display"); 
+
   // Game running — show timer
   change.style.display = "none"
   nochange.style.display = "none"
