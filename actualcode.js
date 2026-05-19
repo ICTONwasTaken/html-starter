@@ -60,6 +60,7 @@ window.onload = async () => {
     const remaining = data.duration - elapsed;
 
     if (remaining <= 0) {
+      timerend()
       timerDisplay.textContent = "0";
       clearInterval(tickInterval);
 
@@ -102,6 +103,13 @@ function playerscome() {
   div1.addEventListener("animationend", endAnim, { once: true });
 }
 
+function timerend() {
+  div1.hidden = false
+  div1.innerText = "The timer ended!";
+  div1.style.animation = "mymove 0.9s forwards";
+  div1.addEventListener("animationend", endAnim, { once: true });
+}
+
 function endAnim() { 
     this.style.animation = "disappear 0.3s forwards"; 
     div1.hidden = true;
@@ -114,7 +122,7 @@ window.mythingy = function mythingy() {
   set(ref(db, "numbers/" + something + "/timer"), {
     running: true,
     startedAt: startTime,
-    duration: 60
+    duration: 30
   });
 }
 

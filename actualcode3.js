@@ -44,6 +44,7 @@ window.onload = async () => {
 
       if (remaining <= 0) {
         timerDisplay.textContent = "0";
+        timerend()
         clearInterval(tickInterval);
         return;
       }
@@ -58,6 +59,13 @@ function start() {
 
 function playAnim() {
   div1.hidden = false;
+  div1.style.animation = "mymove 0.9s forwards";
+  div1.addEventListener("animationend", endAnim, { once: true });
+}
+
+function timerend() {
+  div1.hidden = false
+  div1.innerText = "The timer ended!";
   div1.style.animation = "mymove 0.9s forwards";
   div1.addEventListener("animationend", endAnim, { once: true });
 }
