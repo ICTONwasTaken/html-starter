@@ -46,7 +46,7 @@ async function herewego(something) {
 
 window.backBtn = function backBtn() {
     remove(ref(db, "numbers/" + something));
-    alert("This also worked! You destroyed:", something);
+    console.log("This also worked! You destroyed:", something);
     something = 0;
 }
 
