@@ -41,6 +41,16 @@ window.onload = async () => {
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
 
+  if (role == "a Monk") {}
+  document.getElementById("role-target").innerText = "Try to survive!";
+  document.getElementById("role-target").style.display = "block";
+  document.getElementById("role-target").style.animation = "shake 1s linear";
+
+  if (role == "a Spy") {}
+  document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
+  document.getElementById("role-target").style.display = "block";
+  document.getElementById("role-target").style.animation = "shake 1s linear";
+
   if (role == "an Assassin") {
     const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
     const players = playerSnap.val() || {};

@@ -34,6 +34,16 @@ window.onload = async () => {
     document.getElementById("role-display").style.display = "block";
     roledisplay.style.animation = "shake 1s linear";
 
+  if (role == "a Monk") {}
+  document.getElementById("role-target").innerText = "Try to survive!";
+  document.getElementById("role-target").style.display = "block";
+  document.getElementById("role-target").style.animation = "shake 1s linear";
+
+  if (role == "a Spy") {}
+  document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
+  document.getElementById("role-target").style.display = "block";
+  document.getElementById("role-target").style.animation = "shake 1s linear";
+  
   if (role == "an Assassin") {
       const playerSnap = await get(ref(db, "numbers/" + rum + "/players"));
       const players = playerSnap.val() || {};
