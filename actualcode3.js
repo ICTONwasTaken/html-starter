@@ -28,6 +28,7 @@ window.onload = async () => {
     if (!data || !data.running) {
       clearInterval(tickInterval);
       timerDisplay.style.display = "none";
+      timerDisplay.style.color = rgb(224, 173, 96);
       removing.style.display = "block"
       playercount.style.display = "block";
       return;
@@ -41,10 +42,18 @@ window.onload = async () => {
     tickInterval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - data.startedAt) / 1000);
       const remaining = data.duration - elapsed;
+      
+      if (remaining == 20) {
+      timerDisplay.style.color = rgb(206, 80, 42);
+      }
+
+      if (remaining == 10) {
+        timerDisplay.style.color = rgb(255, 17, 0);
+      }
 
       if (remaining <= 0) {
-        timerDisplay.textContent = "0";
         timerend()
+        timerDisplay.textContent = "Timer Ended!";
         clearInterval(tickInterval);
         return;
       }
@@ -65,7 +74,7 @@ function playAnim() {
 
 function timerend() {
   div1.hidden = false
-  div1.innerText = "The timer ended!";
+  div1.innerText = "Pass the gun!";
   div1.style.animation = "mymove 0.9s forwards";
   div1.addEventListener("animationend", endAnim, { once: true });
 }
