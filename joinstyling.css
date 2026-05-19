@@ -75,6 +75,18 @@ input {
   justify-items: center;
 }
 
+#game-time {
+  display: grid;
+}
+
+#timer-display {
+  color: rgb(224, 173, 96);
+  font-size: 60px;
+  font-weight: bolder;
+  background-color: none;
+  grid-column: 1 / span 2;
+}
+
 #host-box {
   display: flex;
   justify-content: center;

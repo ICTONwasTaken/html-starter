@@ -23,15 +23,18 @@ window.onload = async () => {
     const data = snapshot.val();
     const timerDisplay = document.getElementById("timer-display");
     const playercount = document.getElementById("player-count");
+    const removing = document.getElementById("removing");
 
     if (!data || !data.running) {
       clearInterval(tickInterval);
       timerDisplay.style.display = "none";
+      removing.style.display = "block"
       playercount.style.display = "block";
       return;
     }
 
     timerDisplay.style.display = "block";
+    removing.style.display = "none"
     playercount.style.display = "none";
     clearInterval(tickInterval);
 
