@@ -78,7 +78,8 @@ async function herewego(something) {
   set(ref(db, "numbers/" + something), {
     players: {
         player1: "Host" // host is just the first player
-    }
+    },
+    timer: { running: false }
   });
   set(ref(db, "past_value"), something); 
   console.log("This worked! You sent:", something);
@@ -94,39 +95,25 @@ window.backBtn = function backBtn() {
 }
 
 function game_time() {
-  const timerDisplay = document.getElementById("timer-display");
-  const playercount = document.getElementById("player-count");
-  const stopBtn = document.getElementById("stop-btn");
-  const beginBtn = document.getElementById("begin-btn");
-  const nochange = document.getElementById("nochange");
-  const role = document.getElementById("role-display");  
-
-  change.style.display = "none"
-  nochange.style.display = "none"
-  timerDisplay.style.display = "block";
-  playercount.style.display = "block";
-  role.style.display = "block";
-
-  stopBtn.style.display = "inline-block";
-  beginBtn.style.display = "block";
+  // No game running — show lobby
+  change.style.display = "block"       // show room ID
+  nochange.style.display = "block"     // show "Room ID:" label
+  timerDisplay.style.display = "none"  // hide timer
+  stopBtn.style.display = "none"       // hide stop
+  beginBtn.style.display = "block"     // show begin
+  playercount.style.display = "block"  // show players
+  role.style.display = "none"          // hide role
 }
 
 function game_end() {
-  const timerDisplay = document.getElementById("timer-display");
-  const playercount = document.getElementById("player-count");
-  const stopBtn = document.getElementById("stop-btn");
-  const beginBtn = document.getElementById("begin-btn");
-  const nochange = document.getElementById("nochange");
-  const role = document.getElementById("role-display"); 
-
-  change.style.display = "block"
-  nochange.style.display = "block"
-  timerDisplay.style.display = "none";
-  playercount.style.display = "none";
-  role.style.display = "none";
-
-  stopBtn.style.display = "none";
-  beginBtn.style.display = "block";
+  // Game running — show timer
+  change.style.display = "none"
+  nochange.style.display = "none"
+  timerDisplay.style.display = "block"
+  stopBtn.style.display = "inline-block"
+  beginBtn.style.display = "none"
+  playercount.style.display = "none"
+  role.style.display = "block"
 }
 
 function playerscome() {
