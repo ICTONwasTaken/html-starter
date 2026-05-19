@@ -1,7 +1,8 @@
 import { db, ref, onValue, remove, get, set} from './firebase.js';
 
   let div1 = document.getElementById("myDIV"); 
-  let change = document.getElementById("change"); 
+  let change = document.getElementById("change");
+  let nochange = document.getElementById("nochange");  
   let num = document.getElementById("num"); 
   let something = 0;
   let counting = "";
@@ -29,44 +30,31 @@ window.onload = async () => {
       playerlist.innerText = counting;
     });
 
+  onValue(ref(db, "numbers/" + something + "/roles/player1"), (snapshot) => {
+  const role = snapshot.val();
+  if (role) {
+    document.getElementById("role-display").textContent = "You are... " + role;
+  }
+});
   
-  // Add this inside window.onload, after the players onValue listener
   onValue(ref(db, "numbers/" + something + "/timer"), (snapshot) => {
   const data = snapshot.val();
   const timerDisplay = document.getElementById("timer-display");
-  const playercount = document.getElementById("player-count");
-  const stopBtn = document.getElementById("stop-btn");
-  const beginBtn = document.getElementById("begin-btn");
 
   // Timer stopped or reset
   if (!data || !data.running) {
     clearInterval(tickInterval);
-    timerDisplay.style.display = "none";
-    timerDisplay.style.color = rgb(224, 173, 96);
-    stopBtn.style.display = "none";
-    playercount.style.display = "block";
-    beginBtn.style.display = "block";
+    game_end()
     return;
   }
 
   // Timer running
-  timerDisplay.style.display = "block";
-  stopBtn.style.display = "inline-block";
-  playercount.style.display = "none";
-  beginBtn.style.display = "none";
+  game_time()
   clearInterval(tickInterval); // clear any previous interval
 
   tickInterval = setInterval(() => {
     const elapsed = Math.floor((Date.now() - data.startedAt) / 1000);
     const remaining = data.duration - elapsed;
-    
-    if (remaining == 20) {
-      timerDisplay.style.color = rgb(206, 80, 42);
-    }
-
-    if (remaining == 10) {
-      timerDisplay.style.color = rgb(255, 17, 0);
-    }
 
     if (remaining <= 0) {
       timerend()
@@ -105,6 +93,36 @@ window.backBtn = function backBtn() {
     something = 0;
 }
 
+function game_time() {
+  const timerDisplay = document.getElementById("timer-display");
+  const playercount = document.getElementById("player-count");
+  const stopBtn = document.getElementById("stop-btn");
+  const beginBtn = document.getElementById("begin-btn");
+  const nochange = document.getElementById("nochange");  
+
+  change.style.display = "none"
+  nochange.style.display = "none"
+  timerDisplay.style.display = "none";
+  stopBtn.style.display = "none";
+  playercount.style.display = "block";
+  beginBtn.style.display = "block";
+}
+
+function game_end() {
+  const timerDisplay = document.getElementById("timer-display");
+  const playercount = document.getElementById("player-count");
+  const stopBtn = document.getElementById("stop-btn");
+  const beginBtn = document.getElementById("begin-btn");
+  const nochange = document.getElementById("nochange");  
+
+  change.style.display = "none"
+  nochange.style.display = "none"
+  timerDisplay.style.display = "block";
+  stopBtn.style.display = "inline-block";
+  playercount.style.display = "none";
+  beginBtn.style.display = "none";
+}
+
 function playerscome() {
   div1.hidden = false
   div1.innerText = "A new player arrives!";
@@ -126,13 +144,28 @@ function endAnim() {
 
 let tickInterval = null; // track the interval so we can clear it
 
-window.mythingy = function mythingy() {
+window.mythingy = async function mythingy() {
   const startTime = Date.now();
   set(ref(db, "numbers/" + something + "/timer"), {
     running: true,
     startedAt: startTime,
     duration: 30
   });
+
+  const snap = await get(ref(db, "numbers/" + something + "/players"));
+  const players = snap.val() || {};
+  const keys = Object.keys(players); // ["player1", "player2", ...]
+
+  // Define roles — adjust this to match your player count
+  const roles = ["a Monk", "a Monk", "a Assassin", "a Spy"];
+
+  // Shuffle roles randomly
+  const shuffled = roles.sort(() => Math.random() - 0.5);
+
+  // Assign one role per player
+  for (let i = 0; i < keys.length; i++) {
+    await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), shuffled[i]);
+  }
 }
 
 window.stopTimer = function stopTimer() {

@@ -19,24 +19,24 @@ window.onload = async () => {
     playerlist.innerText = counting;
   });
 
-  onValue(ref(db, "numbers/" + rum + "/timer"), (snapshot) => {  // use rum, not something
+  onValue(ref(db, "numbers/" + rum + "/roles/" + myPlayerKey), (snapshot) => {
+  const role = snapshot.val();
+  if (role) {
+    document.getElementById("role-display").textContent = "You are... " + role;
+  }
+  });
+
+  onValue(ref(db, "numbers/" + rum + "/timer"), (snapshot) => {
     const data = snapshot.val();
     const timerDisplay = document.getElementById("timer-display");
-    const playercount = document.getElementById("player-count");
-    const removing = document.getElementById("removing");
 
     if (!data || !data.running) {
       clearInterval(tickInterval);
-      timerDisplay.style.display = "none";
-      timerDisplay.style.color = rgb(224, 173, 96);
-      removing.style.display = "block"
-      playercount.style.display = "block";
+      game_time()
       return;
     }
 
-    timerDisplay.style.display = "block";
-    removing.style.display = "none"
-    playercount.style.display = "none";
+    game_end()
     clearInterval(tickInterval);
 
     tickInterval = setInterval(() => {
@@ -46,13 +46,33 @@ window.onload = async () => {
       if (remaining <= 0) {
         timerend()
         timerDisplay.textContent = "Timer Ended!";
-        timerDisplay.style.color = rgb(224, 33, 33);
         clearInterval(tickInterval);
         return;
       }
       timerDisplay.textContent = remaining;
     }, 500);
   });
+}
+
+
+function game_time() {
+  const timerDisplay = document.getElementById("timer-display");
+  const playercount = document.getElementById("player-count");
+  const removing = document.getElementById("removing");
+
+  timerDisplay.style.display = "none";
+  removing.style.display = "true"
+  playercount.style.display = "true";
+}
+
+function game_end() {
+  const timerDisplay = document.getElementById("timer-display");
+  const playercount = document.getElementById("player-count");
+  const removing = document.getElementById("removing");
+
+  timerDisplay.style.display = "block";
+  removing.style.display = "none"
+  playercount.style.display = "none";
 }
 
 function start() {

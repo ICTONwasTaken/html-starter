@@ -34,7 +34,7 @@ input {
   cursor: pointer;
 }
 
-#change, #nochange {
+#change, #nochange, #role-display {
   color:rgb(224, 173, 96);
   font-size: 20px;
   font-weight: bolder;
