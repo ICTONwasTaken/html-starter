@@ -37,8 +37,8 @@ window.onload = async () => {
     document.getElementById("role-display").textContent = "You are... " + role;
 
   if (role == "an Assassin") {
-    const snap = get(ref(db, "numbers/" + something + "/players"));
-    const players = snap.val() || {};
+    const playerSnap = get(ref(db, "numbers/" + something + "/players"));
+    const players = playerSnap.val() || {};
     const keys = Object.keys(players);
 
     //figure out how to get a single player name
