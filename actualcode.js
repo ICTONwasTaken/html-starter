@@ -105,6 +105,9 @@ let tickInterval = null; // track the interval so we can clear it
 window.mythingy = async function mythingy() {
   roledisplay.style.animation = "none";
 
+  await set(ref(db, "numbers/" + something + "/roles"), null);
+
+
   const snap = await get(ref(db, "numbers/" + something + "/players"));
   const players = snap.val() || {};
   const keys = Object.keys(players);
