@@ -41,8 +41,9 @@ window.onload = async () => {
     const players = playerSnap.val() || {};
     const keys = Object.keys(players);
 
-    //figure out how to get a single player name
-    console.log("This guy's an assasin! His target is:");
+    const randomKey = keys[Math.floor(Math.random() * keys.length)];
+    const randomPlayer = players[randomKey];
+    console.log("This guy's an assasin! His target is:", randomplayer);
 
   };
   }
@@ -135,7 +136,7 @@ window.mythingy = async function mythingy() {
   const roles = ["a Monk", "a Monk", "an Assassin", "a Spy"];
   const shuffled = roles.sort(() => Math.random() - 0.5);
 
-  game_time()
+  game_end()
 
   for (let i = 0; i < keys.length; i++) {
     await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), shuffled[i]);
