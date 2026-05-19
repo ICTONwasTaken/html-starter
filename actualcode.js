@@ -1,6 +1,6 @@
-import { db } from './firebase.js'
+import { db, ref, onValue, remove, get, set} from './firebase.js';
 
-  
+
 window.onload = async () => {
   const snapshot = await get(ref(db, "past_value"));
   old = snapshot.val() || 0;

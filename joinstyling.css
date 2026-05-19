@@ -10,7 +10,8 @@ body {
   flex-direction: column;   /* stack h1 + box */
 }
 input {
-  padding: 10px;
+  padding: 6px;
+  margin: 5px;
 }
 .button {
   text-decoration: none;

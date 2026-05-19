@@ -9,3 +9,5 @@ const firebaseConfig = {
   projectId: "realsomething", }; const app = initializeApp(firebaseConfig); 
   
 const db = getDatabase(app);
+
+export { db, ref, onValue, remove, set, get};

@@ -1,4 +1,4 @@
-import { db } from './firebase.js'
+import { db, ref, onValue, remove } from './firebase.js';
 
 
   const div1 = document.getElementById("myDIV"); 

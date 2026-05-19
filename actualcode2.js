@@ -1,8 +1,10 @@
-import { db } from './firebase.js'
+import { db, ref, onValue, remove, get, set} from './firebase.js';
+
 
   
   const div1 = document.getElementById("myDIV"); 
   let change = document.getElementById("change");
+  let name = document.getElementById("getname");
   let something = 0;
 
 window.mycheck = async function () {
@@ -16,28 +18,34 @@ window.mycheck = async function () {
     return;
   }
 
-  const playersRef = ref(db, "numbers/" + rum + "/players");
+  const snap = await get(db, "numbers/" + rum + "/players");
 
-  const result = await runTransaction(playersRef, (players) => {
-    if (!players) return; // room doesn't exist, abort
-    const count = Object.keys(players).length;
-    if (count >= 4) return; // full, abort
+  if (!snap.exists()) {
+        div1.innerText = "Invalid Room Number!";
+        playAnim()
+        console.log("Not found:", rum);
+        div1.hidden = true;
+        return;
+    }
 
-    const newKey = "player" + (count + 1);
-    players[newKey] = "Player " + (count + 1);
-    return players; // commit
-  });
+  const players = snap.val().players || {};
+  const playerCount = Object.keys(players).length;
 
-  if (!result.committed) {
-    div1.innerText = result.snapshot.exists() ? "Room is full!" : "Invalid Room Number!";
-    playAnim();
-    return;
-  }
+    if (playerCount >= 4) {
+        div1.innerText = "Room is full!";
+        playAnim();
+        return;
+    }
 
-  const newPlayerKey = "player" + Object.keys(result.snapshot.val()).length;
-  localStorage.setItem("joinedRoom", rum);
-  localStorage.setItem("myPlayerKey", newPlayerKey);
-  window.location.href = "joinedroom.html";
+    const newPlayerKey = "player" + (playerCount + 1);
+    await set(ref(db, "numbers/" + rum + "/players/" + newPlayerKey), name);
+
+    div1.innerText = "Joined Room!";
+    console.log("Joined room:", rum, "as", newPlayerKey);
+
+    localStorage.setItem("joinedRoom", rum); 
+    localStorage.setItem("myPlayerKey", newPlayerKey);
+    window.location.href = "joinedroom.html"; //puts in the joinedroom file
 };
 
 
