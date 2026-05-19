@@ -9,9 +9,11 @@ import { db, ref, onValue, remove, get, set} from './firebase.js';
   let old = 0;
   let timer = null;
   let playerlist = document.getElementById("host-list")
+  let roledisplay = document.getElementById("role-display")
 
 
 window.onload = async () => {
+
   const snapshot = await get(ref(db, "past_value"));
   old = snapshot.val() || 0;
 
@@ -35,6 +37,7 @@ window.onload = async () => {
   const role = snapshot.val();
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
+    roledisplay.style.animation = "shake 1s linear";
 
   if (role == "an Assassin") {
     const playerSnap = get(ref(db, "numbers/" + something + "/players"));
@@ -68,44 +71,6 @@ window.backBtn = function backBtn() {
     remove(ref(db, "numbers/" + something));
     console.log("This also worked! You destroyed:", something);
     something = 0;
-}
-
-function game_time() {
-  const timerDisplay = document.getElementById("timer-display");
-  const playercount = document.getElementById("player-count");
-  const stopBtn = document.getElementById("stop-btn");
-  const beginBtn = document.getElementById("begin-btn");
-  const nochange = document.getElementById("nochange");
-  const role = document.getElementById("role-display");  
-
-  // No game running — show lobby
-  change.style.display = "block";       // show room ID
-  nochange.style.display = "block";     // show "Room ID:" label
-  timerDisplay.style.display = "none";  // hide timer
-  stopBtn.style.display = "none";       // hide stop
-  beginBtn.style.display = "block";     // show begin
-  playercount.style.display = "block";  // show players
-  role.style.display = "none";          // hide role'
-  document.getElementById("timer-btn").style.display = "none";
-}
-
-function game_end() {
-  const timerDisplay = document.getElementById("timer-display");
-  const playercount = document.getElementById("player-count");
-  const nochange = document.getElementById("nochange");
-  const role = document.getElementById("role-display"); 
-
-  const stopBtn = document.getElementById("stop-btn");
-  const beginBtn = document.getElementById("begin-btn");
-
-  // Game running — show timer
-  change.style.display = "none";
-  nochange.style.display = "none";
-  timerDisplay.style.display = "block";
-  stopBtn.style.display = "inline-block";
-  beginBtn.style.display = "none";
-  playercount.style.display = "none";
-  role.style.display = "block";
 }
 
 function playerscome() {
@@ -144,7 +109,8 @@ window.mythingy = async function mythingy() {
     console.log("the roles have been sorted!")
     }
 
-  document.getElementById("timer-btn").style.display = "block";
+  document.getElementById("role-display").style.display = "block";
+  document.getElementById("stop-btn").style.display = "block";
   }
 
 window.mytimer = function mytimer() {
@@ -164,7 +130,7 @@ function timerstart() {
     if (!data || !data.running) return;
 
     const timerDisplay = document.getElementById("timer-display");
-    timerDisplay.style.display = "none"
+    timerDisplay.style.display = "block"
 
   // Timer running
     console.log("the timer starts!")
@@ -177,7 +143,6 @@ function timerstart() {
     if (remaining <= 0) {
       timerend()
       clearInterval(tickInterval);
-      timerDisplay.style.display = "block"
       set(ref(db, "numbers/" + something + "/timer"), { running: false });
       console.log("the timer ends!")
     }
