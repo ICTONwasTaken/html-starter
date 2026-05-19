@@ -41,7 +41,7 @@ window.onload = async () => {
   if (role == "an Assassin") {
     const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
     const players = playerSnap.val() || {};
-    const keys = Object.keys(players);
+    const keys = Object.keys(players).filter(key => players[key] !== "Host");
 
     const randomKey = keys[Math.floor(Math.random() * keys.length)];
     const randomPlayer = players[randomKey];
