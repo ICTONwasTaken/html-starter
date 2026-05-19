@@ -79,33 +79,33 @@ function game_time() {
   const role = document.getElementById("role-display");  
 
   // No game running — show lobby
-  change.style.display = "block"       // show room ID
-  nochange.style.display = "block"     // show "Room ID:" label
-  timerDisplay.style.display = "none"  // hide timer
-  stopBtn.style.display = "none"       // hide stop
-  beginBtn.style.display = "block"     // show begin
-  playercount.style.display = "block"  // show players
-  role.style.display = "none"          // hide role'
-  document.getElementById("timer-btn").style.display = "block";
+  change.style.display = "block";       // show room ID
+  nochange.style.display = "block";     // show "Room ID:" label
+  timerDisplay.style.display = "none";  // hide timer
+  stopBtn.style.display = "none";       // hide stop
+  beginBtn.style.display = "block";     // show begin
+  playercount.style.display = "block";  // show players
+  role.style.display = "none";          // hide role'
+  document.getElementById("timer-btn").style.display = "none";
 }
 
 function game_end() {
   const timerDisplay = document.getElementById("timer-display");
   const playercount = document.getElementById("player-count");
-  const stopBtn = document.getElementById("stop-btn");
-  const beginBtn = document.getElementById("begin-btn");
   const nochange = document.getElementById("nochange");
   const role = document.getElementById("role-display"); 
 
+  const stopBtn = document.getElementById("stop-btn");
+  const beginBtn = document.getElementById("begin-btn");
+
   // Game running — show timer
-  change.style.display = "none"
-  nochange.style.display = "none"
-  timerDisplay.style.display = "block"
-  stopBtn.style.display = "inline-block"
-  beginBtn.style.display = "none"
-  playercount.style.display = "none"
-  role.style.display = "block"
-  document.getElementById("timer-btn").style.display = "none";
+  change.style.display = "none";
+  nochange.style.display = "none";
+  timerDisplay.style.display = "block";
+  stopBtn.style.display = "inline-block";
+  beginBtn.style.display = "none";
+  playercount.style.display = "none";
+  role.style.display = "block";
 }
 
 function playerscome() {
@@ -143,6 +143,8 @@ window.mythingy = async function mythingy() {
     await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), shuffled[i]);
     console.log("the roles have been sorted!")
     }
+
+  document.getElementById("timer-btn").style.display = "block";
   }
 
 window.mytimer = function mytimer() {
