@@ -15,7 +15,9 @@ window.onload = async () => {
       console.log("Cleaned up old number:", old);
     }
 
-  something = await herewego(something);
+  const hostName = document.getElementById("getname").value.trim() || "Player 1";
+  something = await herewego(something, hostName);
+
   console.log('All resources finished loading');
 
   onValue(ref(db, "numbers/" + something + "/players"), (snapshot) => {
@@ -50,10 +52,8 @@ window.onload = async () => {
 async function herewego(something) {
   something = Math.floor(Math.random() * (9999 - 1000) ) + 1000;
 
-  set(ref(db, "numbers/" + something), {
-    players: {
-        player1: "Player 1" // host is just the first player
-    }
+  await set(ref(db, "numbers/" + something), {
+    players: { player1: hostName }
   });
   set(ref(db, "past_value"), something); 
   console.log("This worked! You sent:", something);
@@ -83,8 +83,8 @@ window.joinRoom = async function joinRoom() {
 };
 
 window.backBtn = function backBtn() {
+    alert("This also worked! You destroyed:", something);
     remove(ref(db, "numbers/" + something));
-    console.log("This also worked! You destroyed:", something);
     something = 0;
 }
 
