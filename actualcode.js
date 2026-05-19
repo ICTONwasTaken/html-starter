@@ -102,8 +102,6 @@ window.mythingy = async function mythingy() {
   const roles = ["a Monk", "a Monk", "an Assassin", "a Spy"];
   const shuffled = roles.sort(() => Math.random() - 0.5);
 
-  game_end()
-
   for (let i = 0; i < keys.length; i++) {
     await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), shuffled[i]);
     console.log("the roles have been sorted!")
