@@ -62,7 +62,7 @@ function game_time() {
   const role = document.getElementById("role-display"); 
 
   timerDisplay.style.display = "none";
-  removing.style.display = "block"
+  removing.style.display = "block";
   playercount.style.display = "block";
   role.style.display = "block";
 }
