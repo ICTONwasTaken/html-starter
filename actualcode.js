@@ -103,11 +103,12 @@ function game_time() {
 
   change.style.display = "none"
   nochange.style.display = "none"
-  timerDisplay.style.display = "none";
-  stopBtn.style.display = "none";
+  timerDisplay.style.display = "block";
   playercount.style.display = "block";
-  beginBtn.style.display = "block";
   role.style.display = "block";
+
+  stopBtn.style.display = "inline-block";
+  beginBtn.style.display = "block";
 }
 
 function game_end() {
@@ -118,13 +119,14 @@ function game_end() {
   const nochange = document.getElementById("nochange");
   const role = document.getElementById("role-display"); 
 
-  change.style.display = "none"
-  nochange.style.display = "none"
-  timerDisplay.style.display = "block";
-  stopBtn.style.display = "inline-block";
+  change.style.display = "block"
+  nochange.style.display = "block"
+  timerDisplay.style.display = "none";
   playercount.style.display = "none";
-  beginBtn.style.display = "none";
   role.style.display = "none";
+
+  stopBtn.style.display = "none";
+  beginBtn.style.display = "block";
 }
 
 function playerscome() {
