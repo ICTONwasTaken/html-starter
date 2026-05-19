@@ -36,6 +36,7 @@ window.onload = async () => {
   const timerDisplay = document.getElementById("timer-display");
   const playercount = document.getElementById("player-count");
   const stopBtn = document.getElementById("stop-btn");
+  const beginBtn = document.getElementById("begin-btn");
 
   // Timer stopped or reset
   if (!data || !data.running) {
@@ -43,6 +44,7 @@ window.onload = async () => {
     timerDisplay.style.display = "none";
     stopBtn.style.display = "none";
     playercount.style.display = "block";
+    beginBtn.style.display = "block";
     return;
   }
 
@@ -50,6 +52,7 @@ window.onload = async () => {
   timerDisplay.style.display = "block";
   stopBtn.style.display = "inline-block";
   playercount.style.display = "none";
+  beginBtn.style.display = "none";
   clearInterval(tickInterval); // clear any previous interval
 
   tickInterval = setInterval(() => {
