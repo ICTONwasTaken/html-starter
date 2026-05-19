@@ -1,4 +1,4 @@
-import { db, ref, onValue, remove } from './firebase.js';
+import { db, ref, onValue, remove, get } from './firebase.js';
 
 const div1 = document.getElementById("myDIV"); 
 let counting = "";
@@ -7,6 +7,8 @@ let playerlist = document.getElementById("player-list");
 const rum = localStorage.getItem("joinedRoom");
 const myPlayerKey = localStorage.getItem("myPlayerKey");
 let tickInterval = null;
+
+let roledisplay = document.getElementById("role-display");
 
 window.onload = async () => {
   playAnim();
@@ -19,15 +21,25 @@ window.onload = async () => {
     playerlist.innerText = counting;
   });
 
-  onValue(ref(db, "numbers/" + rum + "/roles/" + myPlayerKey), (snapshot) => {
+  onValue(ref(db, "numbers/" + rum + "/roles/" + myPlayerKey), async (snapshot) => {
+  roledisplay.style.animation = "none";
   const role = snapshot.val();
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
 
   if (role == "an Assassin") {
-    console.log("This guy's an assasin!");
-  };
-  }
+      const playerSnap = await get(ref(db, "numbers/" + rum + "/players"));
+      const players = playerSnap.val() || {};
+      const keys = Object.keys(players).filter(key => key !== myPlayerKey);
+  
+      const randomKey = keys[Math.floor(Math.random() * keys.length)];
+      const randomPlayer = players[randomKey];
+      console.log("This guy's an assasin! His target is:", randomPlayer);
+  
+    };
+    }
+  document.getElementById("role-display").style.display = "block";
+  roledisplay.style.animation = "shake 1s linear";
   });
 
   onValue(ref(db, "numbers/" + rum + "/timer"), (snapshot) => {
@@ -36,11 +48,10 @@ window.onload = async () => {
 
     if (!data || !data.running) {
       clearInterval(tickInterval);
-      game_time()
+      timerplay();
       return;
     }
 
-    game_end()
     clearInterval(tickInterval);
     console.log("the timer reset!")
 
@@ -53,6 +64,7 @@ window.onload = async () => {
         timerDisplay.textContent = "Timer Ended!";
         console.log("the timer ends!")
         clearInterval(tickInterval);
+        document.getElementById("timer-display").style.display = "none";
         return;
       }
       timerDisplay.textContent = remaining;
@@ -60,29 +72,11 @@ window.onload = async () => {
   });
 }
 
-
-function game_time() {
-  const timerDisplay = document.getElementById("timer-display");
-  const playercount = document.getElementById("player-count");
-  const removing = document.getElementById("removing");
-  const role = document.getElementById("role-display"); 
-
-  timerDisplay.style.display = "none";
-  removing.style.display = "block";
-  playercount.style.display = "block";
-  role.style.display = "block";
-}
-
-function game_end() {
-  const timerDisplay = document.getElementById("timer-display");
-  const playercount = document.getElementById("player-count");
-  const removing = document.getElementById("removing");
-  const role = document.getElementById("role-display"); 
-
-  timerDisplay.style.display = "block";
-  removing.style.display = "none";
-  playercount.style.display = "none";
-  role.style.display = "none";
+function timerplay() {
+  div1.hidden = false
+  div1.innerText = "Timer Start!";
+  div1.style.animation = "mymove 0.9s forwards";
+  div1.addEventListener("animationend", endAnim, { once: true });
 }
 
 function start() {
