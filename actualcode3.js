@@ -23,6 +23,10 @@ window.onload = async () => {
   const role = snapshot.val();
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
+
+  if (role == "an Assassin") {
+    console.log("This guy's an assasin!");
+  };
   }
   });
 
@@ -38,6 +42,7 @@ window.onload = async () => {
 
     game_end()
     clearInterval(tickInterval);
+    console.log("the timer reset!")
 
     tickInterval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - data.startedAt) / 1000);
@@ -46,6 +51,7 @@ window.onload = async () => {
       if (remaining <= 0) {
         timerend()
         timerDisplay.textContent = "Timer Ended!";
+        console.log("the timer ends!")
         clearInterval(tickInterval);
         return;
       }

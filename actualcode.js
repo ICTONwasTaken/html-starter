@@ -34,6 +34,10 @@ window.onload = async () => {
   const role = snapshot.val();
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
+
+  if (role == "an Assassin") {
+    console.log("This guy's an assasin!");
+  };
   }
 });
   
@@ -50,6 +54,7 @@ window.onload = async () => {
 
   // Timer running
   game_end()
+  console.log("the timer resets!")
   clearInterval(tickInterval); // clear any previous interval
 
   tickInterval = setInterval(() => {
@@ -60,6 +65,7 @@ window.onload = async () => {
       timerend()
       timerDisplay.textContent = "Timer Ended!";
       clearInterval(tickInterval);
+      console.log("the timer ends!")
 
       // Auto-restart after 3 seconds
       setTimeout(() => {
@@ -164,11 +170,12 @@ window.mythingy = async function mythingy() {
     const players = snap.val() || {};
     const keys = Object.keys(players);
 
-    const roles = ["a Monk", "a Monk", "a Assassin", "a Spy"];
+    const roles = ["a Monk", "a Monk", "an Assassin", "a Spy"];
     const shuffled = roles.sort(() => Math.random() - 0.5);
 
     for (let i = 0; i < keys.length; i++) {
       await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), shuffled[i]);
+      console.log("the roles have been sorted!")
     }
   }
 }
