@@ -45,7 +45,7 @@ window.onload = async () => {
 
     const randomKey = keys[Math.floor(Math.random() * keys.length)];
     const randomPlayer = players[randomKey];
-    console.log("This guy's an assasin! His target is:", randomplayer);
+    console.log("This guy's an assasin! His target is:", randomPlayer);
 
   };
   }
@@ -86,15 +86,25 @@ function timerend() {
   div1.addEventListener("animationend", endAnim, { once: true });
 }
 
+function timerplay() {
+  div1.hidden = false
+  div1.innerText = "Timer Start!";
+  div1.style.animation = "mymove 0.9s forwards";
+  div1.addEventListener("animationend", endAnim, { once: true });
+}
+
 function endAnim() { 
     this.style.animation = "disappear 0.3s forwards"; 
     div1.hidden = true;
   }
 
+
+
 let tickInterval = null; // track the interval so we can clear it
 
 window.mythingy = async function mythingy() {
   roledisplay.style.animation = "none";
+
   const snap = await get(ref(db, "numbers/" + something + "/players"));
   const players = snap.val() || {};
   const keys = Object.keys(players);
@@ -119,7 +129,8 @@ window.mytimer = function mytimer() {
     startedAt: startTime,
     duration: 30
   });
-  timerstart()
+  timerstart();
+  timerplay();
 }
 
 function timerstart() {
