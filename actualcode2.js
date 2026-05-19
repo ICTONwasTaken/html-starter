@@ -18,7 +18,7 @@ window.mycheck = async function () {
     return;
   }
 
-  const snap = await get(db, "numbers/" + rum + "/players");
+const snap = await get(ref(db, "numbers/" + rum + "/players"));
 
   if (!snap.exists()) {
         div1.innerText = "Invalid Room Number!";
@@ -28,7 +28,7 @@ window.mycheck = async function () {
         return;
     }
 
-  const players = snap.val().players || {};
+  const players = snap.val() || {};
   const playerCount = Object.keys(players).length;
 
     if (playerCount >= 4) {
