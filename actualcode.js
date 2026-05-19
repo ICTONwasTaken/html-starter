@@ -1,5 +1,10 @@
 import { db, ref, onValue, remove, get, set} from './firebase.js';
 
+  let div1 = document.getElementById("myDIV"); 
+  let change = document.getElementById("change"); 
+  let num = document.getElementById("num"); 
+  let something = 0; 
+  let old = 0; 
 
 window.onload = async () => {
   const snapshot = await get(ref(db, "past_value"));
@@ -41,8 +46,8 @@ async function herewego(something) {
 }
 
 window.backBtn = function backBtn() {
-    console.log("This also worked! You destroyed:", something);
     remove(ref(db, "numbers/" + something));
+    console.log("This also worked! You destroyed:", old);
     something = 0;
 }
 
