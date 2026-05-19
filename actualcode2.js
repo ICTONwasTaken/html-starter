@@ -4,7 +4,6 @@ import { db, ref, onValue, remove, get, set} from './firebase.js';
   
   const div1 = document.getElementById("myDIV"); 
   let change = document.getElementById("change");
-  let name = document.getElementById("getname");
   let something = 0;
 
 window.mycheck = async function () {
@@ -37,9 +36,9 @@ const snap = await get(ref(db, "numbers/" + rum + "/players"));
         return;
     }
 
-    const newPlayerKey = "player" + (playerCount + 1);
     const playerName = document.getElementById("getname").value.trim() || "Player " + (playerCount + 1);
-    await set(ref(db, "numbers/" + rum + "/players/" + newPlayerKey), name);
+    const newPlayerKey = "player" + (playerCount + 1);
+    await set(ref(db, "numbers/" + rum + "/players/" + newPlayerKey), playerName);
 
     div1.innerText = "Joined Room!";
     console.log("Joined room:", rum, "as", newPlayerKey);
