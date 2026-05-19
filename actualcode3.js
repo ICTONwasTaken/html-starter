@@ -8,7 +8,6 @@ import { db, ref, onValue, remove } from './firebase.js';
   let counting = "";
   let playerlist = document.getElementById("player-list")
 
-  const rum = localStorage.getItem("joinedRoom");
   const myPlayerKey = localStorage.getItem("myPlayerKey");
 
 window.onload = async () => {
@@ -22,7 +21,47 @@ window.onload = async () => {
     counting = stuff.join("\n");
     playerlist.innerText = counting;
   });
+  const rum = localStorage.getItem("joinedRoom");
+
+onValue(ref(db, "numbers/" + something + "/timer"), (snapshot) => {
+  const data = snapshot.val();
+  const timerDisplay = document.getElementById("timer-display");
+  const playercount = document.getElementById("player-count");
+  const stopBtn = document.getElementById("stop-btn");
+
+  // Timer stopped or reset
+  if (!data || !data.running) {
+    clearInterval(tickInterval);
+    timerDisplay.style.display = "none";
+    stopBtn.style.display = "none";
+    playercount.style.display = "block";
+    return;
   }
+
+  // Timer running
+  timerDisplay.style.display = "block";
+  stopBtn.style.display = "inline-block";
+  playercount.style.display = "none";
+  clearInterval(tickInterval); // clear any previous interval
+
+  tickInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - data.startedAt) / 1000);
+    const remaining = data.duration - elapsed;
+
+    if (remaining <= 0) {
+      timerDisplay.textContent = "0";
+      clearInterval(tickInterval);
+
+      // Auto-restart after 3 seconds
+      setTimeout(() => {
+        window.mythingy();
+      }, 3000);
+      return;
+    }
+    timerDisplay.textContent = remaining;
+  }, 500);
+});
+}
 
 function start() {
   document.getElementById("room-boi").innerText = rum;

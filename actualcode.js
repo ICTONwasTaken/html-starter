@@ -8,6 +8,7 @@ import { db, ref, onValue, remove, get, set} from './firebase.js';
   let old = 0;
   let playerlist = document.getElementById("host-list")
 
+
 window.onload = async () => {
   const snapshot = await get(ref(db, "past_value"));
   old = snapshot.val() || 0;
@@ -27,7 +28,48 @@ window.onload = async () => {
       counting = stuff.join("\n");
       playerlist.innerText = counting;
     });
+
+  
+  // Add this inside window.onload, after the players onValue listener
+  onValue(ref(db, "numbers/" + something + "/timer"), (snapshot) => {
+  const data = snapshot.val();
+  const timerDisplay = document.getElementById("timer-display");
+  const playercount = document.getElementById("player-count");
+  const stopBtn = document.getElementById("stop-btn");
+
+  // Timer stopped or reset
+  if (!data || !data.running) {
+    clearInterval(tickInterval);
+    timerDisplay.style.display = "none";
+    stopBtn.style.display = "none";
+    playercount.style.display = "block";
+    return;
   }
+
+  // Timer running
+  timerDisplay.style.display = "block";
+  stopBtn.style.display = "inline-block";
+  playercount.style.display = "none";
+  clearInterval(tickInterval); // clear any previous interval
+
+  tickInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - data.startedAt) / 1000);
+    const remaining = data.duration - elapsed;
+
+    if (remaining <= 0) {
+      timerDisplay.textContent = "0";
+      clearInterval(tickInterval);
+
+      // Auto-restart after 3 seconds
+      setTimeout(() => {
+        window.mythingy();
+      }, 3000);
+      return;
+    }
+    timerDisplay.textContent = remaining;
+  }, 500);
+});
+}
 
 async function herewego(something) {
   something = Math.floor(Math.random() * (9999 - 1000) ) + 1000;
@@ -61,3 +103,18 @@ function endAnim() {
     this.style.animation = "disappear 0.3s forwards"; 
     div1.hidden = true;
   }
+
+let tickInterval = null; // track the interval so we can clear it
+
+window.mythingy = function mythingy() {
+  const startTime = Date.now();
+  set(ref(db, "numbers/" + something + "/timer"), {
+    running: true,
+    startedAt: startTime,
+    duration: 60
+  });
+}
+
+window.stopTimer = function stopTimer() {
+  set(ref(db, "numbers/" + something + "/timer"), { running: false });
+}
