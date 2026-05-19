@@ -7,6 +7,7 @@ import { db, ref, onValue, remove, get, set} from './firebase.js';
   let something = 0;
   let counting = "";
   let old = 0;
+  let timer = null;
   let playerlist = document.getElementById("host-list")
 
 
@@ -22,7 +23,7 @@ window.onload = async () => {
   something = await herewego(something);
   console.log('All resources finished loading');
 
-  onValue(ref(db, "numbers/" + something + "/players"), (snapshot) => {
+  onValue(ref(db, "numbers/" + something + "/players"), async (snapshot) => {
       const players = snapshot.val() || {};
       const stuff = Object.values(players);
   
@@ -36,45 +37,15 @@ window.onload = async () => {
     document.getElementById("role-display").textContent = "You are... " + role;
 
   if (role == "an Assassin") {
-    console.log("This guy's an assasin!");
+    const snap = await get(ref(db, "numbers/" + something + "/players"));
+    const players = snap.val() || {};
+    const keys = Object.keys(players);
+
+    //figure out how to get a single player name
+    console.log("This guy's an assasin! His target is:");
+
   };
   }
-});
-  
-  onValue(ref(db, "numbers/" + something + "/timer"), (snapshot) => {
-  const data = snapshot.val();
-  const timerDisplay = document.getElementById("timer-display");
-
-  // Timer stopped or reset
-  if (!data || !data.running) {
-    clearInterval(tickInterval);
-    game_time()
-    return;
-  }
-
-  // Timer running
-  game_end()
-  console.log("the timer resets!")
-  clearInterval(tickInterval); // clear any previous interval
-
-  tickInterval = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - data.startedAt) / 1000);
-    const remaining = data.duration - elapsed;
-
-    if (remaining <= 0) {
-      timerend()
-      timerDisplay.textContent = "Timer Ended!";
-      clearInterval(tickInterval);
-      console.log("the timer ends!")
-
-      // Auto-restart after 3 seconds
-      setTimeout(() => {
-        window.mythingy();
-      }, 3000);
-      return;
-    }
-    timerDisplay.textContent = remaining;
-  }, 500);
 });
 }
 
@@ -113,7 +84,8 @@ function game_time() {
   stopBtn.style.display = "none"       // hide stop
   beginBtn.style.display = "block"     // show begin
   playercount.style.display = "block"  // show players
-  role.style.display = "none"          // hide role
+  role.style.display = "none"          // hide role'
+  document.getElementById("timer-btn").style.display = "block";
 }
 
 function game_end() {
@@ -156,31 +128,56 @@ function endAnim() {
 let tickInterval = null; // track the interval so we can clear it
 
 window.mythingy = async function mythingy() {
+  const snap = await get(ref(db, "numbers/" + something + "/players"));
+  const players = snap.val() || {};
+  const keys = Object.keys(players);
+
+  const roles = ["a Monk", "a Monk", "an Assassin", "a Spy"];
+  const shuffled = roles.sort(() => Math.random() - 0.5);
+
+  game_time()
+
+  for (let i = 0; i < keys.length; i++) {
+    await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), shuffled[i]);
+    console.log("the roles have been sorted!")
+    }
+  }
+
+window.mytimer = function mytimer() {
   const startTime = Date.now();
   set(ref(db, "numbers/" + something + "/timer"), {
     running: true,
     startedAt: startTime,
     duration: 30
   });
-
-  // Only assign roles if they haven't been set yet
-  const existingRoles = await get(ref(db, "numbers/" + something + "/roles"));
-  if (!existingRoles.exists()) {
-    const snap = await get(ref(db, "numbers/" + something + "/players"));
-    const players = snap.val() || {};
-    const keys = Object.keys(players);
-
-    const roles = ["a Monk", "a Monk", "an Assassin", "a Spy"];
-    const shuffled = roles.sort(() => Math.random() - 0.5);
-
-    for (let i = 0; i < keys.length; i++) {
-      await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), shuffled[i]);
-      console.log("the roles have been sorted!")
-    }
-  }
+  timerstart()
 }
 
-window.stopTimer = function stopTimer() {
-  set(ref(db, "numbers/" + something + "/timer"), { running: false });
-  remove(ref(db, "numbers/" + something + "/roles"));
+function timerstart() {
+  if (timer) timer();
+  timer = onValue(ref(db, "numbers/" + something + "/timer"), (snapshot) => {
+    const data = snapshot.val();
+    if (!data || !data.running) return;
+
+    const timerDisplay = document.getElementById("timer-display");
+    timerDisplay.style.display = "none"
+
+  // Timer running
+    console.log("the timer starts!")
+    clearInterval(tickInterval); // clear any previous interval
+
+    tickInterval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - data.startedAt) / 1000);
+      const remaining = data.duration - elapsed;
+
+    if (remaining <= 0) {
+      timerend()
+      clearInterval(tickInterval);
+      timerDisplay.style.display = "block"
+      set(ref(db, "numbers/" + something + "/timer"), { running: false });
+      console.log("the timer ends!")
+    }
+    timerDisplay.textContent = remaining;
+  }, 500);
+});
 }
