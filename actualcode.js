@@ -42,9 +42,11 @@ window.onload = async () => {
   switch (role) {
   case "a Monk":
     document.getElementById("role-target").innerText = "Try to survive!";
+    document.getElementById("kill-btn").style.display = "none";
     break;
   case "a Spy":
     document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
+    document.getElementById("kill-btn").style.display = "block";
     break;
   case "an Assassin":
     const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
@@ -55,6 +57,7 @@ window.onload = async () => {
     const randomPlayer = players[randomKey];
     document.getElementById("role-target").innerText = "Your target is: " + randomPlayer;
     console.log("This guy's an assasin! His target is:", randomPlayer);
+    document.getElementById("kill-btn").style.display = "block";
   }
 });
 }
@@ -139,6 +142,8 @@ window.mythingy = async function mythingy() {
   roledisplay.style.animation = "shake 1s linear";
   document.getElementById("role-target").style.display = "block";
   document.getElementById("role-target").style.animation = "shake 1s linear";
+
+  await set(ref(db, "numbers/" + something + "/killed"), null);
   }
 
 window.mytimer = function mytimer() {
@@ -178,4 +183,36 @@ function timerstart() {
     timerDisplay.textContent = remaining;
   }, 500);
 });
+}
+
+window.openKillPopup = async function() {
+  const killList = document.getElementById("kill-list");
+  killList.innerHTML = "";
+
+  const [playerSnap, killedSnap] = await Promise.all([
+    get(ref(db, "numbers/" + something + "/players")),
+    get(ref(db, "numbers/" + something + "/killed"))
+  ]);
+
+  const players = playerSnap.val() || {};
+  const killed = killedSnap.val() || {};
+
+  Object.entries(players).forEach(([key, name]) => {
+    if (key === "player1") return;  // skip host (yourself)
+    if (killed[key]) return;        // skip already killed
+
+    const btn = document.createElement("button");
+    btn.innerText = name;
+    btn.onclick = async () => {
+      await set(ref(db, "numbers/" + something + "/killed/" + key), true);
+      closeKillPopup();
+    };
+    killList.appendChild(btn);
+  });
+
+  document.getElementById("kill-popup").style.display = "flex";
+}
+
+window.closeKillPopup = function() {
+  document.getElementById("kill-popup").style.display = "none";
 }
