@@ -53,7 +53,7 @@ window.onload = async () => {
     document.getElementById("role-target").style.animation = "shake 1s linear";
     break;
   case "an Assassin":
-     const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
+    const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
     const players = playerSnap.val() || {};
     const keys = Object.keys(players).filter(key => players[key] !== "Host");
 
@@ -63,7 +63,6 @@ window.onload = async () => {
     document.getElementById("role-target").style.display = "block";
     document.getElementById("role-target").style.animation = "shake 1s linear";
     console.log("This guy's an assasin! His target is:", randomPlayer);
-    break;
   }
 });
 }
