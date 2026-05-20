@@ -46,7 +46,7 @@ window.onload = async () => {
     break;
   case "a Spy":
     document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
-    document.getElementById("kill-btn").style.display = "block";
+    document.getElementById("stop-btn").style.display = "block";
     break;
   case "an Assassin":
     const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
@@ -57,7 +57,7 @@ window.onload = async () => {
     const randomPlayer = players[randomKey];
     document.getElementById("role-target").innerText = "Your target is: " + randomPlayer;
     console.log("This guy's an assasin! His target is:", randomPlayer);
-    document.getElementById("kill-btn").style.display = "block";
+    document.getElementById("stop-btn").style.display = "block";
   }
 });
 }
