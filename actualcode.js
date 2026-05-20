@@ -112,7 +112,9 @@ function endAnim() {
 let tickInterval = null; // track the interval so we can clear it
 
 window.mythingy = async function mythingy() {
-  document.getElementById("role-display").style.animation = "none";
+  const roledisplay = document.getElementById("role-display");
+  roledisplay.style.animation = "none";
+  
   void document.getElementById("role-display").offsetHeight;
   document.getElementById("role-target").style.display = "none";
   document.getElementById("role-target").style.animation = "none";
@@ -137,8 +139,8 @@ window.mythingy = async function mythingy() {
     }
 
   document.getElementById("role-display").style.display = "block";
-  document.getElementById("role-display").style.animation = "shake 1s linear";
   document.getElementById("stop-btn").style.display = "block";
+  roledisplay.style.animation = "shake 1s linear";
   document.getElementById("role-target").style.display = "block";
   document.getElementById("role-target").style.animation = "shake 1s linear";
 
