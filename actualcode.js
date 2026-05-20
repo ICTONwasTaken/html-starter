@@ -9,6 +9,7 @@ import { db, ref, onValue, remove, get, set} from './firebase.js';
   let old = 0;
   let timer = null;
   let playerlist = document.getElementById("host-list")
+  let roledisplay = document.getElementById("role-display")
 
 
 window.onload = async () => {
@@ -112,10 +113,7 @@ function endAnim() {
 let tickInterval = null; // track the interval so we can clear it
 
 window.mythingy = async function mythingy() {
-  const roledisplay = document.getElementById("role-display");
   roledisplay.style.animation = "none";
-  
-  void document.getElementById("role-display").offsetHeight;
   document.getElementById("role-target").style.display = "none";
   document.getElementById("role-target").style.animation = "none";
 
