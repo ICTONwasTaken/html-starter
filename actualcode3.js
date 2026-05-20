@@ -24,17 +24,14 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + rum + "/roles/" + myPlayerKey), async (snapshot) => {
   roledisplay.style.animation = "none";
-  void document.getElementById("role-display").offsetHeight;
-  document.getElementById("role-target").style.display = "none";
-  document.getElementById("role-target").style.animation = "none";
+  void document.getElementById("player-thing").offsetHeight;
+  document.getElementById("player-thing").style.display = "none";
 
   const role = snapshot.val();
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
-    document.getElementById("role-display").style.display = "block";
+    document.getElementById("player-thing").style.display = "block";
     roledisplay.style.animation = "shake 1s linear";
-    document.getElementById("role-target").style.display = "block";
-    document.getElementById("role-target").style.animation = "shake 1s linear";
     }
 
     switch (role) {
