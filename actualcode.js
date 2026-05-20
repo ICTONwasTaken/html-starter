@@ -137,14 +137,15 @@ window.mythingy = async function mythingy() {
     console.log("the roles have been sorted!")
     }
 
-  document.getElementById("role-display").style.display = "block";
+  roledisplay.style.display = "block";
   document.getElementById("stop-btn").style.display = "block";
   roledisplay.style.animation = "shake 1s linear";
-  document.getElementById("role-target").style.display = "block";
-  document.getElementById("role-target").style.animation = "shake 1s linear";
+  roleTarget.style.display = "block";
+  roleTarget.style.animation = "shake 1s linear";
 
   roledisplay.style.animation = "none";
-  document.getElementById("role-target").style.animation = "none";
+  roleTarget.style.animation = "none";
+  await set(ref(db, "numbers/" + something + "/killed"), null);
   await set(ref(db, "numbers/" + something + "/killed"), null);
   }
 
