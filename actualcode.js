@@ -8,8 +8,7 @@ import { db, ref, onValue, remove, get, set} from './firebase.js';
   let counting = "";
   let old = 0;
   let timer = null;
-  let playerlist = document.getElementById("host-list")
-  let roledisplay = document.getElementById("role-display")
+  
 
 
 window.onload = async () => {
@@ -26,6 +25,7 @@ window.onload = async () => {
   console.log('All resources finished loading');
 
   onValue(ref(db, "numbers/" + something + "/players"), async (snapshot) => {
+      let playerlist = document.getElementById("host-list")
       const players = snapshot.val() || {};
       const stuff = Object.values(players);
   
@@ -113,7 +113,10 @@ function endAnim() {
 let tickInterval = null; // track the interval so we can clear it
 
 window.mythingy = async function mythingy() {
-  void document.getElementById("role-display").offsetHeight;
+  const roledisplay = document.getElementById("role-display");  // re-query here
+  const roleTarget = document.getElementById("role-target");
+
+  void roledisplay.offsetHeight;
 
   await set(ref(db, "numbers/" + something + "/roles"), null);
 
