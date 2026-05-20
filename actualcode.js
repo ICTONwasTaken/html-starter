@@ -218,4 +218,5 @@ window.openKillPopup = async function() {
 
 window.closeKillPopup = function() {
   document.getElementById("kill-popup").style.display = "none";
+  document.getElementById("kill-popup").style.animation = "popout 1s forwards"
 }
