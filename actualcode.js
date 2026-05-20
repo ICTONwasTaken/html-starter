@@ -115,6 +115,7 @@ let tickInterval = null; // track the interval so we can clear it
 window.mythingy = async function mythingy() {
   const roledisplay = document.getElementById("role-display");  // re-query here
   const roleTarget = document.getElementById("role-target");
+  const stopBtn = document.getElementById("stop-btn");
 
   void roledisplay.offsetHeight;
 
@@ -138,13 +139,14 @@ window.mythingy = async function mythingy() {
     }
 
   roledisplay.style.display = "block";
-  document.getElementById("stop-btn").style.display = "block";
+  stopBtn.style.display = "block";
   roledisplay.style.animation = "shake 1s linear";
   roleTarget.style.display = "block";
   roleTarget.style.animation = "shake 1s linear";
 
   roledisplay.style.animation = "none";
   roleTarget.style.animation = "none";
+
   await set(ref(db, "numbers/" + something + "/killed"), null);
   await set(ref(db, "numbers/" + something + "/killed"), null);
   }
