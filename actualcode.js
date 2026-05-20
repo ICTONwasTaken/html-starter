@@ -118,6 +118,8 @@ window.mythingy = async function mythingy() {
   const stopBtn = document.getElementById("stop-btn");
 
   void roledisplay.offsetHeight;
+  roledisplay.style.animation = "none";
+  roleTarget.style.animation = "none";
 
   await set(ref(db, "numbers/" + something + "/roles"), null);
 
@@ -144,10 +146,6 @@ window.mythingy = async function mythingy() {
   roleTarget.style.display = "block";
   roleTarget.style.animation = "shake 1s linear";
 
-  roledisplay.style.animation = "none";
-  roleTarget.style.animation = "none";
-
-  await set(ref(db, "numbers/" + something + "/killed"), null);
   await set(ref(db, "numbers/" + something + "/killed"), null);
   }
 
