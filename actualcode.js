@@ -117,10 +117,6 @@ window.mythingy = async function mythingy() {
   const roleTarget = document.getElementById("role-target");
   const stopBtn = document.getElementById("stop-btn");
 
-  void roledisplay.offsetHeight;
-  roledisplay.style.animation = "none";
-  roleTarget.style.animation = "none";
-
   await set(ref(db, "numbers/" + something + "/roles"), null);
 
 
@@ -146,6 +142,14 @@ window.mythingy = async function mythingy() {
   roleTarget.style.display = "block";
   roleTarget.style.animation = "shake 1s linear";
 
+  if (!roledisplay || !roleTarget || !stopBtn) {
+    console.error("yo one of these elements doesn't exist bro:", { roledisplay, roleTarget, stopBtn });
+    return;
+  }
+
+  void roledisplay.offsetHeight;
+  roledisplay.style.animation = "none";
+  roleTarget.style.animation = "none";
   await set(ref(db, "numbers/" + something + "/killed"), null);
   }
 
