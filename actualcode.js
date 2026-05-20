@@ -9,7 +9,6 @@ import { db, ref, onValue, remove, get, set} from './firebase.js';
   let old = 0;
   let timer = null;
   let playerlist = document.getElementById("host-list")
-  let roledisplay = document.getElementById("role-display")
 
 
 window.onload = async () => {
@@ -113,7 +112,7 @@ function endAnim() {
 let tickInterval = null; // track the interval so we can clear it
 
 window.mythingy = async function mythingy() {
-  roledisplay.style.animation = "none";
+  document.getElementById("role-display").style.animation = "none";
   void document.getElementById("role-display").offsetHeight;
   document.getElementById("role-target").style.display = "none";
   document.getElementById("role-target").style.animation = "none";
@@ -138,8 +137,8 @@ window.mythingy = async function mythingy() {
     }
 
   document.getElementById("role-display").style.display = "block";
+  document.getElementById("role-display").style.animation = "shake 1s linear";
   document.getElementById("stop-btn").style.display = "block";
-  roledisplay.style.animation = "shake 1s linear";
   document.getElementById("role-target").style.display = "block";
   document.getElementById("role-target").style.animation = "shake 1s linear";
 
