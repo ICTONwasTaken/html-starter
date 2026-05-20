@@ -35,7 +35,8 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + something + "/roles/player1"), async (snapshot) => {
   const role = snapshot.val();
-  document.getElementById("kill-btn").style.display = "none";
+  killbtn = document.getElementById("kill-btn");
+  killbtn.style.display = "none";
 
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
