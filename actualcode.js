@@ -219,7 +219,7 @@ window.openKillPopup = async function() {
 window.closeKillPopup = function() {
   document.getElementById("kill-popup").style.animation = "popout 1s forwards"
 
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
+  await new tromise(resolve => setTimeout(resolve, 1000));
+
   document.getElementById("kill-popup").style.display = "none";
 }
