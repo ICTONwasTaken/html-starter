@@ -35,8 +35,6 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + something + "/roles/player1"), async (snapshot) => {
   const role = snapshot.val();
-  document.getElementById("role-target").style.display = "none";
-  document.getElementById("role-target").style.animation = "none";
 
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
@@ -44,13 +42,9 @@ window.onload = async () => {
   switch (role) {
   case "a Monk":
     document.getElementById("role-target").innerText = "Try to survive!";
-    document.getElementById("role-target").style.display = "block";
-    document.getElementById("role-target").style.animation = "shake 1s linear";
     break;
   case "a Spy":
     document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
-    document.getElementById("role-target").style.display = "block";
-    document.getElementById("role-target").style.animation = "shake 1s linear";
     break;
   case "an Assassin":
     const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
@@ -60,8 +54,6 @@ window.onload = async () => {
     const randomKey = keys[Math.floor(Math.random() * keys.length)];
     const randomPlayer = players[randomKey];
     document.getElementById("role-target").innerText = "Your target is: " + randomPlayer;
-    document.getElementById("role-target").style.display = "block";
-    document.getElementById("role-target").style.animation = "shake 1s linear";
     console.log("This guy's an assasin! His target is:", randomPlayer);
   }
 });
@@ -120,6 +112,8 @@ let tickInterval = null; // track the interval so we can clear it
 window.mythingy = async function mythingy() {
   roledisplay.style.animation = "none";
   void document.getElementById("role-display").offsetHeight;
+  document.getElementById("role-target").style.display = "none";
+  document.getElementById("role-target").style.animation = "none";
 
   await set(ref(db, "numbers/" + something + "/roles"), null);
 
@@ -143,6 +137,8 @@ window.mythingy = async function mythingy() {
   document.getElementById("role-display").style.display = "block";
   document.getElementById("stop-btn").style.display = "block";
   roledisplay.style.animation = "shake 1s linear";
+  document.getElementById("role-target").style.display = "block";
+  document.getElementById("role-target").style.animation = "shake 1s linear";
   }
 
 window.mytimer = function mytimer() {

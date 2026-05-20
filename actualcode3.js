@@ -56,7 +56,6 @@ window.onload = async () => {
         document.getElementById("role-target").style.display = "block";
         document.getElementById("role-target").style.animation = "shake 1s linear";
         console.log("This guy's an assasin! His target is:", randomPlayer);
-        break;
       }
   });
 
