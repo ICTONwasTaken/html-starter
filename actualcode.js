@@ -142,11 +142,6 @@ window.mythingy = async function mythingy() {
   roleTarget.style.display = "block";
   roleTarget.style.animation = "shake 1s linear";
 
-  if (!roledisplay || !roleTarget || !stopBtn) {
-    console.error("yo one of these elements doesn't exist bro:", { roledisplay, roleTarget, stopBtn });
-    return;
-  }
-
   void roledisplay.offsetHeight;
   roledisplay.style.animation = "none";
   roleTarget.style.animation = "none";
