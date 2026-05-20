@@ -39,7 +39,7 @@ window.onload = async () => {
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
   }
-  
+
   switch (role) {
   case "a Monk":
     document.getElementById("role-target").innerText = "Try to survive!";
@@ -143,7 +143,6 @@ window.mythingy = async function mythingy() {
     console.log("the roles have been sorted!")
     }
 
-  stopBtn.style.display = "block";
   roledisplay.style.display = "block";
   roledisplay.style.animation = "shake 1s linear";
   roleTarget.style.display = "block";
