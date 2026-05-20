@@ -39,15 +39,18 @@ window.onload = async () => {
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
   }
+  
   switch (role) {
   case "a Monk":
     document.getElementById("role-target").innerText = "Try to survive!";
     document.getElementById("stop-btn").style.display = "none";
     break;
+
   case "a Spy":
     document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
     document.getElementById("stop-btn").style.display = "block";
     break;
+
   case "an Assassin":
     const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
     const players = playerSnap.val() || {};
@@ -58,6 +61,7 @@ window.onload = async () => {
     document.getElementById("role-target").innerText = "Your target is: " + randomPlayer;
     console.log("This guy's an assasin! His target is:", randomPlayer);
     document.getElementById("stop-btn").style.display = "block";
+    break;
   }
 });
 }
@@ -115,7 +119,6 @@ let tickInterval = null; // track the interval so we can clear it
 window.mythingy = async function mythingy() {
   const roledisplay = document.getElementById("role-display");  // re-query here
   const roleTarget = document.getElementById("role-target");
-  const stopBtn = document.getElementById("stop-btn");
 
   void roledisplay.offsetHeight;
   roledisplay.style.animation = "none";
