@@ -190,6 +190,8 @@ function timerstart() {
 window.openKillPopup = async function() {
   const killList = document.getElementById("kill-list");
   killList.innerHTML = "";
+  document.getElementById("kill-popup").style.display = "flex";
+  document.getElementById("kill-popup").style.animation = "popup 1s forwards"
 
   const [playerSnap, killedSnap] = await Promise.all([
     get(ref(db, "numbers/" + something + "/players")),
@@ -211,9 +213,6 @@ window.openKillPopup = async function() {
     };
     killList.appendChild(btn);
   });
-
-  document.getElementById("kill-popup").style.display = "flex";
-  document.getElementById("kill-popup").style.animation = "popup 1s forwards"
 }
 
 window.closeKillPopup = async function() {
