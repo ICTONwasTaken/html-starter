@@ -31,6 +31,10 @@ window.onload = async () => {
   const role = snapshot.val();
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
+    document.getElementById("role-display").style.display = "block";
+  roledisplay.style.animation = "shake 1s linear";
+  document.getElementById("role-target").style.display = "block";
+  document.getElementById("role-target").style.animation = "shake 1s linear";
     }
 
     switch (role) {
@@ -50,10 +54,6 @@ window.onload = async () => {
         document.getElementById("role-target").innerText = "Your target is: " + randomPlayer;
         console.log("This guy's an assasin! His target is:", randomPlayer);
       }
-  document.getElementById("role-display").style.display = "block";
-  roledisplay.style.animation = "shake 1s linear";
-  document.getElementById("role-target").style.display = "block";
-  document.getElementById("role-target").style.animation = "shake 1s linear";
   });
 
   onValue(ref(db, "numbers/" + rum + "/timer"), (snapshot) => {
