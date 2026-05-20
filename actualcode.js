@@ -40,19 +40,20 @@ window.onload = async () => {
 
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
-
-  if (role == "a Monk") {}
-  document.getElementById("role-target").innerText = "Try to survive!";
-  document.getElementById("role-target").style.display = "block";
-  document.getElementById("role-target").style.animation = "shake 1s linear";
-
-  if (role == "a Spy") {}
-  document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
-  document.getElementById("role-target").style.display = "block";
-  document.getElementById("role-target").style.animation = "shake 1s linear";
-
-  if (role == "an Assassin") {
-    const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
+  }
+  switch (role) {
+  case "a Monk":
+    document.getElementById("role-target").innerText = "Try to survive!";
+    document.getElementById("role-target").style.display = "block";
+    document.getElementById("role-target").style.animation = "shake 1s linear";
+    break;
+  case "a Spy":
+    document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
+    document.getElementById("role-target").style.display = "block";
+    document.getElementById("role-target").style.animation = "shake 1s linear";
+    break;
+  case "an Assassin":
+     const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
     const players = playerSnap.val() || {};
     const keys = Object.keys(players).filter(key => players[key] !== "Host");
 
@@ -62,8 +63,7 @@ window.onload = async () => {
     document.getElementById("role-target").style.display = "block";
     document.getElementById("role-target").style.animation = "shake 1s linear";
     console.log("This guy's an assasin! His target is:", randomPlayer);
-
-  };
+    break;
   }
 });
 }
@@ -120,6 +120,7 @@ let tickInterval = null; // track the interval so we can clear it
 
 window.mythingy = async function mythingy() {
   roledisplay.style.animation = "none";
+  void document.getElementById("role-display").offsetHeight;
 
   await set(ref(db, "numbers/" + something + "/roles"), null);
 
@@ -128,7 +129,11 @@ window.mythingy = async function mythingy() {
   const players = snap.val() || {};
   const keys = Object.keys(players);
 
-  const roles = ["a Monk", "a Monk", "an Assassin", "a Spy"];
+  const roles = ["an Assassin", "a Spy"];
+  while (roles.length < keys.length) {
+    roles.push("a Monk");
+  }
+
   const shuffled = roles.sort(() => Math.random() - 0.5);
 
   for (let i = 0; i < keys.length; i++) {

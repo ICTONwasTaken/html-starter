@@ -30,12 +30,6 @@ const snap = await get(ref(db, "numbers/" + rum + "/players"));
   const players = snap.val() || {};
   const playerCount = Object.keys(players).length;
 
-    if (playerCount >= 4) {
-        div1.innerText = "Room is full!";
-        playAnim();
-        return;
-    }
-
     const playerName = document.getElementById("getname").value.trim() || "Player " + (playerCount + 1);
     const newPlayerKey = "player" + (playerCount + 1);
     await set(ref(db, "numbers/" + rum + "/players/" + newPlayerKey), playerName);

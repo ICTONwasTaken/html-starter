@@ -24,7 +24,7 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + rum + "/roles/" + myPlayerKey), async (snapshot) => {
   roledisplay.style.animation = "none";
-  roledisplay.offsetHeight;
+  void document.getElementById("role-display").offsetHeight;
   document.getElementById("role-target").style.display = "none";
   document.getElementById("role-target").style.animation = "none";
 
@@ -33,31 +33,31 @@ window.onload = async () => {
     document.getElementById("role-display").textContent = "You are... " + role;
     document.getElementById("role-display").style.display = "block";
     roledisplay.style.animation = "shake 1s linear";
-
-  if (role == "a Monk") {}
-  document.getElementById("role-target").innerText = "Try to survive!";
-  document.getElementById("role-target").style.display = "block";
-  document.getElementById("role-target").style.animation = "shake 1s linear";
-
-  if (role == "a Spy") {}
-  document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
-  document.getElementById("role-target").style.display = "block";
-  document.getElementById("role-target").style.animation = "shake 1s linear";
-  
-  if (role == "an Assassin") {
-      const playerSnap = await get(ref(db, "numbers/" + rum + "/players"));
-      const players = playerSnap.val() || {};
-      const keys = Object.keys(players).filter(key => key !== myPlayerKey);
-  
-      const randomKey = keys[Math.floor(Math.random() * keys.length)];
-      const randomPlayer = players[randomKey];
-      document.getElementById("role-target").innerText = "Your target is: " + randomPlayer;
-      document.getElementById("role-target").style.display = "block";
-      document.getElementById("role-target").style.animation = "shake 1s linear";
-      console.log("This guy's an assasin! His target is:", randomPlayer);
-  
-    };
     }
+    switch (role) {
+      case "a Monk":
+        document.getElementById("role-target").innerText = "Try to survive!";
+        document.getElementById("role-target").style.display = "block";
+        document.getElementById("role-target").style.animation = "shake 1s linear";
+        break;
+      case "a Spy":
+        document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
+        document.getElementById("role-target").style.display = "block";
+        document.getElementById("role-target").style.animation = "shake 1s linear";
+        break;
+      case "an Assassin":
+         const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
+        const players = playerSnap.val() || {};
+        const keys = Object.keys(players).filter(key => players[key] !== "Host");
+    
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        const randomPlayer = players[randomKey];
+        document.getElementById("role-target").innerText = "Your target is: " + randomPlayer;
+        document.getElementById("role-target").style.display = "block";
+        document.getElementById("role-target").style.animation = "shake 1s linear";
+        console.log("This guy's an assasin! His target is:", randomPlayer);
+        break;
+      }
   });
 
   onValue(ref(db, "numbers/" + rum + "/timer"), (snapshot) => {
