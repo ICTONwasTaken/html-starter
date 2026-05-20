@@ -42,7 +42,7 @@ window.onload = async () => {
   switch (role) {
   case "a Monk":
     document.getElementById("role-target").innerText = "Try to survive!";
-    document.getElementById("kill-btn").style.display = "none";
+    document.getElementById("stop-btn").style.display = "none";
     break;
   case "a Spy":
     document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
