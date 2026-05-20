@@ -138,8 +138,8 @@ window.mythingy = async function mythingy() {
     console.log("the roles have been sorted!")
     }
 
-  roledisplay.style.display = "block";
   stopBtn.style.display = "block";
+  roledisplay.style.display = "block";
   roledisplay.style.animation = "shake 1s linear";
   roleTarget.style.display = "block";
   roleTarget.style.animation = "shake 1s linear";
