@@ -213,6 +213,7 @@ window.openKillPopup = async function() {
   });
 
   document.getElementById("kill-popup").style.display = "flex";
+  document.getElementById("kill-popup").style.animation = "popup 1s forwards"
 }
 
 window.closeKillPopup = function() {

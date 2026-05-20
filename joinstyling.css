@@ -211,6 +211,7 @@ input {
   justify-content: center;
   align-items: center;
   z-index: 999;
+  transform-origin: center;
 }
 
 #kill-popup-inner {
@@ -243,5 +244,11 @@ input {
 @keyframes shake {
   0% { transform: scale(10); opacity: 0;}
   10% { transform: scale(0.9); opacity: 0.5;}
+  20% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes popup {
+  0% { transform: scale(0); opacity: 0;}
+  10% { transform: scale(1.2); opacity: 0.5;}
   20% { transform: scale(1); opacity: 1; }
 }
