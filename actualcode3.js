@@ -1,7 +1,6 @@
 import { db, ref, onValue, remove, get } from './firebase.js';
 
 const div1 = document.getElementById("myDIV"); 
-let counting = "";
 let playerlist = document.getElementById("player-list");
 
 const rum = localStorage.getItem("joinedRoom");
@@ -16,8 +15,10 @@ window.onload = async () => {
   start();
 
   onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
+    let counting = "";
     const players = snapshot.val() || {};
     const stuff = Object.values(players);
+
     counting = stuff.join("\n");
     playerlist.innerText = counting;
   });
@@ -86,6 +87,12 @@ window.onload = async () => {
       timerDisplay.textContent = remaining;
     }, 500);
   });
+
+  onValue(ref(db, "numbers/" + rum + "/killed"), (snapshot) => {
+    const killed = snapshot.val() || {};
+    if (killed[myPlayerKey]);
+      openYouDied();
+  });
 }
 
 function timerplay() {
@@ -113,7 +120,7 @@ function timerend() {
 }
 
 function endAnim() { 
-  this.style.animation = "disappear 0.3s forwards"; 
+  div1.style.animation = "disappear 0.3s forwards"; 
   div1.hidden = true;
 }
 
@@ -122,4 +129,15 @@ window.backBtn3 = async function backBtn3() {
   localStorage.removeItem("joinedRoom");
   localStorage.removeItem("myPlayerKey");
   window.location.href = "joinroom.html";
+}
+
+window.openYouDied = async function() {
+  document.getElementById("you-died").style.animation = "popup 1s forwards"
+  document.getElementById("you-died").style.display = "flex";
+}
+
+window.closeYouDied = async function() {
+  document.getElementById("you-died").style.animation = "popout 1s forwards"
+  await new Promise(resolve => setTimeout(resolve, 250));
+  document.getElementById("you-died").style.display = "none";
 }
