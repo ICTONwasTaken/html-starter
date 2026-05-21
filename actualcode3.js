@@ -94,7 +94,7 @@ window.onload = async () => {
     if (killed[myPlayerKey]) {
       openYouDied();
       console.log("You just died boiiiii!")
-    }
+    };
   });
 }
 
