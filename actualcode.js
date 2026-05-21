@@ -226,7 +226,8 @@ window.closeKillPopup = async function() {
 
 
 window.openYouDied = async function() {
-  document.getElementById("you-died").style.animation = "popup 1s forwards"
+  await new Promise(resolve => setTimeout(resolve, 250));
+  document.getElementById("you-died").style.animation = "popup 1s forwards";
   document.getElementById("you-died").style.display = "flex";
 }
 

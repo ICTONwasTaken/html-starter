@@ -90,8 +90,10 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + rum + "/killed"), (snapshot) => {
     const killed = snapshot.val() || {};
+    console.log("Ya ded yet?")
     if (killed[myPlayerKey]);
       openYouDied();
+      console.log("You just died boiiiii!")
   });
 }
 
