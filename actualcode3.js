@@ -43,7 +43,7 @@ window.onload = async () => {
         document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
         break;
       case "an Assassin":
-         const playerSnap = await get(ref(db, "numbers/" + rum + "/players"));
+        const playerSnap = await get(ref(db, "numbers/" + rum + "/players"));
         const players = playerSnap.val() || {};
         const keys = Object.keys(players).filter(key => players[key] !== "Host");
     
