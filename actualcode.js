@@ -223,3 +223,15 @@ window.closeKillPopup = async function() {
   await new Promise(resolve => setTimeout(resolve, 250));
   document.getElementById("kill-popup").style.display = "none";
 }
+
+
+window.openYouDied = async function() {
+  document.getElementById("you-died").style.animation = "popup 1s forwards"
+  document.getElementById("you-died").style.display = "flex";
+}
+
+window.closeYouDied = async function() {
+  document.getElementById("you-died").style.animation = "popout 1s forwards"
+  await new Promise(resolve => setTimeout(resolve, 250));
+  document.getElementById("you-died").style.display = "none";
+}
