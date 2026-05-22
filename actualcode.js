@@ -24,13 +24,13 @@ window.onload = async () => {
   something = await herewego(something);
   console.log('All resources finished loading');
 
-  onValue(ref(db, "numbers/" + rum), async (snapshot) => {
-      const snap = await get(ref(db, "numbers/" + rum));
+  onValue(ref(db, "numbers/" + something), async (snapshot) => {
+      const snap = await get(ref(db, "numbers/" + something));
         if (!snap.exists()) {
               window.location.replace("join or create.html");
           }
         });
-        
+
   onValue(ref(db, "numbers/" + something + "/players"), async (snapshot) => {
       let playerlist = document.getElementById("host-list")
       const players = snapshot.val() || {};
