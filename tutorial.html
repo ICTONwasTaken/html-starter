@@ -71,10 +71,11 @@
 
       <h3>Pre-Phase: Role time!</h3>
       <p>
-        <div class="box" onclick="roletime()">
-          <div style="grid-column: 1 / span 4;">Check out the roles!</div>
-          <div id="role_text"></div>
-          <img id="role_type">
+        
+        <div class="box-boy" onclick="roletime()" style="user-select: none; cursor: pointer; flex-direction: column;">
+          <div id="roletext" style="font-weight: 600;"></div>
+          <img id="role_type" style="width: auto; height: auto; max-height: 200px">
+          <div id="role_check">Check em out!</div>
         </div>
         Before you start the game, you distribute your roles!
         
@@ -82,23 +83,23 @@
         <br><br>
         There are <b>3</b> roles in this game:
         <h4>Assassin</h4>
-        #image here<br> 
+        <img src="Cube bad2.png" style="border-radius: 20px;"><br> 
         <p><i>"Cash ain't heaven, but it sure looks like it!"</i><br>
         There's only 1 goal for this role: <b>kill your target.</b> <br><br>
         So be patient, be manipulative, or be aggressive. Just to whatever it takes to get the gun primed.
         </p>
 
         <h4>Spy</h4>
-        #image here<br> 
+        <img src="Cube bad.png" style="border-radius: 20px;"><br> 
         <p><i>"He could be in this very room!"</i><br>
-        Your goal is to <b>kill the Assassin and protect the priests.</b><br> <br>
+        Your goal is to <b>kill the Assassin and protect the Monks.</b><br> <br>
         And to do that, you're the only other role with access to the gun.
         Though how you can do that in a room of confused idiots and a killer is up to you.
 
         </p>
 
         <h4>Monk</h4>
-        #image here<br> 
+        <img src="Cube bad3.png" style="border-radius: 20px;"><br> 
         <p><i>"...May Buddha help us."</i><br>
         Speaking of confused idiots, these are the Monks! The normal people of the game.<br>
         Unfortunately, as pacafists, they abhor using guns. But they CAN hold it.
@@ -114,12 +115,17 @@
 
       <h3>Phase 1: Talk time!</h3>
       <p>
-        #image here <br> 
+<div class="box" style="user-select: none; cursor: pointer;" onmouseover="talking()" onmouseleave="notalking()" >
+        <div class="cube one" style="background-color: #ce6882; color: rgb(109, 29, 29);">1</div>
+        <div class="cube two" style="background-color: #6146da; color: rgb(27, 10, 75);">2</div>
+        <div class="cube three" style="background-color: #8de266; color: rgb(24, 85, 6);">3</div>
+        <div class="cube four" style="background-color: #cea568; color: rgb(78, 58, 21);">4</div>  
+</div>     
         Spin the gun to see who gets the gun first, and start the timer (default is 30 seconds). <br><br>
         This is the time to figure out who's who, and who should the get the gun. Afterwards...
       </p>
       <h3>Phase 2: Pass time!</h3>
-        <div onmouseover="passing()" onmouseout="nopassing()" class="box">
+        <div onmouseover="passing()" onmouseleave="nopassing()" class="box">
           <div class="line" style="display: none;">Pass!</div>
           <div class="gun" style="display: none;">Gun</div>
           <div class="cube uno" style="background-color: #ce6882; color: rgb(109, 29, 29);">1</div>
@@ -133,7 +139,14 @@
       </p>
       <h3>Phase 3: Pray time!</h3>
       <p>
-        #image here <br> 
+        <div class="box-kill" style="flex-direction: column;" onmouseleave="revive()">
+          <div style="grid-column: 1 / span 4;">Click to kill!</div>
+          <div id="oney" class="cubekill" onclick="kill(this)" style="display: flex; background-color: #ce6882; color: rgb(109, 29, 29);">1</div>
+          <div id="twoy" class="cubekill" onclick="kill(this)" style="display: flex; background-color: #6146da; color: rgb(27, 10, 75);">2</div>
+          <div id="trey" class="cubekill" onclick="kill(this)" style="display: flex; background-color: #8de266; color: rgb(24, 85, 6);">3</div>
+          <div id="fouy" class="cubekill" onclick="kill(this)" style="display: flex; background-color: #cea568; color: rgb(78, 58, 21);">4</div>
+        </div>
+        <br> 
         Once that person has the gun, you pray and see if he shoots or not! Just pray that he'll miss! <br><br>
         Keep in mind though, Monks are pacafists, so <b>they can't use the gun.</b> While the Assassin and Spy <b>can only use the gun after 3 touches.</b> <br> So pay close attention, and count how many times anyone's held the gun, it could save your life!
       </p>
@@ -142,8 +155,11 @@
       <p>Okay, but if it's just a local game, why use this site? Well, it has a few functions to help you make set up easier!</p>
 
       <h4>Easy role distribution</h4>
+      <div class="gridding">
+        <img src="thisthingy.png" style="border-radius: 20px;">
+        <img src="thisthingy1.png" style="border-radius: 20px;">
+        </div>
       <p>
-        #image here <br>
         With room creation, you can distribute roles and targets with a button press!
       </p>
 
@@ -153,21 +169,25 @@
             <div style="grid-column: 1 / span 4; font-size: 2rem; font-weight: bold;" id="timer-display2">00:00</div>
             <div style="grid-column: 1 / span 4;">Hope you kept track... cause we did!</div>
           </div>
+          Anyways, the site has a built-in timer too! You know, if you want it.
       </p>
 
       <h4>Shoot Button</h4>
+      <div class="gridding">
+        <img src="thisthingy2.png" style="border-radius: 20px;">
+        <img src="thisthingy3.png" style="border-radius: 20px;">
+        </div>
       <p>
-        #image here <br>
-        Don't got a gun? No problem! The site has a shoot button, just don't cheat, okay? Cheating isn't cool.
+        Don't got a gun? No problem! The site has a shoot button, just don't cheat, okay? <b> Cheating isn't cool. </b>
       </p>
 
     <h1>Time to get playing!</h1>
-    #image here <br>
+    <img src="thumbs-thumbs-up-kid.gif" style="border-radius: 20px;"> <br>
     And that's all the info you need to play! Did you get all that? <br><br>
 
     <div id="button-grid">
-      <button onclick="ouch()">Yep, time to get playing!</button>
-      <button onclick="warning_go()">No, I hate this stupid game!</button>
+      <a href="join or create.html" class="button">Yep, time to get playing!</a>
+      <a onclick="warning_go()" class="button">No, I hate this stupid game!</a>
     </div>
 
     <div id="damage" style="display: none;">999</div>
@@ -189,30 +209,60 @@ let interval = null;
 const gun = document.querySelector(".gun");
 let role_cycle = 0;
 
+function kill(self) {
+  self.style.animation = "cube_die 1s forwards";
+}
+
+function revive() {
+  const o = document.getElementById("oney");
+  const t = document.getElementById("twoy");
+  const tr = document.getElementById("trey");
+  const fo = document.getElementById("fouy");
+
+  o.style.animation = "none";
+  t.style.animation = "none";
+  tr.style.animation = "none";
+  fo.style.animation = "none";
+
+  o.style.display = "flex";
+  t.style.display = "flex";
+  tr.style.display = "flex";
+  fo.style.display = "flex";
+}
+
 function roletime() {
   const roletype = document.getElementById("role_type");
-  const roletext = document.getElementById("role_text");
-  role_cycle++;
+  const roletext = document.getElementById("roletext");
+  const rolecheck = document.getElementById("role_check");
+  roletype.style.animation = "none";
+  roletype.offsetHeight;
 
-  roletype.style.animation = "cube_come 1s forwards";
-  roletype.style.display = "block";
+  role_cycle++;
 
   if (role_cycle == 1) {
     roletype.src = 'hehegooguy1.png';
-    console.log("It's a bady guy!")
+    roletext.innerText = "Monk!";
+    rolecheck.innerText = "Trying his best.";
   } else if (role_cycle == 2) {
-    roletype.src = 'hehegooguy4.png';
-    console.log("It's a bady guy 1!")
+    roletype.src = 'hehebadguy.png';
+    roletext.innerText = "Assassin!";
+    rolecheck.innerText = "Heeheehee!";
   } else if (role_cycle == 3) {
     roletype.src = 'hehegooguy5.png';
-    console.log("It's a bady guy 2!")
+    roletext.innerText = "Spy!";
+    rolecheck.innerText = "I will avenge my father...";
   } else if (role_cycle == 4) {
-    roletype.src = 'hehebadguy.png';
-    console.log("It's a bady guy 3!")
-  } else if (role_cycle <= 5) {
+    roletype.src = 'hehegooguy4.png';
+    roletext.innerText = "Monk!";
+    rolecheck.innerText = "Also trying best!";
     role_cycle = 0;
-    console.log("It's not bady guy!")
+  } else if (role_cycle >= 5) {
+    role_cycle = 0;
+    console.log("This shouldn't play!");
   }
+  roletype.style.animation = "cube_come2 1s forwards";
+  roletype.style.display = "block";
+  roletext.style.display = "block";
 }
 
 function coolbeans() {
@@ -230,6 +280,35 @@ function coolbeans() {
 function coolend() {
   let cool = document.getElementById("cool")
   cool.style.display = "none";
+}
+
+function talking() {
+  const uno = document.querySelector(".one");
+  const dos = document.querySelector(".two");
+  const tres = document.querySelector(".three");
+  const quart = document.querySelector(".four");
+
+  const order = [uno, tres, quart, dos];
+  
+  let o = 0;
+
+  function jumpNext() {
+    // reset all first
+    for (let cube of order) {
+      cube.style.animation = "none";
+      cube.offsetHeight;
+    }
+    order[o].style.animation = "cube_jump 0.5s forwards";
+    o = (o + 1) % order.length; // cycle through 0,1,2,3,0,1,2...
+  }
+
+  jumpNext(); // run immediately on hover
+  interval = setInterval(jumpNext, 400);
+}
+
+function notalking() {
+  clearInterval(interval);
+  interval = null;
 }
 
 function passing() {
@@ -251,7 +330,6 @@ function passing() {
 
   let i = 0;
 
-  gun.style.animation = "gun_pass 6s infinite";
   gun.style.display = "block";
 
   function jiggleNext() {

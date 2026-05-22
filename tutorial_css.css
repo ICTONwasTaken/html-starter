@@ -2,6 +2,19 @@ body {
     background-color: rgb(48, 48, 48);
 }
 
+img {
+  z-index: 100;
+}
+.gridding {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 5px;
+  transition: transform 0.2s ease;
+}
+.gridding:hover {
+  transform: scale(1.10);
+}
+
 .box {
   margin: 0;
   border-radius: 20px;
@@ -27,14 +40,67 @@ body {
  transform: scale(1.02);
 }
 
+.box-boy {
+  margin: 0;
+  border-radius: 20px;
+  background-color: rgb(27, 12, 36);
+  overflow: hidden;
+
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto auto auto;
+  text-align: center;
+  row-gap: 0px;
+
+  justify-content: center;  /* horizontal center */
+  align-items: center;      /* vertical center */
+  height: 270px;      /* full screen height */
+  width: 300px;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.box-kill {
+  margin: 0;
+  border-radius: 20px;
+  background-color: rgb(27, 12, 36);
+  overflow: hidden;
+
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto auto;
+  column-gap: 15px;
+  row-gap: 0px;
+
+  text-align: center;
+  justify-content: center;  /* horizontal center */
+  align-items: center;      /* vertical center */
+  height: 270px;      /* full screen height */
+  width: 300px;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+.box-kill:hover {
+ background-color: rgb(40, 18, 53);
+ transform: scale(1.02);
+}
+
 #box-clicky {
   grid-template-columns: auto auto auto auto;
   grid-template-rows: auto auto;
   column-gap: 12px;
+  transition: transform 0.2s ease, background-color 0.3s ease;
 }
 #box-awesome {
   grid-template-columns: auto;
   grid-template-rows: auto;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+#box-awesome:hover {
+  background-color: rgb(40, 18, 53);
+ transform: scale(1.02);
+}
+#box-clicky:hover {
+  background-color: rgb(40, 18, 53);
+ transform: scale(1.02);
 }
 
 
@@ -69,6 +135,31 @@ body {
   40% { transform: translateX(0); opacity: 1;}
   80% {transform: translateX(0); opacity: 0;}
 }
+.button {
+  text-decoration: none;
+  font-weight: bold;
+  color: rgb(224, 173, 96);
+  max-width: 150px;
+  background-color: none;
+  padding: 10px;
+  border: 3px solid rgb(224, 173, 96);
+  border-radius: 6px;
+  align-content: center;
+
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.button:hover {
+  color: rgb(53, 59, 68);
+  background-color: rgb(224, 173, 96);
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+#button-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 
 .cube {
   user-select: none;
@@ -84,6 +175,29 @@ body {
 
   padding: 10px;
   border-radius: 5px;
+}
+
+.cubekill {
+  user-select: none;
+  cursor: pointer;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  z-index: 100;
+
+  font-weight: 900;
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 10px;
+  border-radius: 5px;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+.cubekill:hover {
+ background-color: rgb(194, 62, 62);
+ color: rgb(75, 5, 5);
+ transform: scale(1.10);
 }
 
 .gun {
@@ -114,6 +228,12 @@ body {
   34% {transform: translateY(0);}
   100%{ transform: translateY(0);}
 }
+@keyframes cube_die {
+  0% {opacity: 1; transform: translateX(10px);}
+  5% {opacity: 1; transform: translateX(-5px);}
+  10% {opacity: 1; transform: translateY(0px);}
+  100%{opacity: 0; transform: translateY(10px); background-color: #ff0000;}
+}
 
 @keyframes cube_come {
   0% {transform: scaleY(0.5) scaleX(1.5) translateY(0px);}
@@ -121,6 +241,15 @@ body {
   10% {transform: scaleY(1) scaleX(1) translateY(0px);}
   15% {transform: scaleY(1) scaleX(1) translateY(0px);}
   100%{ transform: scaleY(1) scaleX(1) translateY(0px);}
+}
+
+@keyframes cube_come2 {
+  0% {transform: scale(0) translateY(0px);}
+  20% {transform: scale(1.15) translateY(-5px); rotate: -2deg;}
+  30% {transform: scale(0.99) translateY(0px); rotate: 0.20deg;}
+  35% {transform: scale(1) translateY(0px); rotate: 0deg;}
+  50% {transform: scale(1) translateY(0px); rotate: 0deg;}
+  100%{transform: scale(1) translateY(0px);}
 }
 
 @keyframes cube_dance {
@@ -150,6 +279,13 @@ body {
   49%{transform: translateX(-2.05px)}
   50%{transform: translateX(-2px)}
   99%{transform: translateX(2.05px)}
+}
+
+@keyframes cube_jump {
+  0%{transform: scaleY(1) scaleX(1) translateY(0px);}
+  15%{transform:  scaleY(0.8) scaleX(1.05) translateY(20px);}
+  50%{transform: scaleY(1) scaleX(1) translateY(-10px);}
+  100%{transform: scaleY(1) scaleX(1) translateY(0px);}
 }
 
 #orbital {
