@@ -14,6 +14,13 @@ window.onload = async () => {
   playAnim();
   start();
 
+  onValue(ref(db, "numbers/" + rum), (snapshot) => {
+  const snap = await get(ref(db, "numbers/" + rum));
+    if (!snap.exists()) {
+          window.location.replace("https://vsbattles.fandom.com/wiki/Blog:Recent_posts");
+      }
+    });
+
   onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
     let counting = "";
     const players = snapshot.val() || {};
@@ -51,6 +58,7 @@ window.onload = async () => {
         const randomPlayer = players[randomKey];
         document.getElementById("role-target").innerText = "Your target is: " + randomPlayer;
         console.log("This guy's an assasin! His target is:", randomPlayer);
+         document.getElementById("stop-btn").style.display = "block";
       }
   });
 
