@@ -105,7 +105,19 @@ window.onload = async () => {
       console.log("You just died boiiiii!")
     } else {
       div1.hidden = false
-      div1.innerText = killed[key] + "just died!";
+       if (killedKeys.length > 0) {
+          const lastKilledKey = killedKeys[killedKeys.length - 1];
+      
+                    get(ref(db, "numbers/" + rum + "/players/" + lastKilledKey))
+                      .then((snap) => {
+                        const playerName = snap.val();
+      
+                        div1.hidden = false;
+                        div1.innerText = playerName + " just died!";
+                        div1.style.animation = "mymove 0.9s forwards";
+                        div1.addEventListener("animationend", endAnim, { once: true });
+                      });
+                  }
       div1.style.animation = "mymove 0.9s forwards";
       div1.addEventListener("animationend", endAnim, { once: true });
     }

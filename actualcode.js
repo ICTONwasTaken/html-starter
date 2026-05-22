@@ -39,6 +39,7 @@ window.onload = async () => {
         if (killed["Host"]) {
           openYouDied();
           console.log("You just died boiiiii!")
+          
         } else {
           div1.hidden = false
           const killedKeys = Object.keys(killed);
