@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script defer src="/_vercel/insights/script.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"
@@ -31,23 +30,39 @@
       <p>While not much, this game does need a tiny bit of things to get going:</p>
       
         <h4>Friends!</h4>
-        <img src="Sinster_6.png" style="width: 400px;">
+          <div id="box-clicky" onclick="create()" class="box" style="cursor: pointer;  user-select: none;">
+            <div style="grid-column: 1 / span 4;">Click to create friends!</div>
+              <div id="c1" class="cube" style="background-color: #ce6882; color: rgb(109, 29, 29); display: none;">1</div>
+              <div id="c2" class="cube" style="background-color: #6146da; color: rgb(27, 10, 75); display: none;">2</div>
+              <div id="c3" class="cube" style="background-color: #8de266; color: rgb(24, 85, 6); display: none;">3</div>
+              <div id="c4" class="cube" style="background-color: #cea568; color: rgb(78, 58, 21); display: none;">4</div>
+          </div>
+
         <p>This is a multiplayer game, after all. And if you don't have any... find someone who does! You're gonna need at least 4 people.</p>
 
         <h4>A Gun!</h4>
-        <img src="gun.png" style="width: 400px;">
+        <img src="gun.png" style="width: 400px; border-radius: 20px;">
         <p>Any kind will do, a nerf gun for example. Just preferrably it's not one that will cause any lasting injuries.</p>
 
         <h4>A Timer!</h4>
-        <img src="timer.png" style="width: 400px;">
-        <p>Again, any will do! It's up to preferrence. Though, you technically don't need it when you have...</p>
+          <div class="box" style="user-select: none; cursor: pointer; flex-direction: column; gap: 10px;" onclick="toggleTimer()">
+            How fast can you read this site?
+            <div style="grid-column: 1 / span 4; font-size: 2rem; font-weight: bold;" id="timer-display">00:00</div>
+            <div style="grid-column: 1 / span 4; font-size: 0.8rem; opacity: 0.6;" id="timer-hint">Click to start</div>
+          </div>
 
+        <p>Again, any will do! It's up to preferrence. Though, you technically don't need it when you have...</p>
+        
+        <div id="cool"></div>
         <h4>This site(?)</h4>
-        <img src="obama.jpg" style="width: 400px;">
+          <div id="box-awesome" onclick="coolbeans()" class="box" style="user-select: none; cursor: pointer; flex-direction: column;">
+            <div style="grid-column: 1 / span 4;">Click to call this site awesome!</div>
+          </div>
         <p>Self advertising? Perhaps... but it's worth it, we swear! The site does offer features to help make game set-up easier.</p>
       
     <h2>Game Flow</h2>
       <p>
+        <img src="Sinster_6.png" style="width: 400px; border-radius: 20px;">
         Now that you've got your tools and (assuming) your friends, it's time to begin the game! <br>
         The game flow is in a few phase:
       </p>
@@ -98,8 +113,15 @@
         This is the time to figure out who's who, and who should the get the gun. Afterwards...
       </p>
       <h3>Phase 2: Pass time!</h3>
+        <div onclick="passing()" class="box">
+          <div class="line" style="display: none;">Pass!</div>
+          <div class="gun" style="display: none;">Gun</div>
+          <div class="cube uno" style="background-color: #ce6882; color: rgb(109, 29, 29);">1</div>
+          <div class="cube dos" style="background-color: #6146da; color: rgb(27, 10, 75);">2</div>
+          <div class="cube tres" style="background-color: #8de266; color: rgb(24, 85, 6);">3</div>
+          <div class="cube quart" style="background-color: #cea568; color: rgb(78, 58, 21);">4</div>
+        </div>
       <p>
-        #image here <br> 
         The person who has the gun has to pass it onto someone else, they can choose whoever. <br><br>
         Though, if everyone deems that person untrustworthy, they can veto it and give it to someone else! Just make sure you choose correctly, or else it'll be a bad...
       </p>
@@ -151,10 +173,124 @@
     </div>
 
   Footer here
-  </body>
-</html>
-
 <script>
+let interval = null;
+
+function coolbeans() {
+  let cool = document.getElementById("cool")
+
+  cool.innerText = "Awesome"
+  cool.style.animation = "cooling 3s infinite";
+}
+
+function passing() {
+  const gun = document.querySelector(".gun");
+  const uno = document.querySelector(".uno");
+  const dos = document.querySelector(".dos");
+  const tres = document.querySelector(".tres");
+  const quart = document.querySelector(".quart");
+  const line = document.querySelector(".line");
+  
+  const order = [uno, tres, quart, dos];
+
+  const positions = [
+    "translateY(135px)",
+    "translate(140px, 135px)", 
+    "translate(140px, 0px)",
+    "translateY(0px)", 
+       
+  ];
+
+  let i = 0;
+
+  gun.style.display = "block";
+
+  function jiggleNext() {
+    // reset all first
+    for (let cube of order) {
+      cube.style.animation = "none";
+      cube.offsetHeight;
+      line.style.animation = "none";
+      line.style.display = "none";
+    }
+    gun.style.transition = "transform 0.4s ease";
+    gun.style.transform = positions[i];
+
+    order[i].style.animation = "cube_jiggle 1s forwards";
+    line.style.animation = "mymove 1s forwards";
+    line.style.display = "flex";
+    i = (i + 1) % order.length; // cycle through 0,1,2,3,0,1,2...
+  }
+
+  jiggleNext(); // run immediately on hover
+  interval = setInterval(jiggleNext, 1500);
+}
+
+let ii = 0;
+
+function create() {
+  const c1 = document.getElementById("c1")
+  const c2 = document.getElementById("c2")
+  const c3 = document.getElementById("c3")
+  const c4 = document.getElementById("c4")
+
+  ii++
+
+  if (ii == 1) {
+    c1.style.animation = "cube_come 1s forwards";
+    c1.style.display = "flex";
+  } else if (ii == 2) {
+    c2.style.animation = "cube_come 1s forwards";
+    c2.style.display = "flex";
+  } else if (ii == 3) {
+    c3.style.animation = "cube_come 1s forwards";
+    c3.style.display = "flex";
+  } else if (ii == 4) {
+    c4.style.animation = "cube_come 1s forwards";
+    c4.style.display = "flex";
+  } else if (ii <= 5) {
+    c1.style.animation = "cube_dance 0.8s infinite"
+    c2.style.animation = "cube_dance2 0.5s infinite"
+    c3.style.animation = "cube_dance3 0.4s infinite"
+    c4.style.animation = "cube_dance4 0.5s infinite"
+  }
+}
+
+
+
+
+
+
+
+
+
+let timerInterval = null;
+let timerSeconds = 0;
+let timerRunning = false;
+
+function toggleTimer() {
+  if (!timerRunning) {
+    timerRunning = true;
+    document.getElementById("timer-hint").innerText = "Click to stop";
+    timerInterval = setInterval(() => {
+      timerSeconds++;
+      const mins = String(Math.floor(timerSeconds / 60)).padStart(2, "0");
+      const secs = String(timerSeconds % 60).padStart(2, "0");
+      document.getElementById("timer-display").innerText = `${mins}:${secs}`;
+    }, 1000);
+  } else {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    timerSeconds = 0;
+    document.getElementById("timer-display").innerText = "00:00";
+    document.getElementById("timer-hint").innerText = "Click to start";
+  }
+}
+
+
+
+
+
 const orbital = document.getElementById("orbital");
 const laser = document.getElementById("laser");
 const swishytop = document.getElementById("leswishy-top");
@@ -241,3 +377,6 @@ function warning_anim() {
   warning.style.display = 'flex';
 }
 </script>
+
+  </body>
+</html>
