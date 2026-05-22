@@ -96,7 +96,7 @@ window.onload = async () => {
     }, 500);
   });
 
-  onValue(ref(db, "numbers/" + rum + "/killed"), (snapshot) => {
+  onValue(ref(db, "numbers/" + rum + "/killed"), async (snapshot) => {
     const killed = snapshot.val() || {};
     console.log("Ya ded yet?")
 

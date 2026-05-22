@@ -33,7 +33,7 @@ window.onload = async () => {
       playerlist.innerText = counting;
     });
   
-  onValue(ref(db, "numbers/" + something + "/killed"), (snapshot) => {
+  onValue(ref(db, "numbers/" + something + "/killed"), async (snapshot) => {
         const killed = snapshot.val() || {};
         console.log("Ya ded yet?")
         if (killed["player1"]) {
