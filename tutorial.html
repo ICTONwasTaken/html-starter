@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="/_vercel/insights/script.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"
@@ -53,23 +54,28 @@
 
         <p>Again, any will do! It's up to preferrence. Though, you technically don't need it when you have...</p>
         
-        <div id="cool"></div>
+      <div id="cool" style="display: none;"></div>
         <h4>This site(?)</h4>
           <div id="box-awesome" onclick="coolbeans()" class="box" style="user-select: none; cursor: pointer; flex-direction: column;">
-            <div style="grid-column: 1 / span 4;">Click to call this site awesome!</div>
+            <div style="grid-column: 1 / span 4;">Click to call this site <b>awesome!</b></div>
           </div>
         <p>Self advertising? Perhaps... but it's worth it, we swear! The site does offer features to help make game set-up easier.</p>
       
     <h2>Game Flow</h2>
       <p>
-        <img src="Sinster_6.png" style="width: 400px; border-radius: 20px;">
+        <img src="Sinster_6.png" style="width: 400px; border-radius: 20px;"> <br>
+        <br>
         Now that you've got your tools and (assuming) your friends, it's time to begin the game! <br>
         The game flow is in a few phase:
       </p>
 
       <h3>Pre-Phase: Role time!</h3>
       <p>
-        #image here <br> 
+        <div class="box" onclick="roletime()">
+          <div style="grid-column: 1 / span 4;">Check out the roles!</div>
+          <div id="role_text"></div>
+          <img id="role_type">
+        </div>
         Before you start the game, you distribute your roles!
         
         <br><br> <i>Note: This would be pretty hard physically... if you didn't have this site! (again, self advertising, but still)</i>
@@ -113,7 +119,7 @@
         This is the time to figure out who's who, and who should the get the gun. Afterwards...
       </p>
       <h3>Phase 2: Pass time!</h3>
-        <div onclick="passing()" class="box">
+        <div onmouseover="passing()" onmouseout="nopassing()" class="box">
           <div class="line" style="display: none;">Pass!</div>
           <div class="gun" style="display: none;">Gun</div>
           <div class="cube uno" style="background-color: #ce6882; color: rgb(109, 29, 29);">1</div>
@@ -143,8 +149,10 @@
 
       <h4>Timer</h4>
       <p>
-        #image here <br>
-        If you're too lazy to have a timer, this site's got one!
+        <div class="box" style="user-select: none; flex-direction: column; gap: 10px;">
+            <div style="grid-column: 1 / span 4; font-size: 2rem; font-weight: bold;" id="timer-display2">00:00</div>
+            <div style="grid-column: 1 / span 4;">Hope you kept track... cause we did!</div>
+          </div>
       </p>
 
       <h4>Shoot Button</h4>
@@ -173,18 +181,58 @@
     </div>
 
   Footer here
+  </body>
+</html>
+
 <script>
 let interval = null;
+const gun = document.querySelector(".gun");
+let role_cycle = 0;
+
+function roletime() {
+  const roletype = document.getElementById("role_type");
+  const roletext = document.getElementById("role_text");
+  role_cycle++;
+
+  roletype.style.animation = "cube_come 1s forwards";
+  roletype.style.display = "block";
+
+  if (role_cycle == 1) {
+    roletype.src = 'hehegooguy1.png';
+    console.log("It's a bady guy!")
+  } else if (role_cycle == 2) {
+    roletype.src = 'hehegooguy4.png';
+    console.log("It's a bady guy 1!")
+  } else if (role_cycle == 3) {
+    roletype.src = 'hehegooguy5.png';
+    console.log("It's a bady guy 2!")
+  } else if (role_cycle == 4) {
+    roletype.src = 'hehebadguy.png';
+    console.log("It's a bady guy 3!")
+  } else if (role_cycle <= 5) {
+    role_cycle = 0;
+    console.log("It's not bady guy!")
+  }
+}
 
 function coolbeans() {
   let cool = document.getElementById("cool")
 
-  cool.innerText = "Awesome"
-  cool.style.animation = "cooling 3s infinite";
+  var items = Array("Awesome", "Cool!", "Swanky", "Woooooah!");
+
+  var item = items[Math.floor(Math.random()*items.length)]
+
+  cool.innerText = item
+  cool.style.animation = "cooling 3s forwards";
+  cool.style.display = "flex";
+  cool.addEventListener("animationend", coolend, { once: true });
+}
+function coolend() {
+  let cool = document.getElementById("cool")
+  cool.style.display = "none";
 }
 
 function passing() {
-  const gun = document.querySelector(".gun");
   const uno = document.querySelector(".uno");
   const dos = document.querySelector(".dos");
   const tres = document.querySelector(".tres");
@@ -203,6 +251,7 @@ function passing() {
 
   let i = 0;
 
+  gun.style.animation = "gun_pass 6s infinite";
   gun.style.display = "block";
 
   function jiggleNext() {
@@ -224,6 +273,13 @@ function passing() {
 
   jiggleNext(); // run immediately on hover
   interval = setInterval(jiggleNext, 1500);
+}
+
+function nopassing() {
+  gun.style.animation = "none";
+  gun.style.display = "none";
+  clearInterval(interval);
+  interval = null;
 }
 
 let ii = 0;
@@ -277,6 +333,7 @@ function toggleTimer() {
       const mins = String(Math.floor(timerSeconds / 60)).padStart(2, "0");
       const secs = String(timerSeconds % 60).padStart(2, "0");
       document.getElementById("timer-display").innerText = `${mins}:${secs}`;
+      document.getElementById("timer-display2").innerText = `${mins}:${secs}`;
     }, 1000);
   } else {
     clearInterval(timerInterval);
@@ -284,6 +341,7 @@ function toggleTimer() {
     timerSeconds = 0;
     document.getElementById("timer-display").innerText = "00:00";
     document.getElementById("timer-hint").innerText = "Click to start";
+    document.getElementById("timer-display2").innerText = "00:00";
   }
 }
 
@@ -377,6 +435,3 @@ function warning_anim() {
   warning.style.display = 'flex';
 }
 </script>
-
-  </body>
-</html>
