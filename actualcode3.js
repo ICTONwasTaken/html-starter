@@ -104,7 +104,7 @@ window.onload = async () => {
       console.log("You just died boiiiii!")
     } else {
       div1.hidden = false
-      div1.innerText = killed.player + "just died!";
+      div1.innerText = killed[key] + "just died!";
       div1.style.animation = "mymove 0.9s forwards";
       div1.addEventListener("animationend", endAnim, { once: true });
     }
@@ -161,7 +161,7 @@ window.openKillPopup = async function() {
   const killed = killedSnap.val() || {};
 
   Object.entries(players).forEach(([key, name]) => {
-    if (key === "player1") return;  // skip host (yourself)
+    if (key === "myPlayerKey") return;  // skip host (yourself)
     if (killed[key]) return;        // skip already killed
 
     const btn = document.createElement("button");
