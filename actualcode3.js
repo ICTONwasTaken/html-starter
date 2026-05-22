@@ -96,28 +96,33 @@ window.onload = async () => {
     }, 500);
   });
 
-  onValue(ref(db, "numbers/" + rum + "/killed"), async (snapshot) => {
+  onValue(ref(db, "numbers/" + rum + "/killed"), (snapshot) => {
     const killed = snapshot.val() || {};
     console.log("Ya ded yet?")
 
     if (killed[myPlayerKey]) {
       openYouDied();
       console.log("You just died boiiiii!")
+    } else if (killed["player1"])  {
+        div1.hidden = false;
+        div1.innerText = "Host just died!";
+        div1.style.animation = "mymove 0.9s forwards";
+        div1.addEventListener("animationend", endAnim, { once: true });
     } else {
       div1.hidden = false
        if (killedKeys.length > 0) {
-          const lastKilledKey = killedKeys[killedKeys.length - 1];
+        const lastKilledKey = killedKeys[killedKeys.length - 1];
+
+        get(ref(db, "numbers/" + rum + "/players/" + lastKilledKey))
+          .then((snap) => {
+              const playerName = snap.val();
       
-                    get(ref(db, "numbers/" + rum + "/players/" + lastKilledKey))
-                      .then((snap) => {
-                        const playerName = snap.val();
-      
-                        div1.hidden = false;
-                        div1.innerText = playerName + " just died!";
-                        div1.style.animation = "mymove 0.9s forwards";
-                        div1.addEventListener("animationend", endAnim, { once: true });
-                      });
-                  }
+              div1.hidden = false;
+              div1.innerText = playerName + " just died!";
+              div1.style.animation = "mymove 0.9s forwards";
+              div1.addEventListener("animationend", endAnim, { once: true });
+          });
+        }
       div1.style.animation = "mymove 0.9s forwards";
       div1.addEventListener("animationend", endAnim, { once: true });
     }
