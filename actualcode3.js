@@ -94,6 +94,11 @@ window.onload = async () => {
     if (killed[myPlayerKey]) {
       openYouDied();
       console.log("You just died boiiiii!")
+    } else {
+      div1.hidden = false
+      div1.innerText = killed.player + "just died!";
+      div1.style.animation = "mymove 0.9s forwards";
+      div1.addEventListener("animationend", endAnim, { once: true });
     }
   });
 }
@@ -133,6 +138,43 @@ window.backBtn3 = async function backBtn3() {
   localStorage.removeItem("myPlayerKey");
   window.location.href = "joinroom.html";
 }
+
+
+window.openKillPopup = async function() {
+  const killList = document.getElementById("kill-list");
+  killList.innerHTML = "";
+
+  const [playerSnap, killedSnap] = await Promise.all([
+    get(ref(db, "numbers/" + rum + "/players")),
+    get(ref(db, "numbers/" + rum + "/killed"))
+  ]);
+
+  const players = playerSnap.val() || {};
+  const killed = killedSnap.val() || {};
+
+  Object.entries(players).forEach(([key, name]) => {
+    if (key === "player1") return;  // skip host (yourself)
+    if (killed[key]) return;        // skip already killed
+
+    const btn = document.createElement("button");
+    btn.innerText = name;
+    btn.onclick = async () => {
+      await set(ref(db, "numbers/" + rum + "/killed/" + key), true);
+      closeKillPopup();
+    };
+    killList.appendChild(btn);
+  });
+
+  document.getElementById("kill-popup").style.display = "flex";
+  document.getElementById("kill-popup").style.animation = "popup 1s forwards"
+}
+
+window.closeKillPopup = async function() {
+  document.getElementById("kill-popup").style.animation = "popout 1s forwards"
+  await new Promise(resolve => setTimeout(resolve, 250));
+  document.getElementById("kill-popup").style.display = "none";
+}
+
 
 window.openYouDied = async function() {
   document.getElementById("you-died").style.animation = "popup 1s forwards"

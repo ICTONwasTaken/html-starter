@@ -38,6 +38,15 @@
 
 
             <a id="back-btn" href="joinroom.html" onclick="backBtn3()" class="button full-span">BACK</a>
+            <a button id="stop-btn" style="display:none;" onclick="openKillPopup()" class="button">SHOTS</a>
+          </div>
+    </div>
+
+    <div id="kill-popup" style="display: none;">
+          <div id="kill-popup-inner">
+            <h2>Choose a target</h2>
+            <div id="kill-list"></div>
+            <button onclick="closeKillPopup()" class="cancel-btn">Cancel</button>
           </div>
     </div>
 
