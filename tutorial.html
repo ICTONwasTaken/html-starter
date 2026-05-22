@@ -18,7 +18,7 @@
       content="what this do?"
     />
   </head>
-  <body>
+  <body id="this">
   Header here - has menu to go back to places
 
 
@@ -31,19 +31,19 @@
       <p>While not much, this game does need a tiny bit of things to get going:</p>
       
         <h4>Friends!</h4>
-        #Put image here
+        <img src="Sinster_6.png" style="width: 400px;">
         <p>This is a multiplayer game, after all. And if you don't have any... find someone who does! You're gonna need at least 4 people.</p>
 
         <h4>A Gun!</h4>
-        #Put image here
+        <img src="gun.png" style="width: 400px;">
         <p>Any kind will do, a nerf gun for example. Just preferrably it's not one that will cause any lasting injuries.</p>
 
         <h4>A Timer!</h4>
-        #Put image here
+        <img src="timer.png" style="width: 400px;">
         <p>Again, any will do! It's up to preferrence. Though, you technically don't need it when you have...</p>
 
         <h4>This site(?)</h4>
-        #Put image here
+        <img src="obama.jpg" style="width: 400px;">
         <p>Self advertising? Perhaps... but it's worth it, we swear! The site does offer features to help make game set-up easier.</p>
       
     <h2>Game Flow</h2>
@@ -136,10 +136,108 @@
     And that's all the info you need to play! Did you get all that? <br><br>
 
     <div id="button-grid">
-      <button>Yep, time to get playing!</button>
-      <button>No, I hate this stupid game!</button>
+      <button onclick="ouch()">Yep, time to get playing!</button>
+      <button onclick="warning_go()">No, I hate this stupid game!</button>
+    </div>
+
+    <div id="damage" style="display: none;">999</div>
+
+    <img id="warning" style="display: none;">
+    <div id="black_back" style="display: none;"></div>
+    <div id="leswishy-top"></div>
+    <div id="leswishy-bottom"></div>
+    <div id="orbital" style="display: none;">
+      <img id="laser">
     </div>
 
   Footer here
   </body>
 </html>
+
+<script>
+const orbital = document.getElementById("orbital");
+const laser = document.getElementById("laser");
+const swishytop = document.getElementById("leswishy-top");
+const swishybottom = document.getElementById("leswishy-bottom");
+const warning = document.getElementById("warning");
+const black_back = document.getElementById("black_back");
+const damage = document.getElementById("damage");
+
+let health = 2000;
+
+function ouch() {
+  let owie = Math.floor(Math.random() * 100);
+  damage.innerText = owie + " dmg";
+  health = health - owie;
+  console.log(health)
+
+  damage.style.animation = "dmg 2s forwards";
+  damage.style.display = 'flex';
+  damage.addEventListener("animationend", ouch_end, { once: true });
+  setTimeout(die, 1000);
+}
+
+function die() {
+  const body = document.getElementById("this");
+    if (health <= 0) {
+      body.style.animation = "fadetowhite 1s forwards";
+      setTimeout(() => { body.style.display = "none"; }, 1000);
+    }
+  }
+
+function ouch_end() {
+  damage.style.display = 'none';
+}
+
+
+function swing() {
+  swing1();
+  swing2();
+}
+
+function swing1() {
+  swishytop.style.animation = "swing-top 0.4s forwards";
+  swishytop.style.display = 'flex';
+}
+function swing2() {
+  swishybottom.style.animation = "swing-bottom 0.4s forwards";
+  swishybottom.style.display = 'flex';
+}
+
+function explode() {
+  setTimeout(turnon, 1000);
+  setTimeout(turnoff, 19850);
+}
+
+function turnon() {
+  laser.src = '';
+  laser.src = 'ORBITAL SPACE LASER2.gif';
+  orbital.style.display = 'flex';
+  
+  swishytop.style.display = 'none';
+  swishybottom.style.display = 'none';
+  warning.style.display = 'none';
+  black_back.style.display = 'none';
+}
+function turnoff() {
+  laser.src = '';
+  orbital.style.animation = "fadetowhite 0.5s forwards";
+  setTimeout(() => {orbital.style.display = 'none';}, 1700);
+  setTimeout(ouch, 400);
+}
+
+
+function warning_go() {
+  black_back.style.animation = "fadetoblack 0.6s forwards";
+  black_back.style.display = 'flex';
+  setTimeout(warning_anim, 230);
+  setTimeout(() => { warning.style.animation = "pulse 1.4s infinite"; }, 1400);
+  setTimeout(swing, 7000);
+  setTimeout(explode, 8300);
+}
+function warning_anim() {
+  warning.src = '';
+  warning.src = 'WARNING.gif';
+  warning.style.display = 'flex';
+}
+</script>
