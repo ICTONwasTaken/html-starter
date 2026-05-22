@@ -14,9 +14,9 @@ window.onload = async () => {
   playAnim();
   start();
 
-  onValue(ref(db, "numbers/" + rum), (snapshot) => {
-  const snapping = await get(ref(db, "numbers/" + rum));
-    if (!snapping.exists()) {
+  onValue(ref(db, "numbers/" + rum), async (snapshot) => {
+  const snap = await get(ref(db, "numbers/" + rum));
+    if (!snap.exists()) {
           window.location.replace("https://vsbattles.fandom.com/wiki/Blog:Recent_posts");
       }
     });
