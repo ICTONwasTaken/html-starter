@@ -28,10 +28,9 @@ window.onload = async () => {
       const snap = await get(ref(db, "numbers/" + rum));
         if (!snap.exists()) {
               window.location.replace("join or create.html");
-              localStorage.removeItem("joinedRoom");
-              localStorage.removeItem("myPlayerKey");
           }
         });
+        
   onValue(ref(db, "numbers/" + something + "/players"), async (snapshot) => {
       let playerlist = document.getElementById("host-list")
       const players = snapshot.val() || {};
