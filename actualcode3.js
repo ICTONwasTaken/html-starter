@@ -17,7 +17,7 @@ window.onload = async () => {
   onValue(ref(db, "numbers/" + rum), async (snapshot) => {
   const snap = await get(ref(db, "numbers/" + rum));
     if (!snap.exists()) {
-          window.location.replace("https://vsbattles.fandom.com/wiki/Blog:Recent_posts");
+          window.location.replace("joinroom.html");
       }
     });
 
@@ -45,9 +45,11 @@ window.onload = async () => {
     switch (role) {
       case "a Monk":
         document.getElementById("role-target").innerText = "Try to survive!";
+        document.getElementById("stop-btn").style.display = "none";
         break;
       case "a Spy":
         document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
+        document.getElementById("stop-btn").style.display = "block";
         break;
       case "an Assassin":
         const playerSnap = await get(ref(db, "numbers/" + rum + "/players"));
@@ -116,6 +118,7 @@ window.onload = async () => {
         get(ref(db, "numbers/" + rum + "/players/" + lastKilledKey))
           .then((snap) => {
               const playerName = snap.val();
+              console.log("Last Killed Key:", lastKilledKey);
       
               div1.hidden = false;
               div1.innerText = playerName + " just died!";

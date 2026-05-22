@@ -36,6 +36,7 @@ window.onload = async () => {
   onValue(ref(db, "numbers/" + something + "/killed"), async (snapshot) => {
         const killed = snapshot.val() || {};
         console.log("Ya ded yet?")
+        console.log("Killed:", killed);
         if (killed["player1"]) {
           openYouDied();
           console.log("You just died boiiiii!")
@@ -50,6 +51,7 @@ window.onload = async () => {
               get(ref(db, "numbers/" + something + "/players/" + lastKilledKey))
                 .then((snap) => {
                   const playerName = snap.val();
+                  console.log("Last Killed Key:", lastKilledKey);
 
                   div1.hidden = false;
                   div1.innerText = playerName + " just died!";
