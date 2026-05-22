@@ -26,6 +26,12 @@
   border: 4px solid rgb(24, 24, 24);
 }
 
+#stop_btn {
+  display: flex;
+  justify-self: center;
+  align-self: center;
+}
+
 .ded-btn {
   text-decoration: none;
   font-weight: bold;
