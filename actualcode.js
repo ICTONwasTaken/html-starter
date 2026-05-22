@@ -41,7 +41,21 @@ window.onload = async () => {
           console.log("You just died boiiiii!")
         } else {
           div1.hidden = false
-          div1.innerText = killed.player + "just died!";
+          const killedKeys = Object.keys(killed);
+
+            if (killedKeys.length > 0) {
+              const lastKilledKey = killedKeys[killedKeys.length - 1];
+
+              get(ref(db, "numbers/" + something + "/players/" + lastKilledKey))
+                .then((snap) => {
+                  const playerName = snap.val();
+
+                  div1.hidden = false;
+                  div1.innerText = playerName + " just died!";
+                  div1.style.animation = "mymove 0.9s forwards";
+                  div1.addEventListener("animationend", endAnim, { once: true });
+                });
+            }
           div1.style.animation = "mymove 0.9s forwards";
           div1.addEventListener("animationend", endAnim, { once: true });
         }
@@ -242,17 +256,6 @@ window.closeKillPopup = async function() {
 window.openYouDied = async function() {
   await new Promise(resolve => setTimeout(resolve, 250));
   document.getElementById("you-died").style.animation = "popup 1s forwards";
-  document.getElementById("you-died").style.display = "flex";
-}
-
-window.closeYouDied = async function() {
-  document.getElementById("you-died").style.animation = "popout 1s forwards"
-  await new Promise(resolve => setTimeout(resolve, 250));
-  document.getElementById("you-died").style.display = "none";
-}
-
-window.openYouDied = async function() {
-  document.getElementById("you-died").style.animation = "popup 1s forwards"
   document.getElementById("you-died").style.display = "flex";
 }
 

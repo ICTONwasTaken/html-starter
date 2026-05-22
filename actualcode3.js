@@ -1,4 +1,4 @@
-import { db, ref, onValue, remove, get } from './firebase.js';
+import { db, ref, onValue, remove, gets, set } from './firebase.js';
 
 const div1 = document.getElementById("myDIV"); 
 let playerlist = document.getElementById("player-list");
@@ -52,7 +52,7 @@ window.onload = async () => {
       case "an Assassin":
         const playerSnap = await get(ref(db, "numbers/" + rum + "/players"));
         const players = playerSnap.val() || {};
-        const keys = Object.keys(players).filter(key => players[key] !== "Host");
+        const keys = Object.keys(players).filter(key => players[key] !== myPlayerKey);
     
         const randomKey = keys[Math.floor(Math.random() * keys.length)];
         const randomPlayer = players[randomKey];
@@ -96,9 +96,10 @@ window.onload = async () => {
     }, 500);
   });
 
-  onValue(ref(db, "numbers/" + rum + "/killed"), (snapshot) => {
+  onValue(ref(db, "numbers/" + rum + "/killed"), async (snapshot) => {
     const killed = snapshot.val() || {};
     console.log("Ya ded yet?")
+
     if (killed[myPlayerKey]) {
       openYouDied();
       console.log("You just died boiiiii!")
@@ -161,7 +162,7 @@ window.openKillPopup = async function() {
   const killed = killedSnap.val() || {};
 
   Object.entries(players).forEach(([key, name]) => {
-    if (key === "myPlayerKey") return;  // skip host (yourself)
+    if (key === myPlayerKey) return;  // skip host (yourself)
     if (killed[key]) return;        // skip already killed
 
     const btn = document.createElement("button");
