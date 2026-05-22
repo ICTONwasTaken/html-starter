@@ -110,8 +110,8 @@ window.onload = async () => {
         div1.addEventListener("animationend", endAnim, { once: true });
     } else {
       div1.hidden = false
-       if (killedKeys.length > 0) {
-        const lastKilledKey = killedKeys[killedKeys.length - 1];
+       if (killed.length > 0) {
+        const lastKilledKey = killed[killed.length - 1];
 
         get(ref(db, "numbers/" + rum + "/players/" + lastKilledKey))
           .then((snap) => {
