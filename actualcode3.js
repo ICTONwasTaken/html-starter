@@ -123,7 +123,6 @@ window.onload = async () => {
           .then((snap) => {
               const playerName = snap.val();
               console.log("Last Killed Key:", lastKilledKey);
-      
               div1.hidden = false;
               div1.innerText = playerName + " just died!";
               div1.style.animation = "mymove 0.9s forwards";

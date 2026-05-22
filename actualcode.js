@@ -24,6 +24,14 @@ window.onload = async () => {
   something = await herewego(something);
   console.log('All resources finished loading');
 
+  onValue(ref(db, "numbers/" + rum), async (snapshot) => {
+      const snap = await get(ref(db, "numbers/" + rum));
+        if (!snap.exists()) {
+              window.location.replace("join or create.html");
+              localStorage.removeItem("joinedRoom");
+              localStorage.removeItem("myPlayerKey");
+          }
+        });
   onValue(ref(db, "numbers/" + something + "/players"), async (snapshot) => {
       let playerlist = document.getElementById("host-list")
       const players = snapshot.val() || {};
