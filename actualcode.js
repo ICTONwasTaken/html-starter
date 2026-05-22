@@ -47,20 +47,15 @@ window.onload = async () => {
 
             if (killedKeys.length > 0) {
               const lastKilledKey = killedKeys[killedKeys.length - 1];
-
               get(ref(db, "numbers/" + something + "/players/" + lastKilledKey))
                 .then((snap) => {
                   const playerName = snap.val();
-                  console.log("Last Killed Key:", lastKilledKey);
-
                   div1.hidden = false;
                   div1.innerText = playerName + " just died!";
-                  div1.style.animation = "mymove 0.9s forwards";
+                  div1.style.animation = "mymove 0.9s forwards";       // moved INSIDE the if block
                   div1.addEventListener("animationend", endAnim, { once: true });
                 });
             }
-          div1.style.animation = "mymove 0.9s forwards";
-          div1.addEventListener("animationend", endAnim, { once: true });
         }
       });
 

@@ -56,7 +56,7 @@ window.onload = async () => {
       case "an Assassin":
         const playerSnap = await get(ref(db, "numbers/" + rum + "/players"));
         const players = playerSnap.val() || {};
-        const keys = Object.keys(players).filter(key => players[key] !== myPlayerKey);
+        const keys = Object.keys(players).filter(key => key !== myPlayerKey);
     
         const randomKey = keys[Math.floor(Math.random() * keys.length)];
         const randomPlayer = players[randomKey];
@@ -115,8 +115,9 @@ window.onload = async () => {
         div1.addEventListener("animationend", endAnim, { once: true });
     } else {
       div1.hidden = false
-       if (killed.length > 0) {
-        const lastKilledKey = killed[killed.length - 1];
+       const killedKeys = Object.keys(killed);
+      if (killedKeys.length > 0) {
+          const lastKilledKey = killedKeys[killedKeys.length - 1];
 
         get(ref(db, "numbers/" + rum + "/players/" + lastKilledKey))
           .then((snap) => {
@@ -129,8 +130,6 @@ window.onload = async () => {
               div1.addEventListener("animationend", endAnim, { once: true });
           });
         }
-      div1.style.animation = "mymove 0.9s forwards";
-      div1.addEventListener("animationend", endAnim, { once: true });
     }
   });
 }
