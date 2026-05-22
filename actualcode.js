@@ -36,10 +36,10 @@ window.onload = async () => {
   onValue(ref(db, "numbers/" + something + "/killed"), (snapshot) => {
         const killed = snapshot.val() || {};
         console.log("Ya ded yet?")
-        if (killed["Host"]) {
+        if (killed["player1"]) {
           openYouDied();
           console.log("You just died boiiiii!")
-          
+
         } else {
           div1.hidden = false
           const killedKeys = Object.keys(killed);
