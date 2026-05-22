@@ -41,7 +41,7 @@ window.onload = async () => {
           console.log("You just died boiiiii!")
         } else {
           div1.hidden = false
-          div1.innerText = killed + "just died!";
+          div1.innerText = killed.player + "just died!";
           div1.style.animation = "mymove 0.9s forwards";
           div1.addEventListener("animationend", endAnim, { once: true });
         }
