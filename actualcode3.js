@@ -18,6 +18,8 @@ window.onload = async () => {
   const snap = await get(ref(db, "numbers/" + rum));
     if (!snap.exists()) {
           window.location.replace("joinroom.html");
+          localStorage.removeItem("joinedRoom");
+          localStorage.removeItem("myPlayerKey");
       }
     });
 
@@ -101,6 +103,7 @@ window.onload = async () => {
   onValue(ref(db, "numbers/" + rum + "/killed"), async (snapshot) => {
     const killed = snapshot.val() || {};
     console.log("Ya ded yet?")
+    console.log("Killed:", killed);
 
     if (killed[myPlayerKey]) {
       openYouDied();
