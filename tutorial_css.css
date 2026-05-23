@@ -442,3 +442,14 @@ img {
     opacity: 0;
   }
 }
+
+
+footer {
+  position: absolute;
+        text-align: center;
+        padding: 20px;
+        background-color: rgb(24, 7, 32);
+        margin-top: 50px;
+        left: 0;
+        width: 100%;
+    }
