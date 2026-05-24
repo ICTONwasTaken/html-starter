@@ -31,12 +31,11 @@ window.onload = async () => {
           }
         });
 
-  onValue(ref(db, "numbers/" + something + "/points"), async (snapshot) => {
+  onValue(ref(db, "numbers/" + something + "/players"), async (snapshot) => {
   const playerlist = document.getElementById("host-list");
   const players = snapshot.val() || {};
 
-  const [roleSnap, pointSnap] = await Promise.all([
-    get(ref(db, "numbers/" + something + "/roles")),
+  const [pointSnap] = await Promise.all([
     get(ref(db, "numbers/" + something + "/points"))
   ]);
 
@@ -44,6 +43,7 @@ window.onload = async () => {
 
   playerlist.innerText = ""; // clear it
   Object.entries(players).forEach(([key, name]) => {
+    const role = roles[key] || "?";
     const pts = points[key] || 0;
     playerlist.innerText += `${name} — ${pts}pts\n`;
   });
