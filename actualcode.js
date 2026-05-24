@@ -55,6 +55,7 @@ window.onload = async () => {
         const killed = snapshot.val() || {};
         console.log("Ya ded yet?")
         console.log("Killed:", killed);
+        document.getElementById("score-btn").style.display = "flex";
         if (killed["player1"]) {
           document.getElementById("role-display").style.textDecoration = "line-through";
           document.getElementById("role-target").style.textDecoration = "line-through";
