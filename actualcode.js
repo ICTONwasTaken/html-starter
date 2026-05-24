@@ -187,6 +187,8 @@ window.mythingy = async function mythingy() {
   roleTarget.style.textDecoration = "none";
   roledisplay.style.animation = "none";
   roleTarget.style.animation = "none";
+  document.getElementById("stop-btn").style.display = "none";
+  document.getElementById("score-btn").style.display = "none";
   
 
   await set(ref(db, "numbers/" + something + "/roles"), null);
