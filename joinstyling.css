@@ -84,7 +84,7 @@ button {
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 button:hover {
-  color: rgb(53, 59, 68);
+  color: rgb(255, 255, 255);
   background-color: rgb(255, 0, 0);
   transform: scale(1.1);
   cursor: pointer;

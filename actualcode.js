@@ -45,6 +45,8 @@ window.onload = async () => {
         console.log("Ya ded yet?")
         console.log("Killed:", killed);
         if (killed["player1"]) {
+          document.getElementById("role-display").style.textDecoration = "line-through";
+          document.getElementById("role-target").style.textDecoration = "line-through";
           openYouDied();
           console.log("You just died boiiiii!")
 
@@ -154,8 +156,11 @@ window.mythingy = async function mythingy() {
   const roleTarget = document.getElementById("role-target");
 
   void roledisplay.offsetHeight;
+  roledisplay.style.textDecoration = "none";
+  roleTarget.style.textDecoration = "none";
   roledisplay.style.animation = "none";
   roleTarget.style.animation = "none";
+  
 
   await set(ref(db, "numbers/" + something + "/roles"), null);
 
@@ -236,7 +241,6 @@ window.openKillPopup = async function() {
 
   Object.entries(players).forEach(([key, name]) => {
     if (key === "player1") return;  // skip host (yourself)
-    if (killed[key]) return;        // skip already killed
 
     const btn = document.createElement("button");
     btn.innerText = name;
@@ -255,6 +259,7 @@ window.closeKillPopup = async function() {
   document.getElementById("kill-popup").style.animation = "popout 1s forwards"
   await new Promise(resolve => setTimeout(resolve, 250));
   document.getElementById("kill-popup").style.display = "none";
+  document.getElementById("stop-btn").style.display = "none";
 }
 
 

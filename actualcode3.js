@@ -184,7 +184,6 @@ window.openKillPopup = async function() {
 
   Object.entries(players).forEach(([key, name]) => {
     if (key === myPlayerKey) return;  // skip host (yourself)
-    if (killed[key]) return;        // skip already killed
 
     const btn = document.createElement("button");
     btn.innerText = name;
@@ -203,6 +202,7 @@ window.closeKillPopup = async function() {
   document.getElementById("kill-popup").style.animation = "popout 1s forwards"
   await new Promise(resolve => setTimeout(resolve, 250));
   document.getElementById("kill-popup").style.display = "none";
+  document.getElementById("stop-btn").style.display = "none";
 }
 
 
