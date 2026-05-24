@@ -1,5 +1,61 @@
 body {
     background-color: rgb(48, 48, 48);
+    max-width: 800px;
+}
+
+#back{
+  display: flex;
+  background-size: cover;
+  object-fit: inherit;
+  
+  justify-self: center;
+  z-index: -5;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  min-width: 1200px;
+  top: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+#planet{
+  display: flex;
+  position: fixed;
+
+  
+  justify-self: center;
+  z-index: -4;
+  position: fixed;
+  bottom: -10vh;
+  right: -80px;
+
+  width: 550px;
+  transform-origin: center;
+}
+
+@keyframes planeting {
+  0%  { transform: translateX(0px)   translateY(0px); }
+  25% { transform: translateX(8px)   translateY(5px); }
+  50% { transform: translateX(-8px)  translateY(-5px); }
+  75% { transform: translateX(0px)   translateY(-5px); }
+  100%{ transform: translateX(0px)   translateY(0px); }
+}
+
+#dack {
+  display: block;
+  background: rgba(59, 54, 66, 0.884);
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);  /* centers it like a chad */
+  width: 100%;
+  max-width: 800px;             /* matches the body, no cap */
+  height: 100%;
+  z-index: -1;
+  margin: 0;
+
+  padding-right: 30px;
 }
 
 img {
@@ -16,6 +72,7 @@ img {
 }
 
 .box {
+  position: static;
   margin: 0;
   border-radius: 20px;
   background-color: rgb(27, 12, 36);
@@ -158,6 +215,7 @@ img {
 #button-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
 }
 
 

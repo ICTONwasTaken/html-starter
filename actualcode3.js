@@ -111,7 +111,7 @@ window.onload = async () => {
     } else if (killed["player1"])  {
         div1.hidden = false;
         div1.innerText = "Host just died!";
-        div1.style.animation = "mymove 0.9s forwards";
+        div1.style.animation = "mymove 5s forwards";
         div1.addEventListener("animationend", endAnim, { once: true });
     } else {
       div1.hidden = false

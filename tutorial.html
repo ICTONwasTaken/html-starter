@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script defer src="/_vercel/insights/script.js"></script>
     <link
       rel="stylesheet"
@@ -18,8 +18,13 @@
       content="what this do?"
     />
   </head>
+  
+  
   <body id="this">
+    <img src="space_ver1.png" id="back">
+    <img src="earth.png" id="planet" onload="planet_anim()">
 
+    <div id="dack"></div>
     <h1>How to play?</h1>
       <p>
         Monastary Showdown (M.S) is mainly played for the social deduction and guessing game. But it does have a ruleset to follow for the full experience. <br><br> <i>(Reminder, this is still a prototype though)</i>
@@ -113,7 +118,7 @@
 
       <h3>Phase 1: Talk time!</h3>
       <p>
-<div class="box" style="user-select: none; cursor: pointer;" onmouseover="talking()" onmouseleave="notalking()" >
+<div class="box" style="user-select: none; cursor: pointer;" >
         <div class="cube one" style="background-color: #ce6882; color: rgb(109, 29, 29);">1</div>
         <div class="cube two" style="background-color: #6146da; color: rgb(27, 10, 75);">2</div>
         <div class="cube three" style="background-color: #8de266; color: rgb(24, 85, 6);">3</div>
@@ -123,7 +128,7 @@
         This is the time to figure out who's who, and who should the get the gun. Afterwards...
       </p>
       <h3>Phase 2: Pass time!</h3>
-        <div onmouseover="passing()" onmouseleave="nopassing()" class="box">
+        <div class="box" style="position: relative;">
           <div class="line" style="display: none;">Pass!</div>
           <div class="gun" style="display: none;">Gun</div>
           <div class="cube uno" style="background-color: #ce6882; color: rgb(109, 29, 29);">1</div>
@@ -215,6 +220,12 @@ let role_cycle = 0;
 
 function kill(self) {
   self.style.animation = "cube_die 1s forwards";
+}
+
+function planet_anim() {
+  const planet = document.getElementById("planet")
+
+  planet.style.animation = "planeting 20s ease-in-out infinite"
 }
 
 function revive() {
@@ -310,11 +321,6 @@ function talking() {
   interval = setInterval(jumpNext, 400);
 }
 
-function notalking() {
-  clearInterval(interval);
-  interval = null;
-}
-
 function passing() {
   const uno = document.querySelector(".uno");
   const dos = document.querySelector(".dos");
@@ -355,13 +361,6 @@ function passing() {
 
   jiggleNext(); // run immediately on hover
   interval = setInterval(jiggleNext, 1500);
-}
-
-function nopassing() {
-  gun.style.animation = "none";
-  gun.style.display = "none";
-  clearInterval(interval);
-  interval = null;
 }
 
 let ii = 0;
@@ -516,4 +515,10 @@ function warning_anim() {
   warning.src = 'WARNING.gif';
   warning.style.display = 'flex';
 }
+
+
+window.addEventListener("load", () => {
+  talking();
+  passing();
+});
 </script>
