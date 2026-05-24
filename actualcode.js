@@ -32,13 +32,24 @@ window.onload = async () => {
         });
 
   onValue(ref(db, "numbers/" + something + "/players"), async (snapshot) => {
-      let playerlist = document.getElementById("host-list")
-      const players = snapshot.val() || {};
-      const stuff = Object.values(players);
-  
-      counting = stuff.join("\n");
-      playerlist.innerText = counting;
-    });
+  const playerlist = document.getElementById("host-list");
+  const players = snapshot.val() || {};
+
+  const [roleSnap, pointSnap] = await Promise.all([
+    get(ref(db, "numbers/" + something + "/roles")),
+    get(ref(db, "numbers/" + something + "/points"))
+  ]);
+
+  const roles = roleSnap.val() || {};
+  const points = pointSnap.val() || {};
+
+  playerlist.innerText = ""; // clear it
+  Object.entries(players).forEach(([key, name]) => {
+    const role = roles[key] || "?";
+    const pts = points[key] || 0;
+    playerlist.innerText += `${name} — ${role} — ${pts}pts\n`;
+  });
+});
   
   onValue(ref(db, "numbers/" + something + "/killed"), async (snapshot) => {
         const killed = snapshot.val() || {};
@@ -310,7 +321,7 @@ window.closeScoring = async function() {
 
 let boolboi = false;
 
-          window.score_dropdown = function() {
+window.score_dropdown = function() {
               const something = document.getElementById("dropdown-content");
               const score = document.getElementById("score");
 
@@ -329,37 +340,69 @@ let boolboi = false;
               
             }
 
-          window.score_click = async function(what, event) {
-              event.stopPropagation();
-              const something = document.getElementById("dropdown-content");
-              const score = document.getElementById("score");
-              const label = document.getElementById("score-label");
+window.score_click = async function(what, event) {
+  event.stopPropagation();
+  const dropdown = document.getElementById("dropdown-content");
+  const score = document.getElementById("score");
+  const label = document.getElementById("score-label");
 
-              score.style.backgroundColor = "";
-              score.style.color = 'rgb(224, 173, 96)';
-              something.style.display = "none";
-              boolboi = false;
+  // grab both at the same time, no cap
+  const [playerSnap, roleSnap] = await Promise.all([
+    get(ref(db, "numbers/" + something + "/players")),
+    get(ref(db, "numbers/" + something + "/roles"))
+  ]);
 
-              switch (what) {
-                case "AssWin":
-                  label.innerText = "Assassin killed target";
-                  break;
-                case "SpyWin":
-                  label.innerText = "Spy killed Assassin";
-                  break;
-                case "AssSpy":
-                  label.innerText = "Assassin killed Spy";
-                  break;
-                case "AssWrong":
-                  label.innerText = "Assassin killed wrong person";
-                  break;
-                case "SpyWrong":
-                  label.innerText = "Spy killed wrong person";
-                  break;
-            }
-          }
+  const players = playerSnap.val() || {};
+  const roles = roleSnap.val() || {};
 
-          window.closeScoring = async function() {
+  score.style.backgroundColor = "";
+  score.style.color = 'rgb(224, 173, 96)';
+  dropdown.style.display = "none";
+  boolboi = false;
+
+  // figure out who gets points based on what happened
+  let pointMap = {}; // { playerKey: points }
+
+  Object.keys(players).forEach(key => {
+    const role = roles[key];
+    switch (what) {
+      case "AssWin": // assassin killed target, assassin gets points
+        pointMap[key] = role === "an Assassin" ? 2 : 0;
+        break;
+      case "SpyWin": // spy killed assassin, spy gets points
+        pointMap[key] = role === "a Spy" ? 2 : 0;
+        break;
+      case "AssSpy": // assassin killed spy, assassin gets points
+        pointMap[key] = role === "an Assassin" ? 1 : 0;
+        break;
+      case "AssWrong": // assassin killed wrong person, monks/spy get points
+        pointMap[key] = role === "a Monk" || role === "a Spy" ? 1 : 0;
+        break;
+      case "SpyWrong": // spy killed wrong person, assassin gets points
+        pointMap[key] = role === "an Assassin" ? 1 : 0;
+        break;
+    }
+  });
+
+  // save points to firebase bro
+  for (const [key, pts] of Object.entries(pointMap)) {
+    const currentSnap = await get(ref(db, "numbers/" + something + "/points/" + key));
+    const current = currentSnap.val() || 0;
+    await set(ref(db, "numbers/" + something + "/points/" + key), current + pts);
+  }
+
+  // update the label
+  const labels = {
+    AssWin: "Assassin killed target",
+    SpyWin: "Spy killed Assassin",
+    AssSpy: "Assassin killed Spy",
+    AssWrong: "Assassin killed wrong person",
+    SpyWrong: "Spy killed wrong person"
+  };
+  label.innerText = labels[what];
+}
+
+window.closeScoring = async function() {
             document.getElementById("score-popup").style.animation = "popout 1s forwards"
             await new Promise(resolve => setTimeout(resolve, 250));
             document.getElementById("score-popup").style.display = "none";
