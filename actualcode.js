@@ -31,7 +31,7 @@ window.onload = async () => {
           }
         });
 
-  onValue(ref(db, "numbers/" + something + "/players"), async (snapshot) => {
+  onValue(ref(db, "numbers/" + something + "/points"), async (snapshot) => {
   const playerlist = document.getElementById("host-list");
   const players = snapshot.val() || {};
 
@@ -40,14 +40,12 @@ window.onload = async () => {
     get(ref(db, "numbers/" + something + "/points"))
   ]);
 
-  const roles = roleSnap.val() || {};
   const points = pointSnap.val() || {};
 
   playerlist.innerText = ""; // clear it
   Object.entries(players).forEach(([key, name]) => {
-    const role = roles[key] || "?";
     const pts = points[key] || 0;
-    playerlist.innerText += `${name} — ${role} — ${pts}pts\n`;
+    playerlist.innerText += `${name} — ${pts}pts\n`;
   });
 });
   
@@ -296,11 +294,11 @@ window.openScoring = async function() {
 let boolboi = false;
 
 window.score_dropdown = function() {
-              const something = document.getElementById("dropdown-content");
+              const droppy = document.getElementById("dropdown-content");
               const score = document.getElementById("score");
 
               if (boolboi == false) {
-                something.style.display = "block";
+                droppy.style.display = "block";
                 score.style.userSelect = "none";
                 score.style.backgroundColor = 'rgb(224, 173, 96)';
                 score.style.color = 'rgb(27, 12, 36)';
@@ -308,7 +306,7 @@ window.score_dropdown = function() {
               } else {
                 score.style.backgroundColor = "";
                 score.style.color = 'rgb(224, 173, 96)';
-                something.style.display = "none";
+                droppy.style.display = "none";
                 boolboi = false;
               }
               
