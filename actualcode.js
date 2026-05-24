@@ -100,7 +100,7 @@ window.onload = async () => {
   const guy = document.getElementById("guy");
 
   if (role) {
-    document.getElementById("role-display").textContent = "You are... " + role;
+    document.getElementById("role-text").textContent = "You are... " + role;
     guy.src = '';
   }
 
