@@ -68,6 +68,7 @@ window.onload = async () => {
         console.log("Killed:", killed);
         if (Object.keys(killed).length > 0) {
           document.getElementById("score-btn").style.display = "flex";
+          document.getElementById("stop-btn").style.display = "none";
         }
 
         if (killed["player1"]) {
