@@ -308,8 +308,60 @@ window.closeScoring = async function() {
   document.getElementById("score-btn").style.display = "none";
 }
 
-window.score_dropdown = function() {
-  const something = document.getElementById("dropdown-content");
+let boolboi = false;
 
-  something.style.display = "block";
-}
+          window.score_dropdown = function() {
+              const something = document.getElementById("dropdown-content");
+              const score = document.getElementById("score");
+
+              if (boolboi == false) {
+                something.style.display = "block";
+                score.style.userSelect = "none";
+                score.style.backgroundColor = 'rgb(224, 173, 96)';
+                score.style.color = 'rgb(27, 12, 36)';
+                boolboi = true;
+              } else {
+                score.style.backgroundColor = "";
+                score.style.color = 'rgb(224, 173, 96)';
+                something.style.display = "none";
+                boolboi = false;
+              }
+              
+            }
+
+          window.score_click = async function(what, event) {
+              event.stopPropagation();
+              const something = document.getElementById("dropdown-content");
+              const score = document.getElementById("score");
+              const label = document.getElementById("score-label");
+
+              score.style.backgroundColor = "";
+              score.style.color = 'rgb(224, 173, 96)';
+              something.style.display = "none";
+              boolboi = false;
+
+              switch (what) {
+                case "AssWin":
+                  label.innerText = "Assassin killed target";
+                  break;
+                case "SpyWin":
+                  label.innerText = "Spy killed Assassin";
+                  break;
+                case "AssSpy":
+                  label.innerText = "Assassin killed Spy";
+                  break;
+                case "AssWrong":
+                  label.innerText = "Assassin killed wrong person";
+                  break;
+                case "SpyWrong":
+                  label.innerText = "Spy killed wrong person";
+                  break;
+            }
+          }
+
+          window.closeScoring = async function() {
+            document.getElementById("score-popup").style.animation = "popout 1s forwards"
+            await new Promise(resolve => setTimeout(resolve, 250));
+            document.getElementById("score-popup").style.display = "none";
+            document.getElementById("score-btn").style.display = "none";
+          }
