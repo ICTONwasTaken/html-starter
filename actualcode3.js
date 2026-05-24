@@ -33,7 +33,9 @@ window.onload = async () => {
   });
 
   onValue(ref(db, "numbers/" + rum + "/roles/" + myPlayerKey), async (snapshot) => {
-  roledisplay.style.animation = "none";
+  document.getElementById("role-display").style.textDecoration = "none";
+  document.getElementById("role-target").style.textDecoration = "none";
+  document.getElementById("role-display").style.animation = "none";
   void document.getElementById("player-thing").offsetHeight;
   document.getElementById("player-thing").style.display = "none";
 
@@ -107,6 +109,8 @@ window.onload = async () => {
 
     if (killed[myPlayerKey]) {
       openYouDied();
+      document.getElementById("role-display").style.textDecoration = "line-through";
+      document.getElementById("role-target").style.textDecoration = "line-through";
       console.log("You just died boiiiii!")
     } else if (killed["player1"])  {
         div1.hidden = false;
