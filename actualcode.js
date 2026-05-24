@@ -46,13 +46,30 @@ window.onload = async () => {
     const pts = points[key] || 0;
     playerlist.innerText += `${name} — ${pts}pts\n`;
   });
-});
+  });
+
+  onValue(ref(db, "numbers/" + something + "/points"), async (snapshot) => {
+  const playerlist = document.getElementById("host-list");
+  const points = snapshot.val() || {};  // ✅ snapshot IS points here
+
+  const playerSnap = await get(ref(db, "numbers/" + something + "/players")); // ✅ fetch players separately
+  const players = playerSnap.val() || {};
+
+  playerlist.innerText = "";
+  Object.entries(players).forEach(([key, name]) => {
+    const pts = points[key] || 0;
+    playerlist.innerText += `${name} — ${pts}pts\n`;
+  });
+  });
   
   onValue(ref(db, "numbers/" + something + "/killed"), async (snapshot) => {
         const killed = snapshot.val() || {};
         console.log("Ya ded yet?")
         console.log("Killed:", killed);
-        document.getElementById("score-btn").style.display = "flex";
+        if (Object.keys(killed).length > 0) {
+          document.getElementById("score-btn").style.display = "flex";
+        }
+
         if (killed["player1"]) {
           document.getElementById("role-display").style.textDecoration = "line-through";
           document.getElementById("role-target").style.textDecoration = "line-through";
@@ -152,7 +169,7 @@ function timerplay() {
 }
 
 function endAnim() { 
-    this.style.animation = "disappear 0.3s forwards"; 
+    div1.style.animation = "disappear 0.3s forwards"; 
     div1.hidden = true;
   }
 
