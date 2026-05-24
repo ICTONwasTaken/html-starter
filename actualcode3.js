@@ -157,7 +157,7 @@ function playAnim() {
 function timerend() {
   div1.hidden = false
   div1.innerText = "Pass the gun!";
-  div1.style.animation = "mymove 0.9s forwards";
+  div1.style.animation = "mymove 4s forwards";
   div1.addEventListener("animationend", endAnim, { once: true });
 }
 
