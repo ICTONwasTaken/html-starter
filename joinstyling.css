@@ -60,7 +60,7 @@ body {
   background-color: rgb(27, 12, 36);
   overflow: hidden;
   position: fixed;
-  top: 20px;
+  top: -40px;
 
   display: flex;
   justify-content: center;  /* horizontal center */
