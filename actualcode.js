@@ -43,7 +43,6 @@ window.onload = async () => {
 
   playerlist.innerText = ""; // clear it
   Object.entries(players).forEach(([key, name]) => {
-    const role = roles[key] || "?";
     const pts = points[key] || 0;
     playerlist.innerText += `${name} — ${pts}pts\n`;
   });
