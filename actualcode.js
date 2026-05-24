@@ -97,26 +97,31 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + something + "/roles/player1"), async (snapshot) => {
   const role = snapshot.val();
+  const guy = document.getElementById("guy");
 
   if (role) {
     document.getElementById("role-display").textContent = "You are... " + role;
+    guy.src = '';
   }
 
   switch (role) {
   case "a Monk":
     document.getElementById("role-target").innerText = "Try to survive!";
     document.getElementById("stop-btn").style.display = "none";
+    guy.src = 'hehegooguy1.png';
     break;
 
   case "a Spy":
     document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
     document.getElementById("stop-btn").style.display = "block";
+    guy.src = 'hehegooguy5.png';
     break;
 
   case "an Assassin":
     const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
     const players = playerSnap.val() || {};
     const keys = Object.keys(players).filter(key => players[key] !== "Host");
+    guy.src = 'hehebadguy.png';
 
     const randomKey = keys[Math.floor(Math.random() * keys.length)];
     const randomPlayer = players[randomKey];
