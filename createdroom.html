@@ -66,16 +66,58 @@
         <div id="score-popup" style="display: flex;">
           <div id="score-inner">
             <div>Scoring</div>
-              <div id="score-grid">
-                  <div id="score" class="button">What happened?
-                    <div class="dropdown-content">Something somthing</div>
-                    <div class="dropdown-content">Something somthing</div>
-                    <div class="dropdown-content">Something somthing</div>
+                  <div id="score" onclick="score_dropdown()">What happened?
+                    <ul id="dropdown-content">
+                        <li onclick="score_click(AssWin)" class="dropdown-item"><b>Assassin</b> killed <span style="color:rgb(133, 5, 5); font-weight: bold;">target</span></li>
+                        <li onclick="score_click(SpyWin)" class="dropdown-item"><b>Spy</b> killed <span style="color:rgb(0, 105, 26); font-weight: bold;">Assassin</span></li>
+                        <li onclick="score_click(AssSpy)" class="dropdown-item"><b>Assassin</b> killed <span style="color:rgb(133, 5, 5); font-weight: bold;">Spy</span></li>
+                        <li onclick="score_click(AssWrong)" class="dropdown-item"><b>Assassin</b> killed <span style="color:rgb(0, 105, 26); font-weight: bold;">wrong person</span></li>
+                        <li onclick="score_click(SpyWrong)" class="dropdown-item"><b>Spy</b> killed wrong <span style="color:rgb(133, 5, 5); font-weight: bold;">wrong person</span></li>
+                    </ul>
                   </div>
-              </div>
             <div id="score-list"></div>
-            <button onclick="closeScoring()" class="button">Done</button>
+            <button onclick="closeScoring()" class="button">Confirm</button>
           </div>
         </div>
+
+        <script>
+          let boolboi = false;
+
+          window.score_dropdown = function() {
+              const something = document.getElementById("dropdown-content");
+              if (boolboi == false) {
+                something.style.display = "block";
+                boolboi = true
+              } else {
+                something.style.display = "none";
+                boolboi = false;
+              }
+              
+            }
+
+          window.score_click = async function(what) {
+              const something = document.getElementById("dropdown-content");
+              const who = what
+              something.style.display = "none";
+
+              switch (who) {
+                case "AssWin":
+                  console.log("Oh shit, ass win!")
+                  break;
+                case "SpyWin":
+                  console.log("Oh shit, spy win!")
+                  break;
+                case "AssSpy":
+                  console.log("Oh shit, spy died!")
+                  break;
+                case "AssWrong":
+                  console.log("Oh shit, you dum")
+                  break;
+                case "SpyWrong":
+                  console.log("Oh shit")
+                  break;
+            }
+          }
+        </script>
   </body>
 </html>

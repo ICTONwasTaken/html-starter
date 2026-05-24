@@ -307,3 +307,9 @@ window.closeScoring = async function() {
   document.getElementById("score-popup").style.display = "none";
   document.getElementById("score-btn").style.display = "none";
 }
+
+window.score_dropdown = function() {
+  const something = document.getElementById("dropdown-content");
+
+  something.style.display = "block";
+}
