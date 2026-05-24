@@ -23,6 +23,7 @@
   <body id="this">
     <img src="space_ver1.png" id="back">
     <img src="earth.png" id="planet" onload="planet_anim()">
+    <img src="laser.png" id="lasering" onload="laser_anim()">
 
     <div id="dack"></div>
     <h1>How to play?</h1>
@@ -154,6 +155,47 @@
         Keep in mind though, Monks are pacafists, so <b>they can't use the gun.</b> While the Assassin and Spy <b>can only use the gun after 3 touches.</b> <br> So pay close attention, and count how many times anyone's held the gun, it could save your life!
       </p>
 
+      <p>
+        After someone shoots, you tally points based on if:
+        ‣An Assassin successfuly kills its target: 1pt
+
+        ‣An Assassin kills the Spy: 3pts
+
+        A Spy kills the Assassin: Spy 2pt, 1pt monk
+
+        An Assassin kills the Spy: 
+        If assassin kill target 1pt
+
+        If assassin kill wrong person - 1pt to monk and Spy
+        If spy kill random monk - assasin get 1 
+      </p>
+        <table>
+          <tr>
+            <th style="background-color: #272727;">Condition</th>
+            <th style="background-color: #272727;">Points</th>
+          </tr>
+          <tr>
+            <td>Assassin kills their target</td>
+            <td>Assassin 1pt</td>
+          </tr>
+          <tr>
+            <td>Assassin kills the Spy</td>
+            <td>Assassin 3pts</td>
+          </tr>
+          <tr>
+            <td>Spy kills the Assassin</td>
+            <td>Spy 2pts and Monk 1pt</td>
+          </tr>
+          <tr>
+            <td>Assassin kills the wrong person</td>
+            <td>Monk and Spy 1pt</td>
+          </tr>
+          <tr>
+            <td>Assassin kills the wrong person</td>
+            <td>Monk and Spy 1pt</td>
+          </tr>
+        </table>
+
     <h1>What the site does</h1>
       <p>Okay, but if it's just a local game, why use this site? Well, it has a few functions to help you make set up easier!</p>
 
@@ -225,8 +267,15 @@ function kill(self) {
 function planet_anim() {
   const planet = document.getElementById("planet")
 
-  planet.style.animation = "planeting 20s ease-in-out infinite"
+  planet.style.animation = "planeting 10s ease-in-out infinite"
 }
+
+function laser_anim() {
+  const laser = document.getElementById("lasering")
+
+  laser.style.animation = "planeting 10s ease-in-out infinite"
+}
+
 
 function revive() {
   const o = document.getElementById("oney");
@@ -438,7 +487,7 @@ const warning = document.getElementById("warning");
 const black_back = document.getElementById("black_back");
 const damage = document.getElementById("damage");
 
-let health = 2000;
+let health = 999;
 
 function ouch() {
   let owie = Math.floor(Math.random() * 100);

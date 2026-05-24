@@ -59,7 +59,7 @@ window.onload = async () => {
                   const playerName = snap.val();
                   div1.hidden = false;
                   div1.innerText = playerName + " just died!";
-                  div1.style.animation = "mymove 0.9s forwards";       // moved INSIDE the if block
+                  div1.style.animation = "mymove 5s forwards";       // moved INSIDE the if block
                   div1.addEventListener("animationend", endAnim, { once: true });
                 });
             }

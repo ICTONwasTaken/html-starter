@@ -34,11 +34,30 @@ body {
   transform-origin: center;
 }
 
+#lasering{
+  display: flex;
+  position: fixed;
+
+  
+  justify-self: center;
+  z-index: -4;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 550px;
+  transform-origin: center;
+}
+
+td {
+  background-color: #131313
+}
+
 @keyframes planeting {
   0%  { transform: translateX(0px)   translateY(0px); }
-  25% { transform: translateX(8px)   translateY(5px); }
-  50% { transform: translateX(-8px)  translateY(-5px); }
-  75% { transform: translateX(0px)   translateY(-5px); }
+  25% { transform: translateX(3px)   translateY(3px); }
+  50% { transform: translateX(-2px)  translateY(-2px); }
+  75% { transform: translateX(1px)   translateY(2px); }
   100%{ transform: translateX(0px)   translateY(0px); }
 }
 
