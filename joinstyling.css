@@ -104,6 +104,19 @@ button:hover {
   transform-origin: center;
 }
 
+#score-popup {
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  transform-origin: center;
+}
+
 #kill-popup-inner {
   background: rgb(56, 56, 56);
   padding: 2rem;
