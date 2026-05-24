@@ -349,7 +349,7 @@ button:hover {
 #timer-display {
   text-decoration: underline;
   color: rgb(224, 173, 96);
-  font-size: 60px;
+  font-size: 50px;
   font-weight: bolder;
   background-color: none;
   grid-column: 1 / span 2;
