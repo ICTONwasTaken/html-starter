@@ -313,7 +313,7 @@ button:hover {
     justify-content: center;
     align-items: center;
 
-        top: 80%;
+        top: -30%;
         left: 0;
         width: 100vw;
         z-index: 999999;
