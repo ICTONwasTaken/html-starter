@@ -330,6 +330,15 @@ window.score_dropdown = function() {
               
             }
 
+window.resetScoring = async function() {
+    const playerPoint = await get(ref(db, "numbers/" + something + "/points"));
+    const points = playerPoint.val() || 0;
+
+    if (points != 0) {
+      await remove(ref(db, something + "/points"));
+      }
+    }
+
 window.score_click = async function(what, event) {
   event.stopPropagation();
   const dropdown = document.getElementById("dropdown-content");
@@ -372,7 +381,10 @@ window.score_click = async function(what, event) {
         pointMap[key] = role === "an Assassin" ? 1 : 0;
         break;
     }
-  });
+  }) 
+  
+  document.getElementById("score-btn").style.display = "none";
+  ;
 
   // save points to firebase bro
   for (const [key, pts] of Object.entries(pointMap)) {
@@ -396,5 +408,4 @@ window.closeScoring = async function() {
             document.getElementById("score-popup").style.animation = "popout 1s forwards"
             await new Promise(resolve => setTimeout(resolve, 250));
             document.getElementById("score-popup").style.display = "none";
-            document.getElementById("score-btn").style.display = "none";
           }

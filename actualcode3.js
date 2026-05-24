@@ -23,14 +23,36 @@ window.onload = async () => {
       }
     });
 
-  onValue(ref(db, "numbers/" + rum + "/players"), (snapshot) => {
-    let counting = "";
-    const players = snapshot.val() || {};
-    const stuff = Object.values(players);
+  onValue(ref(db, "numbers/" + rum + "/players"), async (snapshot) => {
+      const playerlist = document.getElementById("host-list");
+      const players = snapshot.val() || {};
+    
+      const [pointSnap] = await Promise.all([
+        get(ref(db, "numbers/" + rum + "/points"))
+      ]);
+    
+      const points = pointSnap.val() || {};
+    
+      playerlist.innerText = ""; // clear it
+      Object.entries(players).forEach(([key, name]) => {
+        const pts = points[key] || 0;
+        playerlist.innerText += `${name} — ${pts}pts\n`;
+      });
+    });
 
-    counting = stuff.join("\n");
-    playerlist.innerText = counting;
-  });
+    onValue(ref(db, "numbers/" + rum + "/points"), async (snapshot) => {
+      const playerlist = document.getElementById("host-list");
+      const points = snapshot.val() || {};  // ✅ snapshot IS points here
+    
+      const playerSnap = await get(ref(db, "numbers/" + rum + "/players")); // ✅ fetch players separately
+      const players = playerSnap.val() || {};
+    
+      playerlist.innerText = "";
+      Object.entries(players).forEach(([key, name]) => {
+        const pts = points[key] || 0;
+        playerlist.innerText += `${name} — ${pts}pts\n`;
+      });
+      });
 
   onValue(ref(db, "numbers/" + rum + "/roles/" + myPlayerKey), async (snapshot) => {
   document.getElementById("role-display").style.textDecoration = "none";
@@ -106,6 +128,10 @@ window.onload = async () => {
     const killed = snapshot.val() || {};
     console.log("Ya ded yet?")
     console.log("Killed:", killed);
+
+    if (Object.keys(killed).length > 0) {
+          document.getElementById("stop-btn").style.display = "none";
+        }
 
     if (killed[myPlayerKey]) {
       openYouDied();
