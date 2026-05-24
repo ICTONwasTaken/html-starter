@@ -289,35 +289,8 @@ window.closeYouDied = async function() {
 
 
 window.openScoring = async function() {
-  const killList = document.getElementById("score-list");
-  killList.innerHTML = "";
-
-  const [playerSnap] = await Promise.all([
-    get(ref(db, "numbers/" + something + "/players"))
-  ]);
-
-  const players = playerSnap.val() || {};
-
-  Object.entries(players).forEach(([key, name]) => {
-
-    const btn = document.createElement("button");
-    btn.innerText = name;
-    btn.onclick = async () => {
-      await set(ref(db, "numbers/" + something + "/players/" + key), true);
-      closeScoring();
-    };
-    killList.appendChild(btn);
-  });
-
   document.getElementById("score-popup").style.display = "flex";
   document.getElementById("score-popup").style.animation = "popup 1s forwards"
-}
-
-window.closeScoring = async function() {
-  document.getElementById("score-popup").style.animation = "popout 1s forwards"
-  await new Promise(resolve => setTimeout(resolve, 250));
-  document.getElementById("score-popup").style.display = "none";
-  document.getElementById("score-btn").style.display = "none";
 }
 
 let boolboi = false;
