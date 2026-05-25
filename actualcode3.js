@@ -24,7 +24,7 @@ window.onload = async () => {
     });
 
   onValue(ref(db, "numbers/" + rum + "/players"), async (snapshot) => {
-      const playerlist = document.getElementById("host-list");
+      const playerlist = document.getElementById("player-list");
       const players = snapshot.val() || {};
     
       const [pointSnap] = await Promise.all([
@@ -41,7 +41,7 @@ window.onload = async () => {
     });
 
     onValue(ref(db, "numbers/" + rum + "/points"), async (snapshot) => {
-      const playerlist = document.getElementById("host-list");
+      const playerlist = document.getElementById("player-list");
       const points = snapshot.val() || {};  // ✅ snapshot IS points here
     
       const playerSnap = await get(ref(db, "numbers/" + rum + "/players")); // ✅ fetch players separately
