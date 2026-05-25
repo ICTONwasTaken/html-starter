@@ -375,7 +375,6 @@ window.score_click = async function(what, event) {
         break;
       case "SpyWin": // spy killed assassin, spy gets points
           pointMap[key] = role === "a Spy" ? 2 : role === "a Monk" ? 1 : 0;
-
         break;
       case "AssSpy": // assassin killed spy, assassin gets points
         pointMap[key] = role === "an Assassin" ? 3 : 0;
