@@ -412,7 +412,7 @@ button:hover {
     align-items: center;
 
     position: fixed;   /* ← add this */
-    top: 0;            /* ← anchor to top */
+    top: 30%;            /* ← anchor to top */
     left: 0;
 
     left: 0;
