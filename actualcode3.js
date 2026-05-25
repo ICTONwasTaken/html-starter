@@ -55,32 +55,37 @@ window.onload = async () => {
       });
 
   onValue(ref(db, "numbers/" + rum + "/roles/" + myPlayerKey), async (snapshot) => {
-  document.getElementById("role-display").style.textDecoration = "none";
-  document.getElementById("role-target").style.textDecoration = "none";
-  document.getElementById("role-display").style.animation = "none";
-  void document.getElementById("player-thing").offsetHeight;
-  document.getElementById("player-thing").style.display = "none";
+    const guy = document.getElementById("guy")
+    document.getElementById("role-display").style.textDecoration = "none";
+    document.getElementById("role-target").style.textDecoration = "none";
+    document.getElementById("role-display").style.animation = "none";
+    void document.getElementById("player-thing").offsetHeight;
+    document.getElementById("player-thing").style.display = "none";
 
   const role = snapshot.val();
   if (role) {
-    document.getElementById("role-display").textContent = "You are... " + role;
+    document.getElementById("role-text").textContent = "You are... " + role;
     document.getElementById("player-thing").style.display = "block";
     roledisplay.style.animation = "shake 1s linear";
+    guy.src = '';
     }
 
     switch (role) {
       case "a Monk":
         document.getElementById("role-target").innerText = "Try to survive!";
         document.getElementById("stop-btn").style.display = "none";
+        guy.src = 'hehegooguy1.png';
         break;
       case "a Spy":
         document.getElementById("role-target").innerText = "Deduce who's the Assassin!";
         document.getElementById("stop-btn").style.display = "flex";
+        guy.src = 'hehegooguy5.png';
         break;
       case "an Assassin":
         const playerSnap = await get(ref(db, "numbers/" + rum + "/players"));
         const players = playerSnap.val() || {};
         const keys = Object.keys(players).filter(key => key !== myPlayerKey);
+        guy.src = 'hehebadguy.png';
     
         const randomKey = keys[Math.floor(Math.random() * keys.length)];
         const randomPlayer = players[randomKey];
