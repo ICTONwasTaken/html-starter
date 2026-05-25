@@ -1,98 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script defer src="/_vercel/insights/script.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"
-    />
-    <title>this is the thingy!</title>
-    <meta
-      name="what this do?"
-      content="what this do?"
-    />
-  </head>
-  <body>
-    <a href="testing.html">VePOPOP</a>
-    <h1>CHIPOTLE IS GOD</h1>
-    <a href="join or create.html">VePOPOP</a>
-    <p>
-      This template is a simple, but powerful single
-      <code>index.html</code> file deployed to
-      <a href="https://vercel.com">Vercel</a>. When your site is deployed, all
-      static assets (like HTML, JavaScript, CSS, images, and more) are deployed
-      globally to every
-      <a href="https://vercel.com/docs/concepts/edge-network/overview"
-        >Vercel Edge Network</a
-      >
-      region.
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monastery Showdown</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background-color: #41225c;
+        color: white;
+        overflow-x: hidden;
+    }
+
+    /* NAVBAR */
+    nav {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: rgb(24, 7, 32);
+        width: 100%;
+
+        justify-items: start;
+
+        z-index: 999;
+        position: fixed;
+    }
+    nav ul {
+    list-style: none;
+    display: flex;
+    justify-self: end;
+    }
+    #logoing {
+        justify-self: start;
+        display: block;
+        width: 100px;
+        margin: 0;
+    }
+
+    #shadow {
+        position: fixed;
+        background: #000000;
+        background: linear-gradient(180deg,rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+        width: 100%;
+        height: 110px;
+    }
+
+    nav h1 {
+        color: #ffd700;
+    }
+
+    nav ul {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+    }
+
+    nav a {
+        text-decoration: none;
+        color: rgb(224, 173, 96);
+        transition: 0.3s;
+        transform-origin: center;
+    }
+
+    nav a:hover {
+        text-decoration: none;
+        color: rgb(251, 255, 0);
+        transition: 0.3s;
+        transform: scale(1.1);
+        transform-origin: center;
+        display: block;
+    }
+
+    /* HERO */
+    .hero {
+        height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+            transform-origin: top center;
+            transition: transform 0.1s ease;
+
+        min-height: 70px;
+    }
+
+    .hero h2 {
+        font-size: 60px;
+        margin-bottom: 20px;
+    }
+
+    .hero p {
+        font-size: 20px;
+        max-width: 700px;
+        margin-bottom: 30px;
+    }
+
+    .hero button:hover {
+        transform: scale(1.05);
+    }
+
+    /* FEATURES */
+    .features {
+        background: #41225c;
+        width: 100%;
+        padding-bottom: 100px;
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto auto;
+        align-self: center;
+        justify-self: center;
+        column-gap: 2px;
+
+        align-items: center;
+        justify-items: center;
+
+        gap: 10px;
+        padding: 50px;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        cursor: pointer;
+        text-decoration: none;
+        background-color: rgb(40, 17, 53);
+        padding: 30px;
+        border-radius: 15px;
+        width: 200px;
+        height: 120px;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        color: #000000;
+        background-color: #ffd700;
+    }
+
+    .card h3 {
+        margin-bottom: 15px;
+        color: #ffd700;
+    }
+    .card p {
+        margin-bottom: 15px;
+        text-decoration: none;
+        color: #3f3f3f;
+        font-weight: bold;
+    }
+    .card:hover h3{ 
+        color: #000000;
+    }
+
+    /* FOOTER */
+    footer {
+        text-align: center;
+        padding: 20px;
+        background-color: rgb(24, 7, 32);
+    }
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <a href="homepage.html"><img src="Logo.png" id="logoing"></a>
+
+    <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="join or create.html">Play</a></li>
+        <li><a href="tutorial.html">Tutorial</a></li>
+    </ul>
+</nav>
+<div id="shadow"></div>
+
+<!-- HERO SECTION -->
+<img src="monastary.jpg" style="z-index: -2; position: fixed; width: 100%; filter: blur(3px); -webkit-filter: blur(3px);">
+<div 
+style="z-index: -1; position: absolute; width: 100%; height: calc(89vh + 2px); background: #000000;
+background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);"
+></div>
+<section class="hero" id="hero">
+    
+    <h2 style="color: rgb(255, 251, 0); user-select: none; text-shadow: 0px 3px #724a0f;">Monastary Showdown</h2>
+
+    <p style="color: rgb(255, 174, 0); user-select: none; font-weight: bold; font-size: medium;">
+        Pray, or get a bullet to the face.
     </p>
-    <h2>Simple, privacy-friendly analytics</h2>
-    <p>
-      Want to understand your visitor traffic? Vercel Analytics gives you
-      first-party, privacy-friendly traffic analytics for your HTML site. This
-      template is already configured using the following script:
+</section>
+<p style="align-self: center; justify-self: center; text-align: center; margin-bottom: 20px; color: rgb(206, 124, 1); font-weight: bold;">A protoype social deduction game with monks, assassins, spies, and a single gun! Come here and learn all about it!</p>
+<!-- FEATURES -->
+<section class="features">
+
+    <a class="card" style="grid-column: 1 / span 2;" href="join or create.html">
+        <h3>Play!</h3>
+        <p>Begin the game.</p>
+    </a>
+
+    <a class="card" href="tutorial.html">
+        <h3>Tutorial</h3>
+        <p>Wanna learn what this is?</p>
+    </a>
+
+    <a class="card" href="about.html">
+        <h3>About Us</h3>
+        <p>What? Who? Why?</p>
+    </a>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>©2026 Monastery Showdown. All rights reserved.<br><br>
+        Contact:
+
+
     </p>
-    <pre><code>&lt;script defer src="/_vercel/insights/script.js"&gt;&lt;/script&gt;</code></pre>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/analytics">Vercel Analytics</a>.
-    </p>
-    <h2>Integrated with git</h2>
-    <p>
-      Deploying updates to your site is as simple as
-      <code>git push</code> thanks to Vercel's advanced
-      <a href="https://vercel.com/docs/concepts/git">Git Integration</a>.
-      Support for GitHub, GitLab, Bitbucket is zero-configuration, and with the
-      flexible Vercel CLI and API, you can integrate with any tool possible.
-    </p>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/git">Git Integration</a>.
-    </p>
-    <h2>Fast <code>gzip</code> compression</h2>
-    <p>
-      To help ensure the smallest possible file sizes for your static assets,
-      the Vercel Edge Network compresses files by default using
-      <code>gzip</code>. You can also optionally use
-      <code>brotli</code> compressesion if you prefer.
-    </p>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/edge-network/compression"
-        >compression</a
-      >.
-    </p>
-    <h2>Advanced routing configuration</h2>
-    <p>
-      Vercel gives you a variety of ways to configure the routing of your
-      website. For example, adding redirects, rewrites, or headers to your page.
-      While you can use <code>vercel.json</code> to define these through JSON,
-      you can also express your routing configuration as code using
-      <a href="https://vercel.com/docs/concepts/functions/edge-middleware"
-        >Vercel Edge Middleware</a
-      >.
-    </p>
-    <p>
-      Middleware runs before the
-      <a href="https://vercel.com/docs/concepts/edge-network/caching"
-        >Vercel Edge Network Cache</a
-      >, so you can configure routing exactly as your application needs. For
-      example, this template uses <code>middleware.js</code> defined in the root
-      of the repository to add additional security headers to the site:
-    </p>
-    <pre><code>referrer-policy: origin-when-cross-origin
-strict-transport-security: max-age=31536000; includeSubDomains; preload
-x-content-type-options: nosniff
-x-dns-prefetch-control: on
-x-frame-options: DENY</code></pre>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/functions/edge-middleware"
-        >Vercel Edge Middleware</a
-      >.
-    </p>
-  </body>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+        const hero = document.querySelector('.hero');
+        const scrollY = window.scrollY;
+        const shrink = Math.max(0.6, 1 - scrollY / 1000);
+
+        hero.style.transform = `scaleY(${shrink})`;
+    });
+</script>
+</body>
 </html>
