@@ -22,19 +22,27 @@
     /* NAVBAR */
     nav {
         display: grid;
-        grid-template-columns: 1fr auto;
-        column-gap: 6px;
+        grid-template-columns: auto 1fr;
         align-items: center;
-        padding: 20px 50px;
+        padding: 10px 20px;
         background-color: rgb(24, 7, 32);
-        transition: 0.3s;
         width: 100%;
+
+        justify-items: start;
 
         z-index: 999;
         position: fixed;
     }
-    nav:hover {
-        transform: scale(1.01) translateY(0.1px);
+    nav ul {
+    list-style: none;
+    display: flex;
+    justify-self: end;
+    }
+    #logoing {
+        justify-self: start;
+        display: block;
+        width: 100px;
+        margin: 0;
     }
 
     #shadow {
@@ -146,7 +154,8 @@
     .card p {
         margin-bottom: 15px;
         text-decoration: none;
-        color: #000000;
+        color: #3f3f3f;
+        font-weight: bold;
     }
     .card:hover h3{ 
         color: #000000;
@@ -157,7 +166,6 @@
         text-align: center;
         padding: 20px;
         background-color: rgb(24, 7, 32);
-        margin-top: 50px;
     }
 </style>
 </head>
@@ -166,7 +174,7 @@
 
 <!-- NAVBAR -->
 <nav>
-    <h1>My</h1>
+    <a href="homepage.html"><img src="Logo.png" id="logoing"></a>
 
     <ul>
         <li><a href="#hero">Home</a></li>
@@ -178,7 +186,11 @@
 <div id="shadow"></div>
 
 <!-- HERO SECTION -->
-<img src="monastary.jpg" style="z-index: -1; position: fixed; width: 100%; filter: blur(3px); -webkit-filter: blur(3px);">
+<img src="monastary.jpg" style="z-index: -2; position: fixed; width: 100%; filter: blur(3px); -webkit-filter: blur(3px);">
+<div 
+style="z-index: -1; position: absolute; width: 100%; height: calc(89vh + 2px); background: #000000;
+background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);"
+></div>
 <section class="hero" id="hero">
     
     <h2 style="color: rgb(255, 251, 0); user-select: none; text-shadow: 0px 3px #724a0f;">Monastary Showdown</h2>
@@ -187,7 +199,7 @@
         Pray, or get a bullet to the face.
     </p>
 </section>
-<p style="align-self: center; justify-self: center; text-align: center; margin-bottom: 20px;">A protoype social deduction game with monks, assassins, spies, and a single gun! Come here and learn all about it!</p>
+<p style="align-self: center; justify-self: center; text-align: center; margin-bottom: 20px; color: rgb(206, 124, 1); font-weight: bold;">A protoype social deduction game with monks, assassins, spies, and a single gun! Come here and learn all about it!</p>
 <!-- FEATURES -->
 <section class="features">
 
