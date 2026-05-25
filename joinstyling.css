@@ -413,9 +413,11 @@ button:hover {
     justify-content: center;
     align-items: center;
 
-        left: 0;
-        width: 100vw;
-        z-index: 999999;
+    position: fixed;   /* ← add this */
+    top: 0;            /* ← anchor to top */
+    left: 0;
+    width: 100vw;
+    z-index: 999999;
   height: 100px;
   background: rgba(31, 34, 37, 0.397);
   backdrop-filter: blur(3px);
