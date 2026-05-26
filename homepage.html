@@ -168,6 +168,51 @@
         padding: 20px;
         background-color: rgb(24, 7, 32);
     }
+
+    .play-card {
+        grid-column: 1 / span 2;
+    }
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+        nav {
+            grid-template-columns: auto 1fr;
+            padding: 8px 12px;
+        }
+
+        nav ul {
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-self: end;
+        }
+
+        nav a {
+            font-size: 13px;
+        }
+
+        .hero h2 {
+            font-size: 36px;
+        }
+
+        .hero p {
+            font-size: 16px;
+        }
+
+        .features {
+            grid-template-columns: 1fr;
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 320px;
+        }
+
+        /* Play card should not span 2 cols on mobile */
+        .play-card {
+            grid-column: 1;
+        }
+    }
 </style>
 </head>
 
@@ -204,7 +249,7 @@
 <!-- FEATURES -->
 <section class="features">
 
-    <a class="card" style="grid-column: 1 / span 2;" href="join or create.html">
+    <a class="card play-card" href="join or create.html">
         <h3>Play!</h3>
         <p>Begin the game.</p>
     </a>
