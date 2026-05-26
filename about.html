@@ -14,7 +14,7 @@
     }
 
     body {
-        color: white;
+        color: rgb(255, 255, 255);
         overflow-x: hidden;
     }
 
@@ -91,6 +91,7 @@
         padding: 20px;
         min-height: 70px;
 
+        position: relative;
         overflow: hidden;
     }
 
@@ -99,6 +100,8 @@
         margin-top: 100px;
         transform: scale(0);
         opacity: 0;
+        position: relative;
+        z-index: 4;
 
         transform-origin: center;
         animation: texting 8s infinite;
@@ -108,26 +111,30 @@
         0% { 
             transform: scale(0.1) scaleY(0.2);
             opacity: 0; 
-            color: rgb(255, 255, 255);
-            text-shadow: 0px -15px #616161;
+            color: rgb(255, 187, 0);
+
+            text-shadow: 0px -15px #995f14;
         }
         25% { 
             transform: translateY(-70px) scale(1) scaleY(1);
             opacity: 1; 
-            color: rgb(255, 255, 255);
-            text-shadow: 0px 0px #616161;;
+            color: rgb(255, 187, 0);
+
+            text-shadow: 0px 0px #995f14;;
         }
         70% { 
             transform: translateY(-70px) scale(1) scaleY(1);
             opacity: 1; 
-            color: rgb(255, 255, 255);
-            text-shadow: 0px 0px #616161;
+            color: rgb(255, 187, 0);
+
+            text-shadow: 0px 0px #995f14;
         }
         76% { 
             transform: translateY(-100px) scaleX(0);
             opacity: 1; 
-            color: rgb(255, 255, 255);
-            text-shadow: 0px 2px #616161;
+            color: rgb(255, 187, 0);
+
+            text-shadow: 0px 2px #995f14;
         }
         100% { 
             transform: translateY(-50px) scale(2);
@@ -143,7 +150,7 @@
         align-items: center;
         justify-content: center;
 
-        height: 60vh;
+        height: 50vh;
         width: 100%;
 
         background-size: cover;
@@ -174,6 +181,40 @@
         transform-origin: center;
         transition: all 0.5s;
     }
+    .earth {
+        width: fit-content;
+        height: 600px; 
+        border-radius: 0;
+        transform-origin: center;
+        position: absolute;  /* take it out of flex flow */
+        right: -150px;       /* pin to the right */
+        bottom: -130px;
+        margin-left: 0;
+        z-index: 3;
+
+        animation: planeting 10s infinite;
+    }
+    .blackhole {
+        width: fit-content;
+        border-radius: 0;
+        transform-origin: center;
+        position: absolute;  /* take it out of flex flow */
+        left: -90px;       /* pin to the right */
+        bottom: -40px;
+        margin-left: 0;
+        z-index: 3;
+
+        animation: planeting 30s infinite;
+    }
+    @keyframes planeting {
+    0%  { transform: translateX(0px)   translateY(0px); }
+    25% { transform: translateX(3px)   translateY(3px); }
+    50% { transform: translateX(-2px)  translateY(-2px); }
+    75% { transform: translateX(1px)   translateY(2px); }
+    100%{ transform: translateX(0px)   translateY(0px); }
+    }
+
+
     .circle {
         display: none;
         position: absolute;
@@ -217,6 +258,7 @@
         display: block; 
         animation: pulse 2s infinite;  
         }
+
     .bur {
         position: absolute; 
         inset: 0; 
@@ -227,11 +269,14 @@
         transform-origin: center;
         transition: transform 0.5s ease, filter 0.5s ease;
     }
+    .space {
+        filter: blur(4px); 
+    }
 
     #top-grid {
         display: flex;
         flex-direction: column;
-        height: 60vh;
+        height: 80vh;
         align-items: center;
         justify-content: center;
         gap: 6px;
@@ -277,7 +322,6 @@
 </nav>
 <div id="shadow"></div>
 
-
 <div style="border-top: 5px solid black; z-index: 9999;"></div>
 
 <section id="top-grid" class="features" style="background-image: url('monastary.jpg'); overflow: hidden; margin-top: 72px;">
@@ -292,9 +336,16 @@
 </section>
 
 <div style="border-top: 5px solid black; z-index: 9999;"></div>
-<section class="hero" id="hero">
+<section class="hero" 
+    style= "background-image: url('space_ver1.png'); 
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;">
     <h2>Who are the Masterminds?</h2>
 </section>
+
 <div style="border-top: 5px solid black; z-index: 9999;"></div>
 <section class="features" style="background-image: url('author1.jpg'); overflow: hidden;">
     <!-- blurred bg layer -->
@@ -318,15 +369,14 @@
     <!-- image sits above the blur, unaffected -->
     <div class="circle"></div>
     <img class="imaging" src="author2.jpg">
-        <p><b>Val</b><br>
+        <p><b>Val Archie D. Garay, RCE</b><br>
             A college graduate with honors in engineering. Used his knowledge and game testing experience to give insight about how the game and site flow.
             <br><br>
-            Contact Information: RANDOM STRING OF NUMBERS
+            Contact Information:<br><i>+63 998 402 4937</i>
         </p>
 </section>
 
 <section class="features" style="background-image: url('author3.jpg'); overflow: hidden;">
-    <!-- blurred bg layer -->
     <div class="bur" style="background-image: url('author3.jpg');"></div>
     
     <!-- image sits above the blur, unaffected -->
@@ -335,7 +385,36 @@
         <p><b>Manarang, Marius</b><br>
             IT college student in MCC, currently 2nd year. Coded and designed the entire site.
             <br><br>
-            Contact Information: RANDOM STRING OF NUMBERS
+            Contact Information:<br><i>+63 991 077 1754</i>
+        </p>
+</section>
+
+<div style="border-top: 5px solid black; z-index: 9999;"></div>
+<section class="hero" 
+    style="background-image: url('space_ver1.png'); 
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+">
+    <h2>How did it happen?</h2>
+    <img class="imaging earth" src="earth.png">
+    <img class="imaging blackhole" src="b-hole.png">
+</section>
+<div style="border-top: 5px solid black; z-index: 9999;"></div>
+
+<section class="features" style="background-image: url('space_ver1.png'); overflow: hidden;">
+    <div class="bur space" style="background-image: url('space_ver1.png');"></div>
+
+    <div class="circle"></div>
+    <img class="imaging" src="author4.jpg">
+        <p><b>The Story</b><br><br>
+            Mr. Garay and Rica had met up for a game of DnD at Mugs and Magic, there they talked at length about a game idea
+            about a Monk, Sherrif and Spy. Defining and iterating the rules, creating their own custom timer device, buying a nerf gun, and more!
+            However, they realized that the game's set up was too complex to do physically. So they set out a programmer to create their site, thus 
+            streamlining the process dramatically.
+            <br>
         </p>
 </section>
 
@@ -343,9 +422,10 @@
 <!-- FOOTER -->
 <footer>
     <p>©2026 Monastery Showdown. All rights reserved.<br><br>
-        Contact:
-
-
+        For Inquiries Contact: 
+        <br>+63 998 402 4937
+        <br>+63 991 077 1754
+        <br>+63 
     </p>
 </footer>
 
