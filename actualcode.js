@@ -120,7 +120,7 @@ window.onload = async () => {
   case "an Assassin":
     const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
     const players = playerSnap.val() || {};
-    const keys = Object.keys(players).filter(key => players[key] !== "Host");
+    const keys = Object.keys(players).filter(key => key !== "player1");
     guy.src = 'hehebadguy.png';
 
     const randomKey = keys[Math.floor(Math.random() * keys.length)];
@@ -340,7 +340,7 @@ window.resetScoring = async function() {
     const points = playerPoint.val() || 0;
 
     if (points != 0) {
-      await remove(ref(db, something + "/points"));
+      await remove(ref(db, "numbers/" + something + "/points"));
       }
     }
 

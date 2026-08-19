@@ -23,7 +23,6 @@ const snap = await get(ref(db, "numbers/" + rum + "/players"));
         div1.innerText = "Invalid Room Number!";
         playAnim()
         console.log("Not found:", rum);
-        div1.hidden = true;
         return;
     }
 
