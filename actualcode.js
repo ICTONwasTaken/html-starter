@@ -1,5 +1,10 @@
 import { db, ref, onValue, remove, get, set} from './firebase.js';
 
+["Monk-Killed.png","Spy-Killed.png","Assassin-Killed.png",
+ "hehegooguy1.png","hehegooguy5.png","hehebadguy.png"].forEach(src => {
+  const img = new Image(); img.src = src;
+});
+
 let div1 = document.getElementById("myDIV");
 let change = document.getElementById("change");
 let something = 0;
@@ -67,7 +72,6 @@ window.onload = async () => {
     if (killed["player1"]) {
       document.getElementById("role-display").style.textDecoration = "line-through";
       document.getElementById("role-target").style.textDecoration = "line-through";
-      openYouDied();
     }
   });
 
@@ -180,7 +184,8 @@ window.onload = async () => {
   onValue(ref(db, "numbers/" + something + "/lastShot"), (snapshot) => {
     const shot = snapshot.val();
     if (!shot) return;
-    openShotPopup(shot.targetName, shot.targetRole, shot.shooterRole);
+    const isVictim = shot.targetKey === "player1";
+    openShotPopup(shot.targetName, shot.targetRole, shot.shooterRole, shot.wasTarget, isVictim, shot.shooterName);
   });
 }
 
@@ -296,16 +301,16 @@ window.mythingy = async function mythingy() {
   while (roles.length < keys.length) roles.push("a Monk");
   const shuffled = roles.sort(() => Math.random() - 0.5);
 
-  for (let i = 0; i < keys.length; i++) {
-    await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), shuffled[i]);
-  }
-
   const assassinIdx = shuffled.indexOf("an Assassin");
   const assassinKey = keys[assassinIdx];
   const nonAssassinKeys = keys.filter(k => k !== assassinKey);
   const targetKey = nonAssassinKeys[Math.floor(Math.random() * nonAssassinKeys.length)];
   await set(ref(db, "numbers/" + something + "/assassinTarget"), targetKey);
-  console.log("Roles assigned. Assassin target:", targetKey);
+  console.log("Assassin target set:", targetKey);
+
+  for (let i = 0; i < keys.length; i++) {
+    await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), shuffled[i]);
+  }
 }
 
 window.mytimer = function mytimer() {
@@ -436,7 +441,9 @@ async function hostShoot(targetKey, targetName) {
     targetName,
     targetRole,
     shooterKey: "player1",
-    shooterRole: hostRole
+    shooterRole: hostRole,
+    shooterName: latestPlayers["player1"] || "Host",
+    wasTarget: targetKey === assassinTarget
   });
 
   await set(ref(db, "numbers/" + something + "/killed/" + targetKey), true);
@@ -453,17 +460,19 @@ async function hostShoot(targetKey, targetName) {
   if (shootSection) shootSection.style.display = "none";
 }
 
-function openShotPopup(name, role, shooterRole) {
+function openShotPopup(name, role, shooterRole, wasTarget, isVictim, shooterName) {
   const images = {
     "a Monk": "Monk-Killed.png",
     "a Spy": "Spy-Killed.png",
     "an Assassin": "Assassin-Killed.png"
   };
-  document.getElementById("shot-name").textContent = name + " has been Shot!";
+  document.getElementById("shot-name").textContent = isVictim ? "You have been Shot!" : name + " has been Shot!";
   document.getElementById("shot-role").textContent = "They were " + role;
   document.getElementById("shot-img").src = images[role] || "";
   const shooterEl = document.getElementById("shot-shooter");
-  if (shooterEl) shooterEl.textContent = shooterRole ? "Shot by " + shooterRole : "";
+  if (shooterEl) shooterEl.textContent = shooterName ? "Shot by " + shooterName : (shooterRole ? "Shot by " + shooterRole : "");
+  const targetEl = document.getElementById("shot-target-label");
+  if (targetEl) targetEl.textContent = wasTarget ? "The target was Killed!" : "";
   const popup = document.getElementById("shot-popup");
   popup.style.display = "flex";
   popup.style.animation = "popup 1s forwards";
@@ -475,20 +484,6 @@ window.closeShotPopup = function() {
   setTimeout(() => { popup.style.display = "none"; }, 250);
 }
 
-window.openYouDied = async function() {
-  await new Promise(resolve => setTimeout(resolve, 250));
-  const killedImages = { "a Monk": "Monk-Killed.png", "a Spy": "Spy-Killed.png", "an Assassin": "Assassin-Killed.png" };
-  const img = document.getElementById("you-died-img");
-  if (img && hostRole) img.src = killedImages[hostRole] || "";
-  document.getElementById("you-died").style.animation = "popup 1s forwards";
-  document.getElementById("you-died").style.display = "flex";
-}
-
-window.closeYouDied = async function() {
-  document.getElementById("you-died").style.animation = "popout 1s forwards";
-  await new Promise(resolve => setTimeout(resolve, 250));
-  document.getElementById("you-died").style.display = "none";
-}
 
 window.renameHost = async function() {
   const input = document.getElementById("rename-input");

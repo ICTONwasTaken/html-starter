@@ -687,6 +687,14 @@ button:hover {
   font-style: italic;
 }
 
+/* ── Target killed label ── */
+#shot-target-label {
+  color: rgb(255, 210, 60);
+  font-size: 15px;
+  font-weight: bold;
+  min-height: 0;
+}
+
 /* ── Settings popup ── */
 #settings-popup {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;

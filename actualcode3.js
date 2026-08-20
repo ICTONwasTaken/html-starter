@@ -1,5 +1,10 @@
 import { db, ref, onValue, remove, get, set } from './firebase.js';
 
+["Monk-Killed.png","Spy-Killed.png","Assassin-Killed.png",
+ "hehegooguy1.png","hehegooguy5.png","hehebadguy.png"].forEach(src => {
+  const img = new Image(); img.src = src;
+});
+
 const div1 = document.getElementById("myDIV");
 const rum = localStorage.getItem("joinedRoom");
 const myPlayerKey = localStorage.getItem("myPlayerKey");
@@ -8,6 +13,7 @@ let wasRunning = false;
 let myRole = null;
 let currentGunHolder = null;
 let prevPlayerCount = 0;
+let latestPlayers = {};
 
 window.onload = async () => {
   playAnim();
@@ -24,6 +30,7 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + rum + "/players"), async (snapshot) => {
     const players = snapshot.val() || {};
+    latestPlayers = players;
     const count = Object.keys(players).length;
 
     const pointSnap = await get(ref(db, "numbers/" + rum + "/points"));
@@ -184,14 +191,14 @@ window.onload = async () => {
       document.getElementById("role-target").style.textDecoration = "line-through";
       const shootSection = document.getElementById("shoot-section");
       if (shootSection) shootSection.style.display = "none";
-      openYouDied();
     }
   });
 
   onValue(ref(db, "numbers/" + rum + "/lastShot"), (snapshot) => {
     const shot = snapshot.val();
     if (!shot) return;
-    openShotPopup(shot.targetName, shot.targetRole, shot.shooterRole);
+    const isVictim = shot.targetKey === myPlayerKey;
+    openShotPopup(shot.targetName, shot.targetRole, shot.shooterRole, shot.wasTarget, isVictim, shot.shooterName);
   });
 }
 
@@ -279,7 +286,9 @@ async function shoot(targetKey, targetName) {
     targetName,
     targetRole,
     shooterKey: myPlayerKey,
-    shooterRole: myRole
+    shooterRole: myRole,
+    shooterName: latestPlayers[myPlayerKey] || "?",
+    wasTarget: targetKey === assassinTarget
   });
 
   await set(ref(db, "numbers/" + rum + "/killed/" + targetKey), true);
@@ -332,17 +341,19 @@ function playerscome() {
   div1.addEventListener("animationend", endAnim, { once: true });
 }
 
-function openShotPopup(name, role, shooterRole) {
+function openShotPopup(name, role, shooterRole, wasTarget, isVictim, shooterName) {
   const images = {
     "a Monk": "Monk-Killed.png",
     "a Spy": "Spy-Killed.png",
     "an Assassin": "Assassin-Killed.png"
   };
-  document.getElementById("shot-name").textContent = name + " has been Shot!";
+  document.getElementById("shot-name").textContent = isVictim ? "You have been Shot!" : name + " has been Shot!";
   document.getElementById("shot-role").textContent = "They were " + role;
   document.getElementById("shot-img").src = images[role] || "";
   const shooterEl = document.getElementById("shot-shooter");
-  if (shooterEl) shooterEl.textContent = shooterRole ? "Shot by " + shooterRole : "";
+  if (shooterEl) shooterEl.textContent = shooterName ? "Shot by " + shooterName : (shooterRole ? "Shot by " + shooterRole : "");
+  const targetEl = document.getElementById("shot-target-label");
+  if (targetEl) targetEl.textContent = wasTarget ? "The target was Killed!" : "";
   const popup = document.getElementById("shot-popup");
   popup.style.display = "flex";
   popup.style.animation = "popup 1s forwards";
@@ -361,17 +372,3 @@ window.backBtn3 = async function backBtn3() {
   window.location.href = "joinroom.html";
 }
 
-window.openYouDied = async function() {
-  await new Promise(resolve => setTimeout(resolve, 250));
-  const killedImages = { "a Monk": "Monk-Killed.png", "a Spy": "Spy-Killed.png", "an Assassin": "Assassin-Killed.png" };
-  const img = document.getElementById("you-died-img");
-  if (img && myRole) img.src = killedImages[myRole] || "";
-  document.getElementById("you-died").style.animation = "popup 1s forwards";
-  document.getElementById("you-died").style.display = "flex";
-}
-
-window.closeYouDied = async function() {
-  document.getElementById("you-died").style.animation = "popout 1s forwards";
-  await new Promise(resolve => setTimeout(resolve, 250));
-  document.getElementById("you-died").style.display = "none";
-}
