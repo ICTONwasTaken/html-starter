@@ -15,29 +15,30 @@
     <div id="myDIV" hidden>Room Created!</div>
     <div id="activation-flash" style="display: none;"></div>
 
-    <div id="role-display" style="display: none; align-items: center; justify-content: center;">
-      <span id="role-text">You are... </span>
-      <img id="guy" src="hehebadguy.png" style="width: 70px; vertical-align: middle;">
-    </div>
-    <div id="role-target" style="display: none;">Your target is...</div>
-
     <div id="box">
       <div>
+        <div id="role-display" style="display: none; align-items: center; justify-content: center;">
+          <span id="role-text">You are... </span>
+          <img id="guy" src="hehebadguy.png" style="width: 70px; vertical-align: middle;">
+        </div>
+        <div id="role-target" style="display: none;">Your target is...</div>
+
         <div class="title">
           <div id="nochange">Room ID:</div>
           <div id="change">Generating...</div>
         </div>
         <div id="round-display"></div>
+        <div id="timer-display" style="display: none;">30</div>
 
         <div id="host-box">
           <div id="player-count">Current Players
             <div id="host-list">Waiting for guests...</div>
           </div>
-          <div id="timer-display">30</div>
         </div>
 
         <!-- Gun ownership tracker -->
         <div id="gun-section">
+          <div id="gun-section-label">Pass Gun</div>
           <div id="gun-holder-display">Gun: No one</div>
           <div id="gun-matrix"></div>
           <button onclick="undoGun()" id="undo-btn">UNDO</button>
@@ -51,7 +52,7 @@
         </div>
 
         <div class="grid">
-          <a onclick="mythingy()" class="button" id="begin-btn">GIVE ROLES</a>
+          <a onclick="mythingy()" class="button" id="begin-btn">DEAL</a>
           <a onclick="mytimer()" class="button" id="timer-btn">TIMER</a>
           <a href="join or create.html" onclick="backBtn()" class="button" id="back-btn">BACK</a>
           <a onclick="openSettings()" class="button" id="settings-btn">SETTINGS</a>

@@ -264,9 +264,9 @@ button:hover {
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   display: flex;
   justify-self: center;
-  
+  margin: 0 auto 6px;
+
   font-weight: bold;
-  margin-top: 10px;
   padding: 3px;
   max-width: fit-content;
   border-radius: 4px;
@@ -274,13 +274,13 @@ button:hover {
   background-color: rgb(235, 113, 104);
   color: rgb(63, 36, 4);
   border: 2px solid rgb(63, 36, 4);
-  grid-column: 1 / span 2;
 }
 
 #role-target{
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   display: flex;
   justify-self: center;
+  margin: 0 auto 4px;
   font-weight: bold;
   padding: 3px;
   max-width: fit-content;
@@ -289,7 +289,6 @@ button:hover {
   background-color: rgb(124, 129, 133);
   color: rgb(46, 46, 46);
   border: 2px solid rgb(46, 46, 46);
-  grid-column: 1 / span 2;
 }
 
 #back-btn:hover {
@@ -303,7 +302,7 @@ button:hover {
 
 #change, #nochange{
   color:rgb(224, 173, 96);
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bolder;
 }
 
@@ -314,8 +313,7 @@ button:hover {
     align-items: center;
     text-align: center;
 
-    padding: 30px;
-    padding-bottom: 50px;
+    padding: 16px;
     width: 55vw;
     max-width: 300px;
     height: fit-content;
@@ -328,7 +326,7 @@ button:hover {
 .grid {
   display: grid;
   column-gap: calc(1vw + 10px);
-  row-gap: 20%;
+  row-gap: 8px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
 }
@@ -338,7 +336,7 @@ button:hover {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto auto;
   column-gap: 10px;
-  row-gap: 16px;
+  row-gap: 8px;
   align-items: center;
   justify-items: center;
 }
@@ -361,21 +359,31 @@ button:hover {
   font-size: 50px;
   font-weight: bolder;
   background-color: none;
+  text-align: center;
   grid-column: 1 / span 2;
 }
 
 
 /* ── Gun ownership tracker ── */
 #gun-section {
-  margin: 10px 0 6px;
+  margin: 6px 0 4px;
   text-align: center;
+}
+
+#gun-section-label {
+  color: rgb(180, 140, 40);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
 }
 
 #gun-holder-display {
   color: rgb(255, 200, 80);
   font-weight: bold;
-  font-size: 15px;
-  margin-bottom: 6px;
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 
 #gun-matrix {
@@ -395,7 +403,9 @@ button:hover {
 /* ── Shoot matrix (Spy / Assassin) ── */
 #shoot-section {
   text-align: center;
-  margin: 10px 0;
+  margin: 4px 0;
+  border-top: 1px solid rgba(180, 60, 60, 0.35);
+  padding-top: 6px;
 }
 
 #shoot-label {
@@ -506,8 +516,8 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  column-gap: 4%;
   padding-top: 2px;
+  margin-bottom: 4px;
 }
 
 #player-box {
@@ -519,7 +529,7 @@ button:hover {
 #player-count {
   width: fit-content;
   color: rgb(224, 173, 96);
-  font-size: 20px;
+  font-size: 13px;
   font-weight: bolder;
   background-color: rgb(23, 10, 31);
 }
