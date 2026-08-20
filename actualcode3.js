@@ -1,12 +1,13 @@
 import { db, ref, onValue, remove, get, set } from './firebase.js';
 
 const div1 = document.getElementById("myDIV");
-
 const rum = localStorage.getItem("joinedRoom");
 const myPlayerKey = localStorage.getItem("myPlayerKey");
 let tickInterval = null;
 let wasRunning = false;
 let myRole = null;
+let currentGunHolder = null;
+let prevPlayerCount = 0;
 
 window.onload = async () => {
   playAnim();
@@ -22,17 +23,17 @@ window.onload = async () => {
   });
 
   onValue(ref(db, "numbers/" + rum + "/players"), async (snapshot) => {
-    const playerlist = document.getElementById("player-list");
     const players = snapshot.val() || {};
+    const count = Object.keys(players).length;
 
     const pointSnap = await get(ref(db, "numbers/" + rum + "/points"));
     const points = pointSnap.val() || {};
+    renderGuestPlayerList(players, points);
 
-    playerlist.innerText = "";
-    Object.entries(players).forEach(([key, name]) => {
-      const pts = points[key] || 0;
-      playerlist.innerText += `${name}: ${pts}pts\n`;
-    });
+    if (count > prevPlayerCount && prevPlayerCount > 0) {
+      playerscome();
+    }
+    prevPlayerCount = count;
 
     if (myRole === "a Spy" || myRole === "an Assassin") {
       buildShootMatrix(players);
@@ -40,17 +41,25 @@ window.onload = async () => {
   });
 
   onValue(ref(db, "numbers/" + rum + "/points"), async (snapshot) => {
-    const playerlist = document.getElementById("player-list");
     const points = snapshot.val() || {};
-
     const playerSnap = await get(ref(db, "numbers/" + rum + "/players"));
     const players = playerSnap.val() || {};
+    renderGuestPlayerList(players, points);
+  });
 
-    playerlist.innerText = "";
-    Object.entries(players).forEach(([key, name]) => {
-      const pts = points[key] || 0;
-      playerlist.innerText += `${name}: ${pts}pts\n`;
-    });
+  onValue(ref(db, "numbers/" + rum + "/gunHolder"), async (snapshot) => {
+    currentGunHolder = snapshot.val();
+    const [playerSnap, pointSnap] = await Promise.all([
+      get(ref(db, "numbers/" + rum + "/players")),
+      get(ref(db, "numbers/" + rum + "/points"))
+    ]);
+    renderGuestPlayerList(playerSnap.val() || {}, pointSnap.val() || {});
+  });
+
+  onValue(ref(db, "numbers/" + rum + "/round"), (snapshot) => {
+    const round = snapshot.val() || 0;
+    const el = document.getElementById("round-display");
+    if (el) el.textContent = round > 0 ? "Round " + round : "";
   });
 
   onValue(ref(db, "numbers/" + rum + "/roles/" + myPlayerKey), async (snapshot) => {
@@ -69,7 +78,7 @@ window.onload = async () => {
       roledisplay.style.animation = "none";
       if (shootSection) {
         shootSection.style.display = "none";
-        shootSection.classList.remove("inactive");
+        shootSection.classList.remove("inactive", "activated");
       }
       return;
     }
@@ -90,7 +99,7 @@ window.onload = async () => {
         roleTarget.innerText = "Deduce who's the Assassin!";
         guy.src = 'hehegooguy5.png';
         if (shootSection) {
-          shootSection.classList.remove("inactive");
+          shootSection.classList.remove("inactive", "activated");
           document.getElementById("shoot-label").textContent = "Choose to shoot:";
           shootSection.style.display = "block";
         }
@@ -108,10 +117,13 @@ window.onload = async () => {
         guy.src = 'hehebadguy.png';
         if (shootSection) {
           shootSection.classList.add("inactive");
+          shootSection.classList.remove("activated");
           document.getElementById("shoot-label").textContent = "Touch gun 3 times to activate...";
           shootSection.style.display = "block";
         }
         buildShootMatrix(players);
+        const touchSnap = await get(ref(db, "numbers/" + rum + "/gunTouches/" + myPlayerKey));
+        renderTouchDots(touchSnap.val() || 0);
         break;
       }
     }
@@ -119,12 +131,17 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + rum + "/gunTouches/" + myPlayerKey), (snapshot) => {
     const touches = snapshot.val() || 0;
+    if (myRole === "an Assassin") {
+      renderTouchDots(touches);
+    }
     if (myRole !== "an Assassin") return;
     const shootSection = document.getElementById("shoot-section");
     if (!shootSection) return;
     if (touches >= 3) {
       shootSection.classList.remove("inactive");
+      shootSection.classList.add("activated");
       document.getElementById("shoot-label").textContent = "Gun Active - Choose to shoot!";
+      triggerActivationFlash();
     }
   });
 
@@ -174,8 +191,45 @@ window.onload = async () => {
   onValue(ref(db, "numbers/" + rum + "/lastShot"), (snapshot) => {
     const shot = snapshot.val();
     if (!shot) return;
-    openShotPopup(shot.targetName, shot.targetRole);
+    openShotPopup(shot.targetName, shot.targetRole, shot.shooterRole);
   });
+}
+
+function renderGuestPlayerList(players, points) {
+  const playerlist = document.getElementById("player-list");
+  if (!playerlist) return;
+  playerlist.innerHTML = "";
+  Object.entries(players).forEach(([key, name]) => {
+    const pts = points[key] || 0;
+    const line = document.createElement("div");
+    line.textContent = (key === currentGunHolder ? "🔫 " : "") + `${name}: ${pts}pts`;
+    if (key === currentGunHolder) line.classList.add("gun-holder-row");
+    playerlist.appendChild(line);
+  });
+}
+
+function renderTouchDots(touches) {
+  const counter = document.getElementById("touch-counter");
+  if (!counter) return;
+  counter.innerHTML = "";
+  for (let i = 0; i < 3; i++) {
+    const dot = document.createElement("div");
+    dot.className = "touch-dot" + (i < touches ? " filled" : "");
+    counter.appendChild(dot);
+  }
+}
+
+function triggerActivationFlash() {
+  const flash = document.getElementById("activation-flash");
+  if (!flash) return;
+  flash.style.display = "block";
+  flash.classList.remove("flash");
+  void flash.offsetHeight;
+  flash.classList.add("flash");
+  flash.addEventListener("animationend", () => {
+    flash.classList.remove("flash");
+    flash.style.display = "none";
+  }, { once: true });
 }
 
 function buildShootMatrix(players) {
@@ -205,22 +259,17 @@ async function shoot(targetKey, targetName) {
   const pointMap = {};
 
   if (myRole === "an Assassin") {
-    if (targetKey === assassinTarget) {
-      // AssWin: Assassin killed their target
+    if (targetRole === "a Spy") {
+      playerKeys.forEach(k => { pointMap[k] = roles[k] === "an Assassin" ? 2 : 0; });
+    } else if (targetKey === assassinTarget) {
       playerKeys.forEach(k => { pointMap[k] = roles[k] === "an Assassin" ? 1 : 0; });
-    } else if (targetRole === "a Spy") {
-      // AssSpy: Assassin killed the Spy
-      playerKeys.forEach(k => { pointMap[k] = roles[k] === "an Assassin" ? 3 : 0; });
     } else {
-      // AssWrong: Assassin killed the wrong person
       playerKeys.forEach(k => { pointMap[k] = roles[k] !== "an Assassin" ? 1 : 0; });
     }
   } else if (myRole === "a Spy") {
     if (targetRole === "an Assassin") {
-      // SpyWin: Spy killed the Assassin
       playerKeys.forEach(k => { pointMap[k] = roles[k] === "a Spy" ? 2 : roles[k] === "a Monk" ? 1 : 0; });
     } else {
-      // SpyWrong: Spy killed the wrong person
       playerKeys.forEach(k => { pointMap[k] = roles[k] === "an Assassin" ? 1 : 0; });
     }
   }
@@ -276,30 +325,24 @@ function endAnim() {
   div1.hidden = true;
 }
 
-window.backBtn3 = async function backBtn3() {
-  await remove(ref(db, "numbers/" + rum + "/players/" + myPlayerKey));
-  localStorage.removeItem("joinedRoom");
-  localStorage.removeItem("myPlayerKey");
-  window.location.href = "joinroom.html";
+function playerscome() {
+  div1.hidden = false;
+  div1.innerText = "Player joined!";
+  div1.style.animation = "mymove 1.5s forwards";
+  div1.addEventListener("animationend", endAnim, { once: true });
 }
 
-window.openYouDied = async function() {
-  await new Promise(resolve => setTimeout(resolve, 250));
-  document.getElementById("you-died").style.animation = "popup 1s forwards";
-  document.getElementById("you-died").style.display = "flex";
-}
-
-window.closeYouDied = async function() {
-  document.getElementById("you-died").style.animation = "popout 1s forwards";
-  await new Promise(resolve => setTimeout(resolve, 250));
-  document.getElementById("you-died").style.display = "none";
-}
-
-function openShotPopup(name, role) {
-  const images = { "a Monk": "hehegooguy1.png", "a Spy": "hehegooguy5.png", "an Assassin": "hehebadguy.png" };
+function openShotPopup(name, role, shooterRole) {
+  const images = {
+    "a Monk": "Monk-Killed.png",
+    "a Spy": "Spy-Killed.png",
+    "an Assassin": "Assassin-Killed.png"
+  };
   document.getElementById("shot-name").textContent = name + " has been Shot!";
   document.getElementById("shot-role").textContent = "They were " + role;
   document.getElementById("shot-img").src = images[role] || "";
+  const shooterEl = document.getElementById("shot-shooter");
+  if (shooterEl) shooterEl.textContent = shooterRole ? "Shot by " + shooterRole : "";
   const popup = document.getElementById("shot-popup");
   popup.style.display = "flex";
   popup.style.animation = "popup 1s forwards";
@@ -309,4 +352,26 @@ window.closeShotPopup = function() {
   const popup = document.getElementById("shot-popup");
   popup.style.animation = "popout 1s forwards";
   setTimeout(() => { popup.style.display = "none"; }, 250);
+}
+
+window.backBtn3 = async function backBtn3() {
+  await remove(ref(db, "numbers/" + rum + "/players/" + myPlayerKey));
+  localStorage.removeItem("joinedRoom");
+  localStorage.removeItem("myPlayerKey");
+  window.location.href = "joinroom.html";
+}
+
+window.openYouDied = async function() {
+  await new Promise(resolve => setTimeout(resolve, 250));
+  const killedImages = { "a Monk": "Monk-Killed.png", "a Spy": "Spy-Killed.png", "an Assassin": "Assassin-Killed.png" };
+  const img = document.getElementById("you-died-img");
+  if (img && myRole) img.src = killedImages[myRole] || "";
+  document.getElementById("you-died").style.animation = "popup 1s forwards";
+  document.getElementById("you-died").style.display = "flex";
+}
+
+window.closeYouDied = async function() {
+  document.getElementById("you-died").style.animation = "popout 1s forwards";
+  await new Promise(resolve => setTimeout(resolve, 250));
+  document.getElementById("you-died").style.display = "none";
 }

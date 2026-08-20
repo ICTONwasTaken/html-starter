@@ -1,13 +1,15 @@
 import { db, ref, onValue, remove, get, set} from './firebase.js';
 
-  let div1 = document.getElementById("myDIV");
-  let change = document.getElementById("change");
-  let something = 0;
-  let old = 0;
-  let timer = null;
-  let tickInterval = null;
-  let latestPlayers = {};
-
+let div1 = document.getElementById("myDIV");
+let change = document.getElementById("change");
+let something = 0;
+let old = 0;
+let timer = null;
+let tickInterval = null;
+let latestPlayers = {};
+let hostRole = null;
+let currentGunHolder = null;
+let prevPlayerCount = 0;
 
 window.onload = async () => {
 
@@ -30,34 +32,30 @@ window.onload = async () => {
   });
 
   onValue(ref(db, "numbers/" + something + "/players"), async (snapshot) => {
-    const playerlist = document.getElementById("host-list");
     const players = snapshot.val() || {};
     latestPlayers = players;
+    const count = Object.keys(players).length;
 
     const pointSnap = await get(ref(db, "numbers/" + something + "/points"));
     const points = pointSnap.val() || {};
+    renderHostPlayerList(players, points);
 
-    playerlist.innerText = "";
-    Object.entries(players).forEach(([key, name]) => {
-      const pts = points[key] || 0;
-      playerlist.innerText += `${name}: ${pts}pts\n`;
-    });
+    if (count > prevPlayerCount && prevPlayerCount > 0) {
+      playerscome();
+    }
+    prevPlayerCount = count;
 
     rebuildGunMatrix(players);
+    if (hostRole === "a Spy" || hostRole === "an Assassin") {
+      buildHostShootMatrix(players);
+    }
   });
 
   onValue(ref(db, "numbers/" + something + "/points"), async (snapshot) => {
-    const playerlist = document.getElementById("host-list");
     const points = snapshot.val() || {};
-
     const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
     const players = playerSnap.val() || {};
-
-    playerlist.innerText = "";
-    Object.entries(players).forEach(([key, name]) => {
-      const pts = points[key] || 0;
-      playerlist.innerText += `${name}: ${pts}pts\n`;
-    });
+    renderHostPlayerList(players, points);
   });
 
   onValue(ref(db, "numbers/" + something + "/killed"), (snapshot) => {
@@ -78,13 +76,20 @@ window.onload = async () => {
     const guy = document.getElementById("guy");
     const roledisplay = document.getElementById("role-display");
     const roleTarget = document.getElementById("role-target");
+    const shootSection = document.getElementById("shoot-section");
 
     if (!role) {
+      hostRole = null;
       roledisplay.style.display = "none";
       roleTarget.style.display = "none";
+      if (shootSection) {
+        shootSection.style.display = "none";
+        shootSection.classList.remove("inactive", "activated");
+      }
       return;
     }
 
+    hostRole = role;
     document.getElementById("role-text").textContent = "You are... " + role;
     roledisplay.style.textDecoration = "none";
     roleTarget.style.textDecoration = "none";
@@ -94,20 +99,37 @@ window.onload = async () => {
       case "a Monk":
         roleTarget.innerText = "Try to survive!";
         guy.src = 'hehegooguy1.png';
+        if (shootSection) shootSection.style.display = "none";
         break;
 
-      case "a Spy":
+      case "a Spy": {
         roleTarget.innerText = "Deduce who's the Assassin!";
         guy.src = 'hehegooguy5.png';
+        if (shootSection) {
+          shootSection.classList.remove("inactive", "activated");
+          document.getElementById("shoot-label").textContent = "Choose to shoot:";
+          shootSection.style.display = "block";
+        }
+        const pSnap = await get(ref(db, "numbers/" + something + "/players"));
+        buildHostShootMatrix(pSnap.val() || {});
         break;
+      }
 
       case "an Assassin": {
         const targetKeySnap = await get(ref(db, "numbers/" + something + "/assassinTarget"));
-        const targetKey = targetKeySnap.val();
         const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
         const players = playerSnap.val() || {};
-        roleTarget.innerText = "Your target is: " + (players[targetKey] || "?");
+        roleTarget.innerText = "Your target is: " + (players[targetKeySnap.val()] || "?");
         guy.src = 'hehebadguy.png';
+        if (shootSection) {
+          shootSection.classList.add("inactive");
+          shootSection.classList.remove("activated");
+          document.getElementById("shoot-label").textContent = "Touch gun 3 times to activate...";
+          shootSection.style.display = "block";
+        }
+        buildHostShootMatrix(players);
+        const touchSnap = await get(ref(db, "numbers/" + something + "/gunTouches/player1"));
+        renderTouchDots(touchSnap.val() || 0);
         break;
       }
     }
@@ -118,19 +140,47 @@ window.onload = async () => {
     roleTarget.style.animation = "shake 1s linear";
   });
 
-  onValue(ref(db, "numbers/" + something + "/gunHolder"), (snapshot) => {
-    const holderKey = snapshot.val();
+  onValue(ref(db, "numbers/" + something + "/gunTouches/player1"), (snapshot) => {
+    const touches = snapshot.val() || 0;
+    if (hostRole === "an Assassin") {
+      renderTouchDots(touches);
+    }
+    if (hostRole !== "an Assassin") return;
+    const shootSection = document.getElementById("shoot-section");
+    if (!shootSection) return;
+    if (touches >= 3) {
+      shootSection.classList.remove("inactive");
+      shootSection.classList.add("activated");
+      document.getElementById("shoot-label").textContent = "Gun Active - Choose to shoot!";
+      triggerActivationFlash();
+    }
+  });
+
+  onValue(ref(db, "numbers/" + something + "/gunHolder"), async (snapshot) => {
+    currentGunHolder = snapshot.val();
     document.querySelectorAll("#gun-matrix button").forEach(btn => {
-      btn.classList.toggle("gun-active", btn.dataset.key === holderKey);
+      btn.classList.toggle("gun-active", btn.dataset.key === currentGunHolder);
     });
-    const holderName = holderKey ? (latestPlayers[holderKey] || holderKey) : "No one";
+    const holderName = currentGunHolder ? (latestPlayers[currentGunHolder] || currentGunHolder) : "No one";
     document.getElementById("gun-holder-display").textContent = "Gun: " + holderName;
+
+    const [playerSnap, pointSnap] = await Promise.all([
+      get(ref(db, "numbers/" + something + "/players")),
+      get(ref(db, "numbers/" + something + "/points"))
+    ]);
+    renderHostPlayerList(playerSnap.val() || {}, pointSnap.val() || {});
+  });
+
+  onValue(ref(db, "numbers/" + something + "/round"), (snapshot) => {
+    const round = snapshot.val() || 0;
+    const el = document.getElementById("round-display");
+    if (el) el.textContent = round > 0 ? "Round " + round : "";
   });
 
   onValue(ref(db, "numbers/" + something + "/lastShot"), (snapshot) => {
     const shot = snapshot.val();
     if (!shot) return;
-    openShotPopup(shot.targetName, shot.targetRole);
+    openShotPopup(shot.targetName, shot.targetRole, shot.shooterRole);
   });
 }
 
@@ -169,6 +219,50 @@ function endAnim() {
   div1.hidden = true;
 }
 
+function playerscome() {
+  div1.hidden = false;
+  div1.innerText = "Player joined!";
+  div1.style.animation = "mymove 1.5s forwards";
+  div1.addEventListener("animationend", endAnim, { once: true });
+}
+
+function renderHostPlayerList(players, points) {
+  const playerlist = document.getElementById("host-list");
+  if (!playerlist) return;
+  playerlist.innerHTML = "";
+  Object.entries(players).forEach(([key, name]) => {
+    const pts = points[key] || 0;
+    const line = document.createElement("div");
+    line.textContent = (key === currentGunHolder ? "🔫 " : "") + `${name}: ${pts}pts`;
+    if (key === currentGunHolder) line.classList.add("gun-holder-row");
+    playerlist.appendChild(line);
+  });
+}
+
+function renderTouchDots(touches) {
+  const counter = document.getElementById("touch-counter");
+  if (!counter) return;
+  counter.innerHTML = "";
+  for (let i = 0; i < 3; i++) {
+    const dot = document.createElement("div");
+    dot.className = "touch-dot" + (i < touches ? " filled" : "");
+    counter.appendChild(dot);
+  }
+}
+
+function triggerActivationFlash() {
+  const flash = document.getElementById("activation-flash");
+  if (!flash) return;
+  flash.style.display = "block";
+  flash.classList.remove("flash");
+  void flash.offsetHeight;
+  flash.classList.add("flash");
+  flash.addEventListener("animationend", () => {
+    flash.classList.remove("flash");
+    flash.style.display = "none";
+  }, { once: true });
+}
+
 window.mythingy = async function mythingy() {
   const roledisplay = document.getElementById("role-display");
   const roleTarget = document.getElementById("role-target");
@@ -180,6 +274,9 @@ window.mythingy = async function mythingy() {
   document.getElementById("stop-btn").style.display = "block";
   document.getElementById("score-btn").style.display = "none";
 
+  const roundSnap = await get(ref(db, "numbers/" + something + "/round"));
+  const nextRound = (roundSnap.val() || 0) + 1;
+
   await Promise.all([
     set(ref(db, "numbers/" + something + "/roles"), null),
     set(ref(db, "numbers/" + something + "/killed"), null),
@@ -188,6 +285,7 @@ window.mythingy = async function mythingy() {
     set(ref(db, "numbers/" + something + "/gunTouches"), null),
     set(ref(db, "numbers/" + something + "/gunUndo"), null),
     set(ref(db, "numbers/" + something + "/assassinTarget"), null),
+    set(ref(db, "numbers/" + something + "/round"), nextRound),
   ]);
 
   const snap = await get(ref(db, "numbers/" + something + "/players"));
@@ -291,11 +389,81 @@ function rebuildGunMatrix(players) {
   });
 }
 
-function openShotPopup(name, role) {
-  const images = { "a Monk": "hehegooguy1.png", "a Spy": "hehegooguy5.png", "an Assassin": "hehebadguy.png" };
+function buildHostShootMatrix(players) {
+  const matrix = document.getElementById("shoot-matrix");
+  if (!matrix) return;
+  matrix.innerHTML = "";
+  Object.entries(players).forEach(([key, name]) => {
+    if (key === "player1") return;
+    const btn = document.createElement("button");
+    btn.innerText = name;
+    btn.dataset.key = key;
+    btn.onclick = () => hostShoot(key, name);
+    matrix.appendChild(btn);
+  });
+}
+
+async function hostShoot(targetKey, targetName) {
+  const [rolesSnap, assassinTargetSnap] = await Promise.all([
+    get(ref(db, "numbers/" + something + "/roles")),
+    get(ref(db, "numbers/" + something + "/assassinTarget"))
+  ]);
+
+  const roles = rolesSnap.val() || {};
+  const assassinTarget = assassinTargetSnap.val();
+  const targetRole = roles[targetKey];
+  const playerKeys = Object.keys(roles);
+  const pointMap = {};
+
+  if (hostRole === "an Assassin") {
+    if (targetRole === "a Spy") {
+      playerKeys.forEach(k => { pointMap[k] = roles[k] === "an Assassin" ? 2 : 0; });
+    } else if (targetKey === assassinTarget) {
+      playerKeys.forEach(k => { pointMap[k] = roles[k] === "an Assassin" ? 1 : 0; });
+    } else {
+      playerKeys.forEach(k => { pointMap[k] = roles[k] !== "an Assassin" ? 1 : 0; });
+    }
+  } else if (hostRole === "a Spy") {
+    if (targetRole === "an Assassin") {
+      playerKeys.forEach(k => { pointMap[k] = roles[k] === "a Spy" ? 2 : roles[k] === "a Monk" ? 1 : 0; });
+    } else {
+      playerKeys.forEach(k => { pointMap[k] = roles[k] === "an Assassin" ? 1 : 0; });
+    }
+  }
+
+  await set(ref(db, "numbers/" + something + "/lastShot"), {
+    targetKey,
+    targetName,
+    targetRole,
+    shooterKey: "player1",
+    shooterRole: hostRole
+  });
+
+  await set(ref(db, "numbers/" + something + "/killed/" + targetKey), true);
+
+  for (const [key, pts] of Object.entries(pointMap)) {
+    if (pts > 0) {
+      const currentSnap = await get(ref(db, "numbers/" + something + "/points/" + key));
+      const current = currentSnap.val() || 0;
+      await set(ref(db, "numbers/" + something + "/points/" + key), current + pts);
+    }
+  }
+
+  const shootSection = document.getElementById("shoot-section");
+  if (shootSection) shootSection.style.display = "none";
+}
+
+function openShotPopup(name, role, shooterRole) {
+  const images = {
+    "a Monk": "Monk-Killed.png",
+    "a Spy": "Spy-Killed.png",
+    "an Assassin": "Assassin-Killed.png"
+  };
   document.getElementById("shot-name").textContent = name + " has been Shot!";
   document.getElementById("shot-role").textContent = "They were " + role;
   document.getElementById("shot-img").src = images[role] || "";
+  const shooterEl = document.getElementById("shot-shooter");
+  if (shooterEl) shooterEl.textContent = shooterRole ? "Shot by " + shooterRole : "";
   const popup = document.getElementById("shot-popup");
   popup.style.display = "flex";
   popup.style.animation = "popup 1s forwards";
@@ -309,6 +477,9 @@ window.closeShotPopup = function() {
 
 window.openYouDied = async function() {
   await new Promise(resolve => setTimeout(resolve, 250));
+  const killedImages = { "a Monk": "Monk-Killed.png", "a Spy": "Spy-Killed.png", "an Assassin": "Assassin-Killed.png" };
+  const img = document.getElementById("you-died-img");
+  if (img && hostRole) img.src = killedImages[hostRole] || "";
   document.getElementById("you-died").style.animation = "popup 1s forwards";
   document.getElementById("you-died").style.display = "flex";
 }
@@ -325,6 +496,17 @@ window.renameHost = async function() {
   if (!newName) return;
   await set(ref(db, "numbers/" + something + "/players/player1"), newName);
   input.value = "";
+}
+
+window.openSettings = function() {
+  document.getElementById("settings-popup").style.display = "flex";
+  document.getElementById("settings-popup").style.animation = "popup 1s forwards";
+}
+
+window.closeSettings = async function() {
+  document.getElementById("settings-popup").style.animation = "popout 1s forwards";
+  await new Promise(resolve => setTimeout(resolve, 250));
+  document.getElementById("settings-popup").style.display = "none";
 }
 
 window.openKickPopup = async function() {
@@ -436,9 +618,9 @@ window.score_click = async function(what, event) {
   Object.keys(players).forEach(key => {
     const role = roles[key];
     switch (what) {
-      case "AssWin":  pointMap[key] = role === "an Assassin" ? 1 : 0; break;
-      case "SpyWin":  pointMap[key] = role === "a Spy" ? 2 : role === "a Monk" ? 1 : 0; break;
-      case "AssSpy":  pointMap[key] = role === "an Assassin" ? 3 : 0; break;
+      case "AssWin":   pointMap[key] = role === "an Assassin" ? 1 : 0; break;
+      case "SpyWin":   pointMap[key] = role === "a Spy" ? 2 : role === "a Monk" ? 1 : 0; break;
+      case "AssSpy":   pointMap[key] = role === "an Assassin" ? 2 : 0; break;
       case "AssWrong": pointMap[key] = role === "a Monk" || role === "a Spy" ? 1 : 0; break;
       case "SpyWrong": pointMap[key] = role === "an Assassin" ? 1 : 0; break;
     }

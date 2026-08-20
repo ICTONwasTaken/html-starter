@@ -10,6 +10,8 @@
   </head>
   <body>
     <div id="myDIV" hidden>Room Created!</div>
+    <div id="activation-flash" style="display: none;"></div>
+
     <div id="role-display" style="display: none; align-items: center; justify-content: center;">
       <span id="role-text">You are... </span>
       <img id="guy" src="hehebadguy.png" style="width: 70px; vertical-align: middle;">
@@ -22,15 +24,11 @@
           <div id="nochange">Room ID:</div>
           <div id="change">Generating...</div>
         </div>
-
-        <div id="rename-row">
-          <input id="rename-input" type="text" placeholder="Your name" maxlength="20">
-          <a onclick="renameHost()" class="button">RENAME</a>
-        </div>
+        <div id="round-display"></div>
 
         <div id="host-box">
           <div id="player-count">Current Players
-            <div id="host-list">...</div>
+            <div id="host-list">Waiting for guests...</div>
           </div>
           <div id="timer-display">30</div>
         </div>
@@ -42,14 +40,18 @@
           <button onclick="undoGun()" id="undo-btn">UNDO</button>
         </div>
 
-        <a button id="reset-btn" onclick="resetScoring()" style="display:flex;">RESET SCORES</a>
-        <br>
+        <!-- Shoot section (when host is Spy or Assassin) -->
+        <div id="shoot-section" style="display: none;">
+          <div id="touch-counter"></div>
+          <div id="shoot-label">Choose to shoot:</div>
+          <div id="shoot-matrix"></div>
+        </div>
 
         <div class="grid">
           <a onclick="mythingy()" class="button" id="begin-btn">GIVE ROLES</a>
           <a onclick="mytimer()" class="button" id="timer-btn">TIMER</a>
           <a href="join or create.html" onclick="backBtn()" class="button" id="back-btn">BACK</a>
-          <a onclick="openKickPopup()" class="button" id="kick-btn">KICK</a>
+          <a onclick="openSettings()" class="button" id="settings-btn">SETTINGS</a>
           <a button id="stop-btn" style="display:none;" onclick="openKillPopup()" class="button">SHOTS</a>
           <a button id="score-btn" style="display:none;" onclick="openScoring()" class="button">SCORE</a>
         </div>
@@ -74,10 +76,25 @@
       </div>
     </div>
 
+    <!-- Settings popup -->
+    <div id="settings-popup" style="display: none;">
+      <div id="settings-inner">
+        <h2>Settings</h2>
+        <div id="settings-rename-row">
+          <input id="rename-input" type="text" placeholder="Your name" maxlength="20">
+          <a onclick="renameHost()" class="button">RENAME</a>
+        </div>
+        <button onclick="closeSettings().then(() => openKickPopup())" class="cancel-btn">KICK PLAYER</button>
+        <button onclick="resetScoring(); closeSettings();" class="cancel-btn">RESET SCORES</button>
+        <button onclick="closeSettings()" class="cancel-btn">Close</button>
+      </div>
+    </div>
+
     <!-- You died popup -->
     <div id="you-died" style="display: none;">
       <div id="you-died-inner">
         <div>You done got SHOT!!</div>
+        <img id="you-died-img" src="" style="width: 90px;">
         <button onclick="closeYouDied()" class="ded-btn">Oh no!</button>
       </div>
     </div>
@@ -88,6 +105,7 @@
         <div id="shot-name">Player has been Shot!</div>
         <img id="shot-img" src="" style="width: 90px;">
         <div id="shot-role">They were a Monk</div>
+        <div id="shot-shooter"></div>
         <button onclick="closeShotPopup()" class="button">OK</button>
       </div>
     </div>

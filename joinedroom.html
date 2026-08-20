@@ -10,6 +10,7 @@
   </head>
   <body>
     <div id="myDIV" hidden>Joined a Room!</div>
+    <div id="activation-flash" style="display: none;"></div>
 
     <div id="player-thing" style="display: none;">
       <div id="role-display" style="display: block; align-items: center; justify-content: center;">
@@ -23,6 +24,8 @@
       <div id="titles">
         <div id="timer-display" style="display: none;">30</div>
 
+        <div id="round-display" class="full-span"></div>
+
         <div id="removing">
           <div id="nochange">Current Room: <div id="room-boi">...</div></div>
         </div>
@@ -35,6 +38,7 @@
 
         <!-- Shoot matrix: inactive for Assassin until 3 gun touches, always active for Spy -->
         <div id="shoot-section" style="display: none;" class="full-span">
+          <div id="touch-counter"></div>
           <div id="shoot-label">Choose to shoot:</div>
           <div id="shoot-matrix"></div>
         </div>
@@ -47,6 +51,7 @@
     <div id="you-died" style="display: none;">
       <div id="you-died-inner">
         <div>You got SHOT!!</div>
+        <img id="you-died-img" src="" style="width: 90px;">
         <button onclick="closeYouDied()" class="ded-btn">Oh no!</button>
       </div>
     </div>
@@ -57,6 +62,7 @@
         <div id="shot-name">Player has been Shot!</div>
         <img id="shot-img" src="" style="width: 90px;">
         <div id="shot-role">They were a Monk</div>
+        <div id="shot-shooter"></div>
         <button onclick="closeShotPopup()" class="button">OK</button>
       </div>
     </div>
