@@ -15,6 +15,8 @@ let latestPlayers = {};
 let hostRole = null;
 let currentGunHolder = null;
 let prevPlayerCount = 0;
+let hostHasGun = false;
+let hostActivated = false;
 
 window.onload = async () => {
 
@@ -84,6 +86,7 @@ window.onload = async () => {
 
     if (!role) {
       hostRole = null;
+      hostActivated = false;
       roledisplay.style.display = "none";
       roleTarget.style.display = "none";
       if (shootSection) {
@@ -109,31 +112,28 @@ window.onload = async () => {
       case "a Spy": {
         roleTarget.innerText = "Deduce who's the Assassin!";
         guy.src = 'hehegooguy5.png';
-        if (shootSection) {
-          shootSection.classList.remove("inactive", "activated");
-          document.getElementById("shoot-label").textContent = "Choose to shoot:";
-          shootSection.style.display = "block";
-        }
+        if (shootSection) shootSection.style.display = "block";
         const pSnap = await get(ref(db, "numbers/" + something + "/players"));
         buildHostShootMatrix(pSnap.val() || {});
+        updateHostShootSectionState();
         break;
       }
 
       case "an Assassin": {
+        hostActivated = false;
         const targetKeySnap = await get(ref(db, "numbers/" + something + "/assassinTarget"));
         const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
         const players = playerSnap.val() || {};
         roleTarget.innerText = "Your target is: " + (players[targetKeySnap.val()] || "?");
         guy.src = 'hehebadguy.png';
         if (shootSection) {
-          shootSection.classList.add("inactive");
           shootSection.classList.remove("activated");
-          document.getElementById("shoot-label").textContent = "Touch gun 3 times to activate...";
           shootSection.style.display = "block";
         }
         buildHostShootMatrix(players);
         const touchSnap = await get(ref(db, "numbers/" + something + "/gunTouches/player1"));
         renderTouchDots(touchSnap.val() || 0);
+        updateHostShootSectionState();
         break;
       }
     }
@@ -150,18 +150,18 @@ window.onload = async () => {
       renderTouchDots(touches);
     }
     if (hostRole !== "an Assassin") return;
-    const shootSection = document.getElementById("shoot-section");
-    if (!shootSection) return;
-    if (touches >= 3) {
-      shootSection.classList.remove("inactive");
-      shootSection.classList.add("activated");
-      document.getElementById("shoot-label").textContent = "Gun Active - Choose to shoot!";
+    if (touches >= 3 && !hostActivated) {
+      hostActivated = true;
+      document.getElementById("shoot-section")?.classList.add("activated");
       triggerActivationFlash();
     }
+    updateHostShootSectionState();
   });
 
   onValue(ref(db, "numbers/" + something + "/gunHolder"), async (snapshot) => {
     currentGunHolder = snapshot.val();
+    hostHasGun = currentGunHolder === "player1";
+    updateHostShootSectionState();
     document.querySelectorAll("#gun-matrix button").forEach(btn => {
       btn.classList.toggle("gun-active", btn.dataset.key === currentGunHolder);
     });
@@ -229,6 +229,32 @@ function playerscome() {
   div1.innerText = "Player joined!";
   div1.style.animation = "mymove 1.5s forwards";
   div1.addEventListener("animationend", endAnim, { once: true });
+}
+
+function updateHostShootSectionState() {
+  const shootSection = document.getElementById("shoot-section");
+  if (!shootSection || shootSection.style.display === "none") return;
+  const label = document.getElementById("shoot-label");
+  if (hostRole === "a Spy") {
+    if (hostHasGun) {
+      shootSection.classList.remove("inactive");
+      label.textContent = "Choose to shoot:";
+    } else {
+      shootSection.classList.add("inactive");
+      label.textContent = "Get the gun to shoot!";
+    }
+  } else if (hostRole === "an Assassin") {
+    if (!hostActivated) {
+      shootSection.classList.add("inactive");
+      label.textContent = "Touch gun 3 times to activate...";
+    } else if (hostHasGun) {
+      shootSection.classList.remove("inactive");
+      label.textContent = "Gun Active - Choose to shoot!";
+    } else {
+      shootSection.classList.add("inactive");
+      label.textContent = "Get the gun to shoot!";
+    }
+  }
 }
 
 function renderHostPlayerList(players, points) {
