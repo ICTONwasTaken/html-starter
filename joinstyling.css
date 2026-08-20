@@ -57,14 +57,16 @@
 body {
   margin: 0;
   overflow-x: hidden;
+  overflow-y: auto;
   background-color: rgb(27, 12, 36);
-  overflow: hidden;
 
   display: flex;
-  justify-content: center;  /* horizontal center */
-  align-items: center;      /* vertical center */
-  min-height: 80vh;        /* full screen height */
-  flex-direction: column;   /* stack h1 + box */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  padding-bottom: 20px;
+  box-sizing: border-box;
 }
 input {
   padding: 6px;
@@ -781,12 +783,10 @@ button:hover {
   min-height: 0;
 }
 
-/* ── Room ID badge (upper right, host screen) ── */
+/* ── Room ID badge (upper right) ── */
 #room-badge {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 500;
+  align-self: flex-end;
+  margin: 8px 10px 0;
   background: rgba(27, 12, 36, 0.92);
   border: 2px solid rgb(196, 168, 127);
   border-radius: 8px;
@@ -797,7 +797,6 @@ button:hover {
   font-size: 15px;
   font-weight: bold;
   color: rgb(224, 173, 96);
-  backdrop-filter: blur(4px);
 }
 
 #room-badge-label {

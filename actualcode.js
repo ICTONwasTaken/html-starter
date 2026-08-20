@@ -319,6 +319,10 @@ window.mythingy = async function mythingy() {
   document.getElementById("stop-btn").style.display = "block";
   document.getElementById("score-btn").style.display = "none";
 
+  change.style.display = "none";
+  const badgeLabel = document.getElementById("room-badge-label");
+  if (badgeLabel) badgeLabel.style.display = "none";
+
   const roundSnap = await get(ref(db, "numbers/" + something + "/round"));
   const nextRound = (roundSnap.val() || 0) + 1;
 
