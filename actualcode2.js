@@ -1,10 +1,14 @@
 import { db, ref, onValue, remove, get, set} from './firebase.js';
 
+const div1 = document.getElementById("myDIV");
+let change = document.getElementById("change");
+let something = 0;
 
-  
-  const div1 = document.getElementById("myDIV"); 
-  let change = document.getElementById("change");
-  let something = 0;
+const _roomParam = new URLSearchParams(window.location.search).get('room');
+if (_roomParam) {
+  document.getElementById("dothething").value = _roomParam;
+  document.getElementById("getname").focus();
+}
 
 window.mycheck = async function () {
   let rum = document.getElementById("dothething").value.trim();

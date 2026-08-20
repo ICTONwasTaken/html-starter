@@ -685,6 +685,30 @@ window.score_click = async function(what, event) {
   label.innerText = labels[what];
 }
 
+window.openQRPopup = function() {
+  const url = new URL('joinroom.html?room=' + something, window.location.href).href;
+  const container = document.getElementById("qr-code");
+  container.innerHTML = "";
+  new QRCode(container, {
+    text: url,
+    width: 200,
+    height: 200,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+  document.getElementById("qr-room-label").textContent = "Room " + something;
+  const popup = document.getElementById("qr-popup");
+  popup.style.display = "flex";
+  popup.style.animation = "popup 0.5s forwards";
+}
+
+window.closeQRPopup = function() {
+  const popup = document.getElementById("qr-popup");
+  popup.style.animation = "popout 0.5s forwards";
+  setTimeout(() => { popup.style.display = "none"; }, 250);
+}
+
 window.resetScoring = async function() {
   const playerPoint = await get(ref(db, "numbers/" + something + "/points"));
   if (playerPoint.val() != null) {
