@@ -4,88 +4,112 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="hugertest.js"></script>
-     <script type="module" src="actualcode.js"></script>
-    <link
-      rel="stylesheet"
-      href="joinstyling.css"
-    />
-    <title>This is tab!</title>
-    <meta
-      name="what this do?"
-      content="what this do?"
-    />
+    <script type="module" src="actualcode.js"></script>
+    <link rel="stylesheet" href="joinstyling.css" />
+    <title>Monastery Showdown - Host</title>
   </head>
   <body>
     <div id="myDIV" hidden>Room Created!</div>
     <div id="role-display" style="display: none; align-items: center; justify-content: center;">
-        <span id="role-text">You are... </span>
-        <img id="guy" src="hehebadguy.png" style="width: 70px; vertical-align: middle;">
-      </div>
-          <div id="role-target" style="display: none;">You're target is...</div>
-    <div id="box">
+      <span id="role-text">You are... </span>
+      <img id="guy" src="hehebadguy.png" style="width: 70px; vertical-align: middle;">
+    </div>
+    <div id="role-target" style="display: none;">Your target is...</div>
 
+    <div id="box">
       <div>
         <div class="title">
           <div id="nochange">Room ID:</div>
           <div id="change">Generating...</div>
         </div>
-        
-        <div id="host-box">
-                <div id="player-count">Current Players
-                  <div id="host-list">...</div>
-                </div>
 
-                <div id="timer-display">30</div>
+        <div id="rename-row">
+          <input id="rename-input" type="text" placeholder="Your name" maxlength="20">
+          <a onclick="renameHost()" class="button">RENAME</a>
         </div>
+
+        <div id="host-box">
+          <div id="player-count">Current Players
+            <div id="host-list">...</div>
+          </div>
+          <div id="timer-display">30</div>
+        </div>
+
+        <!-- Gun ownership tracker -->
+        <div id="gun-section">
+          <div id="gun-holder-display">Gun: No one</div>
+          <div id="gun-matrix"></div>
+          <button onclick="undoGun()" id="undo-btn">UNDO</button>
+        </div>
+
         <a button id="reset-btn" onclick="resetScoring()" style="display:flex;">RESET SCORES</a>
-
         <br>
-
 
         <div class="grid">
           <a onclick="mythingy()" class="button" id="begin-btn">GIVE ROLES</a>
           <a onclick="mytimer()" class="button" id="timer-btn">TIMER</a>
-          <a href="join or create.html" onclick="backBtn()" class="button" id="back-btn">BACK</a> 
+          <a href="join or create.html" onclick="backBtn()" class="button" id="back-btn">BACK</a>
+          <a onclick="openKickPopup()" class="button" id="kick-btn">KICK</a>
           <a button id="stop-btn" style="display:none;" onclick="openKillPopup()" class="button">SHOTS</a>
-          <a button id="score-btn" style="display:none;" onclick="openScoring()" class="button">SCORE</a> <br>
-
+          <a button id="score-btn" style="display:none;" onclick="openScoring()" class="button">SCORE</a>
         </div>
       </div>
-
     </div>
 
-        <div id="kill-popup" style="display: none;">
-          <div id="kill-popup-inner">
-            <h2>Choose a target</h2>
-            <div id="kill-list"></div>
-            <button onclick="closeKillPopup()" class="cancel-btn">Cancel</button>
-          </div>
-        </div>
+    <!-- Kill popup (manual) -->
+    <div id="kill-popup" style="display: none;">
+      <div id="kill-popup-inner">
+        <h2>Choose a target</h2>
+        <div id="kill-list"></div>
+        <button onclick="closeKillPopup()" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
 
-        <div id="you-died" style="display: none;">
-          <div id="you-died-inner">
-            <div>You done got SHOT!!</div>
-            <button onclick="closeYouDied()" class="ded-btn">Oh no!</button>
-          </div>
-        </div>
+    <!-- Kick popup -->
+    <div id="kick-popup" style="display: none;">
+      <div id="kick-popup-inner">
+        <h2>Kick a player</h2>
+        <div id="kick-list"></div>
+        <button onclick="closeKickPopup()" class="cancel-btn">Cancel</button>
+      </div>
+    </div>
 
-        <div id="score-popup" style="display: none;">
-          <div id="score-inner">
-            <span style="font-weight: bold; font-size: 30px; color: coral;">SCORING</span>
-                  <div id="score" onclick="score_dropdown()"><span id="score-label">What happened?</span>
-                    <ul id="dropdown-content">
-                        <li onclick="score_click('AssWin', event)" class="dropdown-item"><b>Assassin</b> killed <span style="color:rgb(133, 5, 5); font-weight: bold;">target</span></li>
-                        <li onclick="score_click('SpyWin', event)" class="dropdown-item"><b>Spy</b> killed <span style="color:rgb(0, 105, 26); font-weight: bold;">Assassin</span></li>
-                        <li onclick="score_click('AssSpy', event)" class="dropdown-item"><b>Assassin</b> killed <span style="color:rgb(133, 5, 5); font-weight: bold;">Spy</span></li>
-                        <li onclick="score_click('AssWrong', event)" class="dropdown-item"><b>Assassin</b> killed <span style="color:rgb(0, 105, 26); font-weight: bold;">wrong person</span></li>
-                        <li onclick="score_click('SpyWrong', event)" class="dropdown-item"><b>Spy</b> killed <span style="color:rgb(133, 5, 5); font-weight: bold;">wrong person</span></li>
-                    </ul>
-                  </div>
-            <button onclick="closeScoring()" class="button">Confirm</button>
-          </div>
-        </div>
+    <!-- You died popup -->
+    <div id="you-died" style="display: none;">
+      <div id="you-died-inner">
+        <div>You done got SHOT!!</div>
+        <button onclick="closeYouDied()" class="ded-btn">Oh no!</button>
+      </div>
+    </div>
 
-        <script>
-        </script>
+    <!-- Shot announcement popup -->
+    <div id="shot-popup" style="display: none;">
+      <div id="shot-popup-inner">
+        <div id="shot-name">Player has been Shot!</div>
+        <img id="shot-img" src="" style="width: 90px;">
+        <div id="shot-role">They were a Monk</div>
+        <button onclick="closeShotPopup()" class="button">OK</button>
+      </div>
+    </div>
+
+    <!-- Manual score popup -->
+    <div id="score-popup" style="display: none;">
+      <div id="score-inner">
+        <span style="font-weight: bold; font-size: 30px; color: coral;">SCORING</span>
+        <div id="score" onclick="score_dropdown()">
+          <span id="score-label">What happened?</span>
+          <ul id="dropdown-content">
+            <li onclick="score_click('AssWin', event)" class="dropdown-item"><b>Assassin</b> killed <span style="color:rgb(133,5,5); font-weight:bold;">target</span></li>
+            <li onclick="score_click('SpyWin', event)" class="dropdown-item"><b>Spy</b> killed <span style="color:rgb(0,105,26); font-weight:bold;">Assassin</span></li>
+            <li onclick="score_click('AssSpy', event)" class="dropdown-item"><b>Assassin</b> killed <span style="color:rgb(133,5,5); font-weight:bold;">Spy</span></li>
+            <li onclick="score_click('AssWrong', event)" class="dropdown-item"><b>Assassin</b> killed <span style="color:rgb(0,105,26); font-weight:bold;">wrong person</span></li>
+            <li onclick="score_click('SpyWrong', event)" class="dropdown-item"><b>Spy</b> killed <span style="color:rgb(133,5,5); font-weight:bold;">wrong person</span></li>
+          </ul>
+        </div>
+        <button onclick="closeScoring()" class="button">Confirm</button>
+      </div>
+    </div>
+
+    <script></script>
   </body>
 </html>

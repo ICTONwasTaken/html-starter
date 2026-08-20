@@ -4,58 +4,62 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="hugertest.js"></script>
-     <script type="module" src="actualcode3.js"></script>
-    <link
-      rel="stylesheet"
-      href="joinstyling.css"
-    />
-    <title>This is tab!</title>
-    <meta
-      name="what this do?"
-      content="what this do?"
-    />
+    <script type="module" src="actualcode3.js"></script>
+    <link rel="stylesheet" href="joinstyling.css" />
+    <title>Monastery Showdown</title>
   </head>
   <body>
     <div id="myDIV" hidden>Joined a Room!</div>
-      <div id="player-thing" style="display: none;">
-                    <div id="role-display" style="display: block; align-items: center; justify-content: center;">
-                      <span id="role-text">You are... </span>
-                      <img id="guy" src="hehebadguy.png" style="width: 70px; vertical-align: middle;">
-                    </div>
-                    <div id="role-target">You're target is...</div>
-                  </div>
-        <div id="box">
-          <div id="titles">
-                <div id="timer-display" style="display: none;">30</div>
-            <div id="removing">
-              <div id="nochange">Current Room: <div id="room-boi">...</div></div>
-            </div>
 
-            <div id="player-box">
-              <div id="player-count">Players
-                <div id="player-list">...</div>
-              </div>
-              
-            </div>
-              <a id="back-btn" href="joinroom.html" onclick="backBtn3()" class="button">BACK</a>
-              <a button id="stop-btn" style="display:none;" onclick="openKillPopup()" class="button">SHOTS</a>
-          </div>
+    <div id="player-thing" style="display: none;">
+      <div id="role-display" style="display: block; align-items: center; justify-content: center;">
+        <span id="role-text">You are... </span>
+        <img id="guy" src="hehebadguy.png" style="width: 70px; vertical-align: middle;">
+      </div>
+      <div id="role-target">Your target is...</div>
     </div>
 
-    <div id="kill-popup" style="display: none;">
-          <div id="kill-popup-inner">
-            <h2>Choose a target</h2>
-            <div id="kill-list"></div>
-            <button onclick="closeKillPopup()" class="cancel-btn">Cancel</button>
-          </div>
-    </div>
+    <div id="box">
+      <div id="titles">
+        <div id="timer-display" style="display: none;">30</div>
 
-    <div id="you-died" style="display: none;">
-          <div id="you-died-inner">
-            <div>You got SHOT!!</div>
-            <button onclick="closeYouDied()" class="ded-btn">Oh no!</button>
+        <div id="removing">
+          <div id="nochange">Current Room: <div id="room-boi">...</div></div>
+        </div>
+
+        <div id="player-box">
+          <div id="player-count">Players
+            <div id="player-list">...</div>
           </div>
         </div>
+
+        <!-- Shoot matrix: inactive for Assassin until 3 gun touches, always active for Spy -->
+        <div id="shoot-section" style="display: none;" class="full-span">
+          <div id="shoot-label">Choose to shoot:</div>
+          <div id="shoot-matrix"></div>
+        </div>
+
+        <a id="back-btn" href="joinroom.html" onclick="backBtn3()" class="button full-span">BACK</a>
+      </div>
+    </div>
+
+    <!-- You died popup -->
+    <div id="you-died" style="display: none;">
+      <div id="you-died-inner">
+        <div>You got SHOT!!</div>
+        <button onclick="closeYouDied()" class="ded-btn">Oh no!</button>
+      </div>
+    </div>
+
+    <!-- Shot announcement popup -->
+    <div id="shot-popup" style="display: none;">
+      <div id="shot-popup-inner">
+        <div id="shot-name">Player has been Shot!</div>
+        <img id="shot-img" src="" style="width: 90px;">
+        <div id="shot-role">They were a Monk</div>
+        <button onclick="closeShotPopup()" class="button">OK</button>
+      </div>
+    </div>
 
   </body>
 </html>
