@@ -360,7 +360,31 @@ function timerend() {
 }
 
 function start() {
-  document.getElementById("room-boi").innerText = rum;
+  document.getElementById("change").innerText = rum;
+}
+
+window.openQRPopup = function() {
+  const url = new URL('joinroom.html?room=' + rum, window.location.href).href;
+  const container = document.getElementById("qr-code");
+  container.innerHTML = "";
+  new QRCode(container, {
+    text: url,
+    width: 200,
+    height: 200,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+  document.getElementById("qr-room-label").textContent = "Room " + rum;
+  const popup = document.getElementById("qr-popup");
+  popup.style.display = "flex";
+  popup.style.animation = "popup 0.5s forwards";
+}
+
+window.closeQRPopup = function() {
+  const popup = document.getElementById("qr-popup");
+  popup.style.animation = "popout 0.5s forwards";
+  setTimeout(() => { popup.style.display = "none"; }, 250);
 }
 
 function playAnim() {

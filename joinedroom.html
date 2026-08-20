@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="hugertest.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script type="module" src="actualcode3.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +13,12 @@
     <title>Monastery Showdown</title>
   </head>
   <body>
+    <div id="room-badge">
+      <span id="room-badge-label">Room</span>
+      <span id="change">···</span>
+      <button id="qr-btn" onclick="openQRPopup()">QR</button>
+    </div>
+
     <div id="myDIV" hidden>Joined a Room!</div>
     <div id="activation-flash" style="display: none;"></div>
 
@@ -28,11 +35,7 @@
 
         <div id="round-display" class="full-span"></div>
 
-        <div id="removing">
-          <div id="nochange">Current Room: <div id="room-boi">...</div></div>
-        </div>
-
-        <div id="player-box">
+        <div id="player-box" class="full-span">
           <div id="player-count">Players
             <div id="player-list">...</div>
           </div>
@@ -46,6 +49,15 @@
         </div>
 
         <a id="back-btn" href="joinroom.html" onclick="backBtn3()" class="button full-span">BACK</a>
+      </div>
+    </div>
+
+    <!-- QR code popup -->
+    <div id="qr-popup" style="display: none;">
+      <div id="qr-popup-inner">
+        <div id="qr-room-label"></div>
+        <div id="qr-code"></div>
+        <button onclick="closeQRPopup()" class="button">CLOSE</button>
       </div>
     </div>
 
