@@ -87,6 +87,7 @@ window.onload = async () => {
     if (!role) {
       hostRole = null;
       hostActivated = false;
+      roledisplay.classList.remove("role-monk", "role-spy", "role-assassin");
       roledisplay.style.display = "none";
       roleTarget.style.display = "none";
       if (shootSection) {
@@ -138,6 +139,9 @@ window.onload = async () => {
       }
     }
 
+    roledisplay.classList.remove("role-monk", "role-spy", "role-assassin");
+    const roleClassMap = { "a Monk": "role-monk", "a Spy": "role-spy", "an Assassin": "role-assassin" };
+    if (roleClassMap[role]) roledisplay.classList.add(roleClassMap[role]);
     roledisplay.style.display = "block";
     roledisplay.style.animation = "shake 1s linear";
     roleTarget.style.display = "block";
@@ -266,10 +270,17 @@ function renderHostPlayerList(players, points) {
   playerlist.innerHTML = "";
   Object.entries(players).forEach(([key, name]) => {
     const pts = points[key] || 0;
-    const line = document.createElement("div");
-    line.textContent = (key === currentGunHolder ? "🔫 " : "") + `${name}: ${pts}pts`;
-    if (key === currentGunHolder) line.classList.add("gun-holder-row");
-    playerlist.appendChild(line);
+    const isHolder = key === currentGunHolder;
+    const chip = document.createElement("div");
+    chip.className = "player-chip" + (isHolder ? " gun-holder-chip" : "");
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = (isHolder ? "🔫 " : "") + name;
+    const ptsSpan = document.createElement("span");
+    ptsSpan.className = "player-pts";
+    ptsSpan.textContent = pts + " pts";
+    chip.appendChild(nameSpan);
+    chip.appendChild(ptsSpan);
+    playerlist.appendChild(chip);
   });
 }
 
@@ -502,6 +513,13 @@ function openShotPopup(name, role, shooterRole, wasTarget, isVictim, shooterName
   if (shooterEl) shooterEl.textContent = shooterName ? "Shot by " + shooterName : (shooterRole ? "Shot by " + shooterRole : "");
   const targetEl = document.getElementById("shot-target-label");
   if (targetEl) targetEl.textContent = wasTarget ? "The target was Killed!" : "";
+  const box = document.getElementById("box");
+  if (box) {
+    box.classList.remove("screen-shake");
+    void box.offsetHeight;
+    box.classList.add("screen-shake");
+    box.addEventListener("animationend", () => box.classList.remove("screen-shake"), { once: true });
+  }
   const popup = document.getElementById("shot-popup");
   popup.style.display = "flex";
   popup.style.animation = "popup 1s forwards";

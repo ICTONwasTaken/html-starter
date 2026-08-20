@@ -81,12 +81,13 @@ button {
   border-radius: 6px;
   align-content: center;
 
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 button:hover {
   color: rgb(255, 255, 255);
   background-color: rgb(255, 0, 0);
   transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(255, 60, 60, 0.45);
   cursor: pointer;
 }
 
@@ -243,13 +244,15 @@ button:hover {
   border: 3px solid rgb(224, 173, 96);
   border-radius: 6px;
   align-content: center;
+  text-align: center;
 
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 .button:hover {
   color: rgb(53, 59, 68);
   background-color: rgb(224, 173, 96);
   transform: scale(1.1);
+  box-shadow: 0 0 14px rgba(224, 173, 96, 0.55);
   cursor: pointer;
 }
 
@@ -293,6 +296,7 @@ button:hover {
   color: rgb(53, 59, 68);
   background-color: rgb(255, 63, 63);
   border: 3px solid rgb(255, 63, 63);
+  box-shadow: 0 0 14px rgba(255, 63, 63, 0.55);
   transform: scale(1.1);
   cursor: pointer;
 }
@@ -521,21 +525,23 @@ button:hover {
 }
 
 #player-list {
-  color: rgb(171, 124, 192);
-  font-size: 15px;
   background-color: rgb(15, 6, 20);
-  padding: 5px;
+  padding: 6px;
   transform-origin: top;
-  text-decoration: underline;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 130px;
 }
 
 #host-list {
-  color: rgb(171, 124, 192);
-  font-size: 15px;
   background-color: rgb(15, 6, 20);
-  padding: 5px;
+  padding: 6px;
   transform-origin: top;
-  text-decoration: underline;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 130px;
 }
 
 @keyframes player-come {
@@ -607,6 +613,76 @@ button:hover {
   0% { transform: scale(1); opacity: 1;}
   10% { transform: scale(1.2); opacity: 1.2;}
   20% { transform: scale(0); opacity: 0; }
+}
+
+/* ── Cinzel font ── */
+* {
+  font-family: 'Cinzel', 'Gill Sans MT', 'Gill Sans', Calibri, serif;
+}
+
+/* ── Role color themes ── */
+#role-display {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
+#role-display.role-monk {
+  background-color: rgb(18, 52, 28);
+  color: rgb(140, 215, 155);
+  border-color: rgb(55, 125, 70);
+}
+#role-display.role-spy {
+  background-color: rgb(12, 32, 78);
+  color: rgb(120, 175, 255);
+  border-color: rgb(45, 90, 185);
+}
+#role-display.role-assassin {
+  background-color: rgb(68, 10, 10);
+  color: rgb(255, 120, 120);
+  border-color: rgb(155, 25, 25);
+}
+
+/* ── Player chips ── */
+.player-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background-color: rgb(35, 15, 50);
+  border: 1px solid rgb(80, 55, 115);
+  font-size: 12px;
+  color: rgb(200, 170, 230);
+  letter-spacing: 0.03em;
+}
+.gun-holder-chip {
+  background-color: rgb(55, 40, 5);
+  border-color: rgb(200, 160, 40);
+  color: rgb(255, 210, 80);
+}
+.player-pts {
+  color: rgb(135, 105, 170);
+  font-size: 11px;
+}
+.gun-holder-chip .player-pts {
+  color: rgb(195, 160, 65);
+}
+
+/* ── Screen shake on shot popup ── */
+@keyframes screen-shake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  15%  { transform: translateX(-5px) rotate(-0.4deg); }
+  30%  { transform: translateX(5px) rotate(0.4deg); }
+  45%  { transform: translateX(-3px); }
+  60%  { transform: translateX(3px); }
+  80%  { transform: translateX(-1px); }
+}
+.screen-shake {
+  animation: screen-shake 0.5s ease-out;
+}
+
+/* ── Equal-width grid buttons ── */
+.grid > * {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* ── Touch counter dots (Assassin activation) ── */
