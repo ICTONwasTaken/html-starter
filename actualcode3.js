@@ -196,7 +196,10 @@ window.onload = async () => {
 
   onValue(ref(db, "numbers/" + rum + "/lastShot"), (snapshot) => {
     const shot = snapshot.val();
-    if (!shot) return;
+    if (!shot) {
+      closeShotPopup();
+      return;
+    }
     const isVictim = shot.targetKey === myPlayerKey;
     openShotPopup(shot.targetName, shot.targetRole, shot.shooterRole, shot.wasTarget, isVictim, shot.shooterName);
   });
@@ -387,6 +390,7 @@ function openShotPopup(name, role, shooterRole, wasTarget, isVictim, shooterName
 
 window.closeShotPopup = function() {
   const popup = document.getElementById("shot-popup");
+  if (popup.style.display === "none") return;
   popup.style.animation = "popout 1s forwards";
   setTimeout(() => { popup.style.display = "none"; }, 250);
 }
