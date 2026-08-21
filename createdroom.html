@@ -54,6 +54,19 @@
           <div id="shoot-matrix"></div>
         </div>
 
+        <!-- Suspicion section -->
+        <div id="suspicion-section" style="display: none;">
+          <div id="my-suspicion-label">No suspicion</div>
+          <div id="suspect-count-label"></div>
+          <a onclick="openSuspicionPopup()" class="button" id="suspect-btn">SUSPECT</a>
+        </div>
+
+        <!-- Consensus shoot section -->
+        <div id="consensus-section" style="display: none;">
+          <div id="consensus-label">All Monks agree: ???</div>
+          <a id="consensus-shoot-btn" style="display: none;" onclick="hostMonkShoot()" class="button">SHOOT</a>
+        </div>
+
         <div class="grid">
           <a onclick="mythingy()" class="button" id="begin-btn">DEAL</a>
           <a onclick="mytimer()" class="button" id="timer-btn">TIMER</a>
@@ -124,6 +137,15 @@
           </ul>
         </div>
         <button onclick="closeScoring()" class="button">Confirm</button>
+      </div>
+    </div>
+
+    <!-- Suspicion popup -->
+    <div id="suspicion-popup" style="display: none;">
+      <div id="suspicion-popup-inner">
+        <div id="suspicion-popup-title">Who do you suspect?</div>
+        <div id="suspicion-list"></div>
+        <button onclick="closeSuspicionPopup()" class="cancel-btn">Cancel</button>
       </div>
     </div>
 

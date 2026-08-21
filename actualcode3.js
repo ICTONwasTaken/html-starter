@@ -14,8 +14,11 @@ let myRole = null;
 let currentGunHolder = null;
 let prevPlayerCount = 0;
 let latestPlayers = {};
+let latestRoles = {};
+let latestSuspicions = {};
 let hasGun = false;
 let assassinActivated = false;
+let consensusTarget = null;
 
 window.onload = async () => {
   playAnim();
@@ -56,10 +59,16 @@ window.onload = async () => {
     renderGuestPlayerList(players, points);
   });
 
+  onValue(ref(db, "numbers/" + rum + "/roles"), (snapshot) => {
+    latestRoles = snapshot.val() || {};
+    checkConsensus();
+  });
+
   onValue(ref(db, "numbers/" + rum + "/gunHolder"), async (snapshot) => {
     currentGunHolder = snapshot.val();
     hasGun = currentGunHolder === myPlayerKey;
     updateShootSectionState();
+    checkConsensus();
     const [playerSnap, pointSnap] = await Promise.all([
       get(ref(db, "numbers/" + rum + "/players")),
       get(ref(db, "numbers/" + rum + "/points"))
@@ -78,6 +87,7 @@ window.onload = async () => {
     const roledisplay = document.getElementById("role-display");
     const roleTarget = document.getElementById("role-target");
     const shootSection = document.getElementById("shoot-section");
+    const suspicionSection = document.getElementById("suspicion-section");
     const role = snapshot.val();
     myRole = role;
 
@@ -93,6 +103,7 @@ window.onload = async () => {
         shootSection.style.display = "none";
         shootSection.classList.remove("inactive", "activated");
       }
+      if (suspicionSection) suspicionSection.style.display = "none";
       return;
     }
 
@@ -140,6 +151,7 @@ window.onload = async () => {
         break;
       }
     }
+    if (suspicionSection) suspicionSection.style.display = "block";
   });
 
   onValue(ref(db, "numbers/" + rum + "/gunTouches/" + myPlayerKey), (snapshot) => {
@@ -207,6 +219,26 @@ window.onload = async () => {
     const isVictim = shot.targetKey === myPlayerKey;
     openShotPopup(shot.targetName, shot.targetRole, shot.shooterRole, shot.wasTarget, isVictim, shot.shooterName);
   });
+
+  onValue(ref(db, "numbers/" + rum + "/suspicions"), (snapshot) => {
+    const suspicions = snapshot.val() || {};
+    latestSuspicions = suspicions;
+    const count = Object.values(suspicions).filter(v => v === myPlayerKey).length;
+    const countLabel = document.getElementById("suspect-count-label");
+    if (countLabel) {
+      countLabel.textContent = count > 0
+        ? count + (count === 1 ? " Monk suspects you" : " Monks suspect you")
+        : "";
+    }
+    const mySuspicion = suspicions[myPlayerKey];
+    const myLabel = document.getElementById("my-suspicion-label");
+    if (myLabel) {
+      myLabel.textContent = mySuspicion
+        ? "You suspect: " + (latestPlayers[mySuspicion] || "?")
+        : "No suspicion";
+    }
+    checkConsensus();
+  });
 }
 
 function updateShootSectionState() {
@@ -233,6 +265,83 @@ function updateShootSectionState() {
       label.textContent = "Get the gun to shoot!";
     }
   }
+}
+
+function checkConsensus() {
+  const section = document.getElementById("consensus-section");
+  const label = document.getElementById("consensus-label");
+  const btn = document.getElementById("consensus-shoot-btn");
+  if (!section) return;
+
+  const monkKeys = Object.keys(latestRoles).filter(k => latestRoles[k] === "a Monk");
+  if (monkKeys.length === 0) {
+    section.style.display = "none";
+    consensusTarget = null;
+    return;
+  }
+
+  const votes = monkKeys.map(k => latestSuspicions[k]).filter(v => v != null);
+  const allVoted = votes.length === monkKeys.length;
+  const allAgree = allVoted && new Set(votes).size === 1;
+
+  if (!allAgree) {
+    section.style.display = "none";
+    consensusTarget = null;
+    return;
+  }
+
+  consensusTarget = votes[0];
+  const targetName = latestPlayers[consensusTarget] || "?";
+  section.style.display = "block";
+  if (label) label.textContent = "All Monks agree: " + targetName;
+  if (btn) btn.style.display = (myRole === "a Monk" && hasGun) ? "block" : "none";
+}
+
+window.monkShoot = async function() {
+  if (!consensusTarget || myRole !== "a Monk" || !hasGun) return;
+
+  const targetKey = consensusTarget;
+  const targetName = latestPlayers[targetKey] || "?";
+
+  const [rolesSnap, assassinTargetSnap] = await Promise.all([
+    get(ref(db, "numbers/" + rum + "/roles")),
+    get(ref(db, "numbers/" + rum + "/assassinTarget"))
+  ]);
+
+  const roles = rolesSnap.val() || {};
+  const assassinTarget = assassinTargetSnap.val();
+  const targetRole = roles[targetKey];
+  const playerKeys = Object.keys(roles);
+  const pointMap = {};
+
+  if (targetRole === "an Assassin") {
+    playerKeys.forEach(k => { pointMap[k] = roles[k] === "a Spy" ? 1 : roles[k] === "a Monk" ? 2 : 0; });
+  } else {
+    playerKeys.forEach(k => { pointMap[k] = roles[k] === "an Assassin" ? 1 : 0; });
+  }
+
+  await set(ref(db, "numbers/" + rum + "/lastShot"), {
+    targetKey,
+    targetName,
+    targetRole,
+    shooterKey: myPlayerKey,
+    shooterRole: myRole,
+    shooterName: latestPlayers[myPlayerKey] || "?",
+    wasTarget: targetKey === assassinTarget
+  });
+
+  await set(ref(db, "numbers/" + rum + "/killed/" + targetKey), true);
+
+  for (const [key, pts] of Object.entries(pointMap)) {
+    if (pts > 0) {
+      const currentSnap = await get(ref(db, "numbers/" + rum + "/points/" + key));
+      const current = currentSnap.val() || 0;
+      await set(ref(db, "numbers/" + rum + "/points/" + key), current + pts);
+    }
+  }
+
+  const consensusSection = document.getElementById("consensus-section");
+  if (consensusSection) consensusSection.style.display = "none";
 }
 
 function renderGuestPlayerList(players, points) {
@@ -341,6 +450,25 @@ async function shoot(targetKey, targetName) {
     }
   }
 
+  if (myRole === "an Assassin" && targetKey === assassinTarget && targetRole === "a Monk") {
+    const [suspicionSnap, killedSnap] = await Promise.all([
+      get(ref(db, "numbers/" + rum + "/suspicions")),
+      get(ref(db, "numbers/" + rum + "/killed"))
+    ]);
+    const suspicions = suspicionSnap.val() || {};
+    const killed = killedSnap.val() || {};
+    const spyKey = playerKeys.find(k => roles[k] === "a Spy");
+    if (!spyKey || !killed[spyKey]) {
+      for (const [pKey, suspectedKey] of Object.entries(suspicions)) {
+        if (suspectedKey === myPlayerKey && roles[pKey] === "a Monk") {
+          const currentSnap = await get(ref(db, "numbers/" + rum + "/points/" + pKey));
+          const current = currentSnap.val() || 0;
+          await set(ref(db, "numbers/" + rum + "/points/" + pKey), current + 1);
+        }
+      }
+    }
+  }
+
   const shootSection = document.getElementById("shoot-section");
   if (shootSection) shootSection.style.display = "none";
 }
@@ -361,6 +489,34 @@ function timerend() {
 
 function start() {
   document.getElementById("change").innerText = rum;
+}
+
+window.openSuspicionPopup = async function() {
+  const playerSnap = await get(ref(db, "numbers/" + rum + "/players"));
+  const players = playerSnap.val() || {};
+  const list = document.getElementById("suspicion-list");
+  list.innerHTML = "";
+  Object.entries(players).forEach(([key, name]) => {
+    if (key === myPlayerKey) return;
+    const btn = document.createElement("button");
+    btn.innerText = name;
+    btn.onclick = () => submitSuspicion(key, name);
+    list.appendChild(btn);
+  });
+  const popup = document.getElementById("suspicion-popup");
+  popup.style.display = "flex";
+  popup.style.animation = "popup 0.5s forwards";
+}
+
+window.closeSuspicionPopup = function() {
+  const popup = document.getElementById("suspicion-popup");
+  popup.style.animation = "popout 0.5s forwards";
+  setTimeout(() => { popup.style.display = "none"; }, 250);
+}
+
+async function submitSuspicion(key, name) {
+  await set(ref(db, "numbers/" + rum + "/suspicions/" + myPlayerKey), key);
+  closeSuspicionPopup();
 }
 
 window.openQRPopup = function() {

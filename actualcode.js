@@ -12,11 +12,14 @@ let old = 0;
 let timer = null;
 let tickInterval = null;
 let latestPlayers = {};
+let latestRoles = {};
+let latestSuspicions = {};
 let hostRole = null;
 let currentGunHolder = null;
 let prevPlayerCount = 0;
 let hostHasGun = false;
 let hostActivated = false;
+let hostConsensusTarget = null;
 
 window.onload = async () => {
 
@@ -83,6 +86,7 @@ window.onload = async () => {
     const roledisplay = document.getElementById("role-display");
     const roleTarget = document.getElementById("role-target");
     const shootSection = document.getElementById("shoot-section");
+    const suspicionSection = document.getElementById("suspicion-section");
 
     if (!role) {
       hostRole = null;
@@ -94,6 +98,7 @@ window.onload = async () => {
         shootSection.style.display = "none";
         shootSection.classList.remove("inactive", "activated");
       }
+      if (suspicionSection) suspicionSection.style.display = "none";
       return;
     }
 
@@ -146,6 +151,7 @@ window.onload = async () => {
     roledisplay.style.animation = "shake 1s linear";
     roleTarget.style.display = "block";
     roleTarget.style.animation = "shake 1s linear";
+    if (suspicionSection) suspicionSection.style.display = "block";
   });
 
   onValue(ref(db, "numbers/" + something + "/gunTouches/player1"), (snapshot) => {
@@ -162,10 +168,16 @@ window.onload = async () => {
     updateHostShootSectionState();
   });
 
+  onValue(ref(db, "numbers/" + something + "/roles"), (snapshot) => {
+    latestRoles = snapshot.val() || {};
+    checkHostConsensus();
+  });
+
   onValue(ref(db, "numbers/" + something + "/gunHolder"), async (snapshot) => {
     currentGunHolder = snapshot.val();
     hostHasGun = currentGunHolder === "player1";
     updateHostShootSectionState();
+    checkHostConsensus();
     document.querySelectorAll("#gun-matrix button").forEach(btn => {
       btn.classList.toggle("gun-active", btn.dataset.key === currentGunHolder);
     });
@@ -193,6 +205,26 @@ window.onload = async () => {
     }
     const isVictim = shot.targetKey === "player1";
     openShotPopup(shot.targetName, shot.targetRole, shot.shooterRole, shot.wasTarget, isVictim, shot.shooterName);
+  });
+
+  onValue(ref(db, "numbers/" + something + "/suspicions"), (snapshot) => {
+    const suspicions = snapshot.val() || {};
+    latestSuspicions = suspicions;
+    const count = Object.values(suspicions).filter(v => v === "player1").length;
+    const countLabel = document.getElementById("suspect-count-label");
+    if (countLabel) {
+      countLabel.textContent = count > 0
+        ? count + (count === 1 ? " Monk suspects you" : " Monks suspect you")
+        : "";
+    }
+    const mySuspicion = suspicions["player1"];
+    const myLabel = document.getElementById("my-suspicion-label");
+    if (myLabel) {
+      myLabel.textContent = mySuspicion
+        ? "You suspect: " + (latestPlayers[mySuspicion] || "?")
+        : "No suspicion";
+    }
+    checkHostConsensus();
   });
 }
 
@@ -264,6 +296,83 @@ function updateHostShootSectionState() {
   }
 }
 
+function checkHostConsensus() {
+  const section = document.getElementById("consensus-section");
+  const label = document.getElementById("consensus-label");
+  const btn = document.getElementById("consensus-shoot-btn");
+  if (!section) return;
+
+  const monkKeys = Object.keys(latestRoles).filter(k => latestRoles[k] === "a Monk");
+  if (monkKeys.length === 0) {
+    section.style.display = "none";
+    hostConsensusTarget = null;
+    return;
+  }
+
+  const votes = monkKeys.map(k => latestSuspicions[k]).filter(v => v != null);
+  const allVoted = votes.length === monkKeys.length;
+  const allAgree = allVoted && new Set(votes).size === 1;
+
+  if (!allAgree) {
+    section.style.display = "none";
+    hostConsensusTarget = null;
+    return;
+  }
+
+  hostConsensusTarget = votes[0];
+  const targetName = latestPlayers[hostConsensusTarget] || "?";
+  section.style.display = "block";
+  if (label) label.textContent = "All Monks agree: " + targetName;
+  if (btn) btn.style.display = (hostRole === "a Monk" && hostHasGun) ? "block" : "none";
+}
+
+window.hostMonkShoot = async function() {
+  if (!hostConsensusTarget || hostRole !== "a Monk" || !hostHasGun) return;
+
+  const targetKey = hostConsensusTarget;
+  const targetName = latestPlayers[targetKey] || "?";
+
+  const [rolesSnap, assassinTargetSnap] = await Promise.all([
+    get(ref(db, "numbers/" + something + "/roles")),
+    get(ref(db, "numbers/" + something + "/assassinTarget"))
+  ]);
+
+  const roles = rolesSnap.val() || {};
+  const assassinTarget = assassinTargetSnap.val();
+  const targetRole = roles[targetKey];
+  const playerKeys = Object.keys(roles);
+  const pointMap = {};
+
+  if (targetRole === "an Assassin") {
+    playerKeys.forEach(k => { pointMap[k] = roles[k] === "a Spy" ? 1 : roles[k] === "a Monk" ? 2 : 0; });
+  } else {
+    playerKeys.forEach(k => { pointMap[k] = roles[k] === "an Assassin" ? 1 : 0; });
+  }
+
+  await set(ref(db, "numbers/" + something + "/lastShot"), {
+    targetKey,
+    targetName,
+    targetRole,
+    shooterKey: "player1",
+    shooterRole: hostRole,
+    shooterName: latestPlayers["player1"] || "Host",
+    wasTarget: targetKey === assassinTarget
+  });
+
+  await set(ref(db, "numbers/" + something + "/killed/" + targetKey), true);
+
+  for (const [key, pts] of Object.entries(pointMap)) {
+    if (pts > 0) {
+      const currentSnap = await get(ref(db, "numbers/" + something + "/points/" + key));
+      const current = currentSnap.val() || 0;
+      await set(ref(db, "numbers/" + something + "/points/" + key), current + pts);
+    }
+  }
+
+  const consensusSection = document.getElementById("consensus-section");
+  if (consensusSection) consensusSection.style.display = "none";
+}
+
 function renderHostPlayerList(players, points) {
   const playerlist = document.getElementById("host-list");
   if (!playerlist) return;
@@ -330,6 +439,7 @@ window.mythingy = async function mythingy() {
     set(ref(db, "numbers/" + something + "/gunTouches"), null),
     set(ref(db, "numbers/" + something + "/gunUndo"), null),
     set(ref(db, "numbers/" + something + "/assassinTarget"), null),
+    set(ref(db, "numbers/" + something + "/suspicions"), null),
     set(ref(db, "numbers/" + something + "/round"), nextRound),
   ]);
 
@@ -497,6 +607,26 @@ async function hostShoot(targetKey, targetName) {
       const currentSnap = await get(ref(db, "numbers/" + something + "/points/" + key));
       const current = currentSnap.val() || 0;
       await set(ref(db, "numbers/" + something + "/points/" + key), current + pts);
+    }
+  }
+
+  // Suspicion bonus: monks who correctly suspected the Assassin get +1 when Assassin kills their Monk target
+  if (hostRole === "an Assassin" && targetKey === assassinTarget && targetRole === "a Monk") {
+    const [suspicionSnap, killedSnap] = await Promise.all([
+      get(ref(db, "numbers/" + something + "/suspicions")),
+      get(ref(db, "numbers/" + something + "/killed"))
+    ]);
+    const suspicions = suspicionSnap.val() || {};
+    const killed = killedSnap.val() || {};
+    const spyKey = playerKeys.find(k => roles[k] === "a Spy");
+    if (!spyKey || !killed[spyKey]) {
+      for (const [pKey, suspectedKey] of Object.entries(suspicions)) {
+        if (suspectedKey === "player1" && roles[pKey] === "a Monk") {
+          const currentSnap = await get(ref(db, "numbers/" + something + "/points/" + pKey));
+          const current = currentSnap.val() || 0;
+          await set(ref(db, "numbers/" + something + "/points/" + pKey), current + 1);
+        }
+      }
     }
   }
 
@@ -687,6 +817,34 @@ window.score_click = async function(what, event) {
     SpyWrong: "Spy killed wrong person"
   };
   label.innerText = labels[what];
+}
+
+window.openSuspicionPopup = async function() {
+  const playerSnap = await get(ref(db, "numbers/" + something + "/players"));
+  const players = playerSnap.val() || {};
+  const list = document.getElementById("suspicion-list");
+  list.innerHTML = "";
+  Object.entries(players).forEach(([key, name]) => {
+    if (key === "player1") return;
+    const btn = document.createElement("button");
+    btn.innerText = name;
+    btn.onclick = () => submitSuspicion(key, name);
+    list.appendChild(btn);
+  });
+  const popup = document.getElementById("suspicion-popup");
+  popup.style.display = "flex";
+  popup.style.animation = "popup 0.5s forwards";
+}
+
+window.closeSuspicionPopup = function() {
+  const popup = document.getElementById("suspicion-popup");
+  popup.style.animation = "popout 0.5s forwards";
+  setTimeout(() => { popup.style.display = "none"; }, 250);
+}
+
+async function submitSuspicion(key, name) {
+  await set(ref(db, "numbers/" + something + "/suspicions/player1"), key);
+  closeSuspicionPopup();
 }
 
 window.openQRPopup = function() {

@@ -41,6 +41,19 @@
           </div>
         </div>
 
+        <!-- Suspicion section -->
+        <div id="suspicion-section" style="display: none;" class="full-span">
+          <div id="my-suspicion-label">No suspicion</div>
+          <div id="suspect-count-label"></div>
+          <a onclick="openSuspicionPopup()" class="button">SUSPECT</a>
+        </div>
+
+        <!-- Consensus shoot section -->
+        <div id="consensus-section" style="display: none;" class="full-span">
+          <div id="consensus-label">All Monks agree: ???</div>
+          <a id="consensus-shoot-btn" style="display: none;" onclick="monkShoot()" class="button">SHOOT</a>
+        </div>
+
         <!-- Shoot matrix: inactive for Assassin until 3 gun touches, always active for Spy -->
         <div id="shoot-section" style="display: none;" class="full-span">
           <div id="touch-counter"></div>
@@ -49,6 +62,15 @@
         </div>
 
         <a id="back-btn" href="joinroom.html" onclick="backBtn3()" class="button full-span">BACK</a>
+      </div>
+    </div>
+
+    <!-- Suspicion popup -->
+    <div id="suspicion-popup" style="display: none;">
+      <div id="suspicion-popup-inner">
+        <div id="suspicion-popup-title">Who do you suspect?</div>
+        <div id="suspicion-list"></div>
+        <button onclick="closeSuspicionPopup()" class="cancel-btn">Cancel</button>
       </div>
     </div>
 
