@@ -786,7 +786,7 @@ button:hover {
 /* ── Room ID badge (upper right) ── */
 #room-badge {
   align-self: flex-end;
-  margin: 8px 10px 0;
+  margin: 8px 10px 12px;
   background: rgba(27, 12, 36, 0.92);
   border: 2px solid rgb(196, 168, 127);
   border-radius: 8px;
