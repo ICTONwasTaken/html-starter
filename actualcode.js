@@ -319,10 +319,6 @@ window.mythingy = async function mythingy() {
   document.getElementById("stop-btn").style.display = "block";
   document.getElementById("score-btn").style.display = "none";
 
-  change.style.display = "none";
-  const badgeLabel = document.getElementById("room-badge-label");
-  if (badgeLabel) badgeLabel.style.display = "none";
-
   const roundSnap = await get(ref(db, "numbers/" + something + "/round"));
   const nextRound = (roundSnap.val() || 0) + 1;
 
@@ -343,17 +339,21 @@ window.mythingy = async function mythingy() {
 
   const roles = ["an Assassin", "a Spy"];
   while (roles.length < keys.length) roles.push("a Monk");
-  const shuffled = roles.sort(() => Math.random() - 0.5);
 
-  const assassinIdx = shuffled.indexOf("an Assassin");
+  // Fisher-Yates shuffle — unbiased
+  for (let i = roles.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [roles[i], roles[j]] = [roles[j], roles[i]];
+  }
+
+  const assassinIdx = roles.indexOf("an Assassin");
   const assassinKey = keys[assassinIdx];
   const nonAssassinKeys = keys.filter(k => k !== assassinKey);
   const targetKey = nonAssassinKeys[Math.floor(Math.random() * nonAssassinKeys.length)];
   await set(ref(db, "numbers/" + something + "/assassinTarget"), targetKey);
-  console.log("Assassin target set:", targetKey);
 
   for (let i = 0; i < keys.length; i++) {
-    await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), shuffled[i]);
+    await set(ref(db, "numbers/" + something + "/roles/" + keys[i]), roles[i]);
   }
 }
 
